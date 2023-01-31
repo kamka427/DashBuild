@@ -13,7 +13,7 @@
 			href="/create">Create</a
 		>
 		<a
-			class="h-10 w-10 rounded-full bg-gray-800 text-center shadow-lg hover:bg-gray-500 dark:bg-slate-400 dark:hover:bg-slate-700 "
+			class="h-10 w-10 rounded-full bg-gray-800 text-center shadow-lg hover:bg-gray-500 dark:bg-slate-400 dark:hover:bg-slate-700"
 			href="/profile"
 		/>
 	</div>

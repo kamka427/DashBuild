@@ -16,7 +16,7 @@
 	<h1 class="pb-3 text-center text-xl">Gallery of already built Dashboards</h1>
 	<div class="flex flex-wrap justify-center gap-8">
 		{#each dashboards as dash}
-			<img class="h-20 rounded-md shadow-lg" src={dash} alt="dashboard" />
+			<img class="h-[7em] rounded-md shadow-lg" src={dash} alt="dashboard" />
 		{/each}
 	</div>
 	<Pagination />
