@@ -1,4 +1,3 @@
-<!-- three dot pagination -->
 <div>
 	<div class="flex justify-center p-3">
 		<div class="flex items-center gap-2">

@@ -1,7 +1,6 @@
 <script lang="ts">
 	import Pagination from './Pagination.svelte';
-
-	// six random images from unsplash in a list
+	
 	export let dashboards = [
 		'https://grafana.com/static/img/screenshots/Modal_dashboards.png',
 		'https://grafana.com/static/img/screenshots/Modal_dashboards.png',
