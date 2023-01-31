@@ -2,8 +2,8 @@
 	import Minigallery from './components/GalleryPreview.svelte';
 </script>
 
-<main class="m-12 flex dark:text-slate-100 gap-12">
-	<div class="space-y-6 container">
+<main class="m-12 flex gap-12 dark:text-slate-100">
+	<div class="container space-y-6">
 		<div>
 			<h1 class="text-4xl">Welcome to DashBuild</h1>
 			<h2 class="text-2xl">Build. Dashboards. Easily.</h2>
@@ -26,5 +26,5 @@
 			</button>
 		</div>
 	</div>
-		<Minigallery />
+	<Minigallery />
 </main>

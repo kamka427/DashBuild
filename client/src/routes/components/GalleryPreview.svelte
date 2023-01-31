@@ -11,7 +11,7 @@
 		'https://grafana.com/static/img/screenshots/Modal_dashboards.png',
 		'https://grafana.com/static/img/screenshots/Modal_dashboards.png',
 		'https://grafana.com/static/img/screenshots/Modal_dashboards.png',
-		'https://grafana.com/static/img/screenshots/Modal_dashboards.png',
+		'https://grafana.com/static/img/screenshots/Modal_dashboards.png'
 	];
 </script>
 
