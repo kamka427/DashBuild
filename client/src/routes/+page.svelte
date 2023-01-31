@@ -2,13 +2,13 @@
 	import Minigallery from './components/GalleryPreview.svelte';
 </script>
 
-<main class="m-12 flex dark:text-slate-100">
-	<div class="space-y-6">
+<main class="m-12 flex dark:text-slate-100 gap-12">
+	<div class="space-y-6 container">
 		<div>
 			<h1 class="text-4xl">Welcome to DashBuild</h1>
 			<h2 class="text-2xl">Build. Dashboards. Easily.</h2>
 		</div>
-		<p>
+		<p class="text-">
 			Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia, enim temporibus sequi illum
 			maxime asperiores iusto aperiam illo nesciunt, quidem perspiciatis! Odit, esse? Eum labore
 			aliquam amet possimus asperiores est. Lorem, ipsum dolor sit amet consectetur adipisicing
