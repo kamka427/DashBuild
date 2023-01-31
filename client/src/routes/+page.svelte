@@ -1,5 +1,5 @@
 <script>
-	import Minigallery from '../GalleryPreview.svelte';
+	import Minigallery from './components/GalleryPreview.svelte';
 </script>
 
 <main class="m-12  flex dark:text-slate-100">
