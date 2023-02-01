@@ -8,7 +8,7 @@
 			<h1 class="text-4xl">Welcome to DashBuild</h1>
 			<h2 class="text-2xl">Build. Dashboards. Easily.</h2>
 		</div>
-		<p class="text-">
+		<p>
 			Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia, enim temporibus sequi illum
 			maxime asperiores iusto aperiam illo nesciunt, quidem perspiciatis! Odit, esse? Eum labore
 			aliquam amet possimus asperiores est. Lorem, ipsum dolor sit amet consectetur adipisicing
