@@ -1,5 +1,5 @@
 <script>
-	import GalleryPreview from './components/GalleryPreview.svelte';
+	import GalleryPreview from '../components/GalleryPreview.svelte';
 </script>
 
 <main class="m-12 flex gap-12 dark:text-slate-100">
