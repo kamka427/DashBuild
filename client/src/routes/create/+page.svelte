@@ -1,3 +1,7 @@
+<script>
+	import PanelView from '../../components/PanelView.svelte';
+</script>
+
 <main>
 	<div class="container m-12 dark:text-white">
 		<div class="flex justify-between">
@@ -14,6 +18,9 @@
 					class="rounded-md bg-gray-200 px-6 py-4 text-black shadow-lg hover:bg-gray-300"
 				/>
 			</div>
+		</div>
+		<div>
+			<PanelView />
 		</div>
 	</div>
 </main>
