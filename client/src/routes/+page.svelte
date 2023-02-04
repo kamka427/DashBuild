@@ -2,7 +2,7 @@
 	import GalleryPreview from '../components/GalleryPreview.svelte';
 </script>
 
-<main class="m-12 flex gap-12 dark:text-slate-100">
+<main class="container m-12 mx-auto flex flex-wrap gap-12 dark:text-slate-100 lg:flex-nowrap">
 	<div class="container space-y-6">
 		<div>
 			<h1 class="text-4xl">Welcome to DashBuild</h1>
