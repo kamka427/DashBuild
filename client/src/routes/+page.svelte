@@ -16,13 +16,11 @@
 			minima rem velit facere, nam, id cumque exercitationem autem quidem tenetur vel modi.
 		</p>
 		<div class="space-x-2">
-			<button
-				class="rounded-3xl bg-green-600 px-6 py-4 text-slate-100 shadow-lg hover:bg-green-800"
-			>
-				Create a new Dashboard
+			<button class="rounded-3xl bg-green-600 px-6 py-4 text-slate-100 shadow-lg hover:bg-green-800"
+				><a href="/create"> Create a new Dashboard </a>
 			</button>
 			<button class="rounded-3xl bg-blue-600 px-6 py-4 text-slate-100 shadow-lg hover:bg-blue-800">
-				Jump to my Dashboards
+				<a href="/dashboards"> Jump to my Dashboards </a>
 			</button>
 		</div>
 	</div>
