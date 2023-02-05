@@ -10,7 +10,7 @@
 			<h1 class="text-4xl">Create Dashboard</h1>
 			<div class="flex gap-2">
 				<div class="flex items-center gap-2">
-					<label for="columns">Columns:</label>
+					<label class="font-semibold" for="columns">Columns:</label>
 					<input
 						id="columns"
 						type="number"
@@ -19,7 +19,7 @@
 					/>
 				</div>
 				<div class="flex items-center gap-2">
-					<label for="Rows">Rows:</label>
+					<label class="font-semibold" for="Rows">Rows:</label>
 					<input
 						type="number"
 						placeholder="2"

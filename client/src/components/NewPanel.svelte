@@ -1,4 +1,4 @@
-<div class="h-48 w-1/3 rounded-md bg-gray-200 p-3 shadow-xl">
+<div class="w-1/3 rounded-md bg-gray-200 p-3 shadow-xl">
 	<div class="flex h-full items-center justify-center">
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
