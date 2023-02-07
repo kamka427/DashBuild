@@ -1,5 +1,6 @@
 <script>
 	import NewPanel from '../../components/NewPanel.svelte';
+	import PanelEdit from '../../components/PanelEdit.svelte';
 	import PanelDetails from '../../components/PanelEdit.svelte';
 	import PanelView from '../../components/PanelView.svelte';
 </script>
@@ -41,7 +42,7 @@
 			<div class="grid grid-cols-2 grid-rows-2 gap-3 place-items-center">
 				<PanelView />
 				<PanelView />
-				<PanelView />
+				<PanelEdit />
 				<NewPanel />
 			</div>
 			<div class="flex flex-col justify-end gap-3 sm:flex-row">
