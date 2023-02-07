@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Pagination from './Pagination.svelte';
-	
+
 	export let dashboards = [
 		'https://grafana.com/static/img/screenshots/Modal_dashboards.png',
 		'https://grafana.com/static/img/screenshots/Modal_dashboards.png',
