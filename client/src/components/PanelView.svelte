@@ -1,4 +1,4 @@
-<div class="flex w-1/3 flex-col gap-3 rounded-md bg-gray-200 p-3 text-black shadow-xl">
+<div class="flex flex-col gap-3 rounded-md bg-gray-200 p-3 text-black shadow-xl">
 	<div class="flex items-center justify-between">
 		<h1 class="text-xl">Panel Title</h1>
 		<button>
@@ -20,7 +20,7 @@
 	</div>
 	<img
 		src="https://grafana.com/static/img/screenshots/Modal_dashboards.png"
-		class="rounded-md bg-gray-300 shadow-xl"
+		class="rounded-md bg-gray-300 shadow-xl lg:max-w-lg"
 		alt=""
 	/>
 	<div class="flex flex-col justify-end gap-3 lg:flex-row">
