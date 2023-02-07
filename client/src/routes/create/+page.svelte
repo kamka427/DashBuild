@@ -39,7 +39,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="grid grid-cols-2 grid-rows-2 gap-3 place-items-center">
+			<div class="grid grid-cols-2 grid-rows-2 place-items-center gap-3">
 				<PanelView />
 				<PanelView />
 				<PanelEdit />
