@@ -32,5 +32,13 @@
 			<PanelView />
 			<NewPanel />
 		</div>
+		<div class="flex justify-end gap-3">
+			<button class="rounded-md bg-red-600 px-8 py-2 text-white shadow-lg hover:bg-green-800">
+				Discard
+			</button>
+			<button class="rounded-md bg-green-600 px-8 py-2 text-white shadow-lg hover:bg-green-800">
+				Create
+			</button>
+		</div>
 	</div>
 </main>
