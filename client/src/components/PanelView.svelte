@@ -20,7 +20,7 @@
 	</div>
 	<img
 		src="https://grafana.com/static/img/screenshots/Modal_dashboards.png"
-		class="rounded-md bg-gray-300 shadow-xl lg:max-w-lg"
+		class="rounded-md bg-gray-300 shadow-xl w-max"
 		alt=""
 	/>
 	<div class="flex flex-col justify-end gap-3 lg:flex-row">

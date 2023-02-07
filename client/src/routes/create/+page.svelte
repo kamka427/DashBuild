@@ -38,11 +38,9 @@
 					</div>
 				</div>
 			</div>
-			<div class="flex flex-col justify-around gap-3 sm:flex-row items-center">
+			<div class="grid grid-cols-2 grid-rows-2 gap-3 place-items-center">
 				<PanelView />
 				<PanelView />
-			</div>
-			<div class="flex flex-col justify-around gap-3 sm:flex-row items-center">
 				<PanelView />
 				<NewPanel />
 			</div>
