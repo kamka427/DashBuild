@@ -13,7 +13,7 @@
 				<DashboardView />
 				<DashboardView />
 			</div>
-            <Pagination/>
+			<Pagination />
 		</div>
 	</div>
 </main>
