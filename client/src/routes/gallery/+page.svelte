@@ -16,13 +16,13 @@
 					class="h-8 w-1/2 rounded-md bg-gray-200 px-2 text-black shadow-lg hover:bg-gray-300"
 				/>
 				<div class="flex gap-4">
-					<select class="h-8 px-2 text-black">
+					<select class="h-8 bg-gray-200 p-2 text-black shadow-lg hover:bg-gray-300">
 						<option value="none">Tags</option>
 						{#each tags as tag}
 							<option value={tag}>{tag}</option>
 						{/each}
 					</select>
-					<select class="h-8 px-2 text-black">
+					<select class="h-8 bg-gray-200 p-2 text-black shadow-lg hover:bg-gray-300">
 						<option value="none">Teams</option>
 						{#each tags as tag}
 							<option value={tag}>{tag}</option>

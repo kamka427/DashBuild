@@ -3,7 +3,7 @@
 		<h1 class="text-xl">Dashboard Title</h1>
 		<div class="flex items-center gap-6">
 			<p>Team</p>
-			<p class="rounded-md bg-gray-400 p-2">Tags...</p>
+			<p class="rounded-md bg-orange-300 p-2 shadow-md">Tags...</p>
 		</div>
 	</div>
 	<img
@@ -12,7 +12,7 @@
 		alt=""
 	/>
 	<div class="flex flex-col justify-end gap-3 lg:flex-row">
-		<button class="rounded-md bg-cyan-600 px-8 py-2 text-white shadow-lg hover:bg-green-800 "
+		<button class="rounded-md bg-cyan-600 px-8 py-2 text-white shadow-lg hover:bg-cyan-800 "
 			>View</button
 		>
 		<button class="rounded-md bg-green-600 px-8 py-2 text-white shadow-lg hover:bg-green-800"
