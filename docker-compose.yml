@@ -1,0 +1,27 @@
+version: '3.9'
+services:
+  db:
+    image: postgres:alpine3.17
+    restart: always
+    environment:
+      - POSTGRES_USER=${PG_USER}
+      - POSTGRES_PASSWORD=${PG_PWD}
+      - POSTGRES_DB=${PG_DB}
+    volumes:
+      - type: volume
+        source: db_data
+        target: /var/lib/postgresql/data      
+    ports:
+      - 5432:5432
+  pgadmin:
+    image: dpage/pgadmin4:6.20
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGA_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGA_PWD}
+    ports:
+      - "5050:80"
+
+volumes:
+  db_data:
+  
