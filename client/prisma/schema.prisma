@@ -9,3 +9,34 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+id    Int     @id @default(autoincrement())
+email String  @unique
+name  String?
+team String?
+password String
+dashboards Dashboard[]
+}
+
+model Dashboard {
+id    Int     @id @default(autoincrement())
+name  String
+description String?
+published Boolean
+thumbnail Bytes
+representation String
+owner User    @relation(fields: [ownerId], references: [id])
+ownerId Int
+panels Panel[]
+}
+
+model Panel {
+id    Int     @id @default(autoincrement())
+name  String
+description String?
+thumbnail Bytes
+representation String
+dashboard Dashboard @relation(fields: [dashboardId], references: [id])
+dashboardId Int
+}
