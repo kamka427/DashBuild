@@ -24,7 +24,8 @@ model Dashboard {
   name           String
   description    String?
   published      Boolean
-  thumbnail      Bytes
+  version        Int     @default(1)
+  thumbnail      Bytes?
   representation Json
   owner          User    @relation(fields: [ownerId], references: [id])
   ownerId        Int
@@ -35,7 +36,7 @@ model Panel {
   id             Int       @id @default(autoincrement())
   name           String
   description    String?
-  thumbnail      Bytes
+  thumbnail      Bytes?
   representation Json
   dashboard      Dashboard @relation(fields: [dashboardId], references: [id])
   dashboardId    Int
