@@ -1,5 +1,7 @@
 <script>
 	import GalleryPreview from '../components/GalleryPreview.svelte';
+	import { signIn, signOut } from '@auth/sveltekit/client';
+	import { page } from '$app/stores';
 </script>
 
 <main class="container m-12 mx-auto flex flex-wrap gap-12 dark:text-slate-100 lg:flex-nowrap">
