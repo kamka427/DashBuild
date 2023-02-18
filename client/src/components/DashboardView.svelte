@@ -1,28 +1,18 @@
+<script>
+	import Circle from '../svgs/Circle.svelte';
+	import Close from '../svgs/Close.svelte';
+</script>
+
 <div class="flex flex-col gap-3 rounded-md bg-gray-200 p-3 text-black shadow-xl">
 	<div class="flex items-center justify-between">
 		<h1 class="text-xl">Dashboard Title</h1>
 		<div class="flex items-center">
 			<p class="text-">Published</p>
 			<button>
-				<svg height="30" width="30">
-					<circle cx="15" cy="15" r="10" stroke="green" stroke-width="3" fill="white" />
-				</svg>
+				<Circle />
 			</button>
 			<button>
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					class="h-8 w-8 cursor-pointer text-red-800"
-					fill="none"
-					viewBox="0 0 24 24"
-					stroke="currentColor"
-				>
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="4"
-						d="M6 18L18 6M6 6l12 12"
-					/>
-				</svg>
+				<Close />
 			</button>
 		</div>
 	</div>
