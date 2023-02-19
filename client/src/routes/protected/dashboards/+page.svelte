@@ -1,6 +1,6 @@
 <script>
-	import DashboardView from '../../components/DashboardView.svelte';
-	import Pagination from '../../components/Pagination.svelte';
+	import DashboardView from '../../../components/DashboardView.svelte';
+	import Pagination from '../../../components/Pagination.svelte';
 </script>
 
 <main>

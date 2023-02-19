@@ -1,7 +1,8 @@
-<script>
+<script lang="ts">
 	import GalleryPreview from '../components/GalleryPreview.svelte';
 	import { signIn, signOut } from '@auth/sveltekit/client';
 	import { page } from '$app/stores';
+	console.log($page);
 </script>
 
 <main class="container m-12 mx-auto flex flex-wrap gap-12 dark:text-slate-100 lg:flex-nowrap">
@@ -17,14 +18,19 @@
 			elit. Facilis explicabo minus accusantium eligendi, nostrum molestiae adipisci voluptatem
 			minima rem velit facere, nam, id cumque exercitationem autem quidem tenetur vel modi.
 		</p>
-		<div class="space-x-2">
-			<button class="rounded-3xl bg-green-600 px-6 py-4 text-slate-100 shadow-lg hover:bg-green-800"
-				><a href="/create"> Create a new Dashboard </a>
-			</button>
-			<button class="rounded-3xl bg-blue-600 px-6 py-4 text-slate-100 shadow-lg hover:bg-blue-800">
-				<a href="/dashboards"> Jump to my Dashboards </a>
-			</button>
-		</div>
+		{#if $page.data.session}
+			<div class="space-x-2">
+				<button
+					class="rounded-3xl bg-green-600 px-6 py-4 text-slate-100 shadow-lg hover:bg-green-800"
+					><a href="/protected/create"> Create a new Dashboard </a>
+				</button>
+				<button
+					class="rounded-3xl bg-blue-600 px-6 py-4 text-slate-100 shadow-lg hover:bg-blue-800"
+				>
+					<a href="/protected/dashboards"> Jump to my Dashboards </a>
+				</button>
+			</div>
+		{/if}
 	</div>
 	<GalleryPreview />
 </main>

@@ -1,6 +1,6 @@
 <script>
-	import Pagination from '../../components/Pagination.svelte';
-	import GalleryDashboard from '../../components/GalleryDashboard.svelte';
+	import Pagination from '../../../components/Pagination.svelte';
+	import GalleryDashboard from '../../../components/GalleryDashboard.svelte';
 
 	let tags = ['val1', 'val2', 'val3', 'val4'];
 </script>
