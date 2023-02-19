@@ -20,6 +20,7 @@ model Account {
   access_token      String? @db.Text
   expires_in        Int?
   ext_expires_in    Int?
+  refresh_token_expires_in Int?
   token_type        String?
   scope             String?
   id_token          String? @db.Text

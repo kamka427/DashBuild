@@ -1,7 +1,7 @@
 <script>
-	import NewPanel from '../../components/NewPanel.svelte';
-	import PanelEdit from '../../components/PanelEdit.svelte';
-	import PanelView from '../../components/PanelView.svelte';
+	import NewPanel from '../../../components/NewPanel.svelte';
+	import PanelEdit from '../../../components/PanelEdit.svelte';
+	import PanelView from '../../../components/PanelView.svelte';
 </script>
 
 <main>
