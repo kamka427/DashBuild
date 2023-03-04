@@ -1,3 +1,6 @@
+<script lang="ts">
+	export let source: string
+</script>
 <div class="flex flex-col gap-3 rounded-md bg-gray-200 p-3 text-black shadow-xl">
 	<div class="flex items-center justify-between">
 		<h1 class="text-xl">Dashboard Title</h1>
@@ -7,7 +10,7 @@
 		</div>
 	</div>
 	<img
-		src="https://grafana.com/static/img/screenshots/Modal_dashboards.png"
+		src={source}
 		class="w-max rounded-md bg-gray-300 shadow-xl"
 		alt=""
 	/>

@@ -1,6 +1,13 @@
 <script>
 	import DashboardView from '../../../components/DashboardView.svelte';
 	import Pagination from '../../../components/Pagination.svelte';
+
+	export let dashboards = [
+		'../../src/placeholders/dash1.png',
+		'../../src/placeholders/dash2.png',
+		'../../src/placeholders/dash3.png',
+		'../../src/placeholders/dash4.png',
+	];
 </script>
 
 <main>
@@ -10,8 +17,9 @@
 				<h1 class="text-4xl">My Dashboards</h1>
 			</div>
 			<div class="grid grid-cols-2 grid-rows-1 place-items-center gap-3">
-				<DashboardView />
-				<DashboardView />
+				{#each dashboards as dashboard}
+					<DashboardView source={dashboard} />
+				{/each}
 			</div>
 			<Pagination />
 		</div>

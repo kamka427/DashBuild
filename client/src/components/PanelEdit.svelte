@@ -1,5 +1,6 @@
-<script>
+<script lang="ts">
 	let props = ['prop1', 'prop2', 'prop3'];
+	export let source: string
 </script>
 
 <div class="flex h-full w-full flex-col gap-3 rounded-lg bg-slate-200 p-2 text-black shadow-lg">
@@ -7,7 +8,7 @@
 	<div class="flex flex-col gap-6 lg:flex-row">
 		<div class="flex flex-col gap-3">
 			<img
-				src="https://grafana.com/static/img/screenshots/Modal_dashboards.png"
+				src={source}
 				class="rounded-lg shadow-lg"
 				alt=""
 			/>

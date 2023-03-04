@@ -2,15 +2,15 @@
 	import Pagination from './Pagination.svelte';
 
 	export let dashboards = [
-		'https://grafana.com/static/img/screenshots/Modal_dashboards.png',
-		'https://grafana.com/static/img/screenshots/Modal_dashboards.png',
-		'https://grafana.com/static/img/screenshots/Modal_dashboards.png',
-		'https://grafana.com/static/img/screenshots/Modal_dashboards.png',
-		'https://grafana.com/static/img/screenshots/Modal_dashboards.png',
-		'https://grafana.com/static/img/screenshots/Modal_dashboards.png',
-		'https://grafana.com/static/img/screenshots/Modal_dashboards.png',
-		'https://grafana.com/static/img/screenshots/Modal_dashboards.png',
-		'https://grafana.com/static/img/screenshots/Modal_dashboards.png'
+		'src/placeholders/dash1.png',
+		'src/placeholders/dash2.png',
+		'src/placeholders/dash3.png',
+		'src/placeholders/dash4.png',
+		'src/placeholders/dash5.png',
+		'src/placeholders/dash6.png',
+		'src/placeholders/dash1.png',
+		'src/placeholders/dash2.png',
+		'src/placeholders/dash3.png',
 	];
 </script>
 

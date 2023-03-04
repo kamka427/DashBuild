@@ -3,6 +3,13 @@
 	import GalleryDashboard from '../../../components/GalleryDashboard.svelte';
 
 	let tags = ['val1', 'val2', 'val3', 'val4'];
+	export let dashboards = [
+		'../../src/placeholders/dash5.png',
+		'../../src/placeholders/dash6.png',
+		'../../src/placeholders/dash2.png',
+		'../../src/placeholders/dash4.png',
+	];
+
 </script>
 
 <main>
@@ -31,8 +38,9 @@
 				</div>
 			</div>
 			<div class="grid grid-cols-2 grid-rows-1 place-items-center gap-3">
-				<GalleryDashboard />
-				<GalleryDashboard />
+				{#each dashboards as dashboard}
+					<GalleryDashboard source={dashboard} />
+				{/each}
 			</div>
 			<Pagination />
 		</div>

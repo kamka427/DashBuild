@@ -2,6 +2,13 @@
 	import NewPanel from '../../../components/NewPanel.svelte';
 	import PanelEdit from '../../../components/PanelEdit.svelte';
 	import PanelView from '../../../components/PanelView.svelte';
+
+	export let panels = [
+		'../../src/placeholders/panel1.png',
+		'../../src/placeholders/panel2.png',
+		'../../src/placeholders/panel3.png',
+		'../../src/placeholders/panel4.png'
+	];
 </script>
 
 <main>
@@ -39,9 +46,10 @@
 				</div>
 			</div>
 			<div class="grid grid-cols-2 grid-rows-2 place-items-center gap-3">
-				<PanelView />
-				<PanelView />
-				<PanelEdit />
+				{#each panels as panel}
+					<PanelView source={panel} />
+				{/each}
+				<PanelEdit source="../../src/placeholders/panel3.png" />
 				<NewPanel />
 			</div>
 			<div class="flex flex-col justify-end gap-3 sm:flex-row">

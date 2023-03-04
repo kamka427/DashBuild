@@ -1,6 +1,8 @@
-<script>
+<script lang="ts">
 	import Circle from '../svgs/Circle.svelte';
 	import Close from '../svgs/Close.svelte';
+
+	export let source: string
 </script>
 
 <div class="flex flex-col gap-3 rounded-md bg-gray-200 p-3 text-black shadow-xl">
@@ -17,7 +19,7 @@
 		</div>
 	</div>
 	<img
-		src="https://grafana.com/static/img/screenshots/Modal_dashboards.png"
+		src={source}
 		class="w-max rounded-md bg-gray-300 shadow-xl"
 		alt=""
 	/>
