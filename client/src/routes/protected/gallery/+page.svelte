@@ -20,16 +20,16 @@
 				<input
 					type="search"
 					placeholder="Search for a dashboard"
-					class="h-8 w-1/2 rounded-md bg-gray-200 px-2 text-black shadow-lg hover:bg-gray-300"
+					class="h-12 w-1/2 rounded-md bg-gray-200 px-2 text-black shadow-lg hover:bg-gray-300"
 				/>
 				<div class="flex gap-4">
-					<select class="h-8 bg-gray-200 p-2 text-black shadow-lg hover:bg-gray-300">
+					<select class="h-12 bg-gray-200 p-2 text-black shadow-lg hover:bg-gray-300 rounded-md">
 						<option value="none">Tags</option>
 						{#each tags as tag}
 							<option value={tag}>{tag}</option>
 						{/each}
 					</select>
-					<select class="h-8 bg-gray-200 p-2 text-black shadow-lg hover:bg-gray-300">
+					<select class="h-12 bg-gray-200 p-2 text-black shadow-lg hover:bg-gray-300 rounded-md">
 						<option value="none">Teams</option>
 						{#each tags as tag}
 							<option value={tag}>{tag}</option>

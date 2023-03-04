@@ -35,7 +35,7 @@
 					class="flex gap-2 rounded-2xl bg-green-600 px-6 py-1 text-slate-100 shadow-lg hover:bg-green-800"
 					href="/auth/signin"
 				>
-					Log in
+					Sign in
 				</a>
 				<a
 					class="flex gap-2 rounded-2xl bg-blue-600 px-6 py-1 text-slate-100 shadow-lg hover:bg-blue-800"
