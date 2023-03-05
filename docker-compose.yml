@@ -13,6 +13,7 @@ services:
         target: /var/lib/postgresql/data      
     ports:
       - 5432:5432
+
   pgadmin:
     image: dpage/pgadmin4:6.20
     restart: always
@@ -24,8 +25,19 @@ services:
         source: pgadmin_data
         target: /var/lib/pgadmin
     ports:
-      - "5050:80"
+      - 5050:80
 
+  grafana:
+    image: grafana/grafana-oss:9.4.3
+    restart: always
+    volumes:
+      - type: volume
+        source: grafana_data
+        target: /var/lib/grafana
+    ports:
+      - 3000:3000
+      
 volumes:
   db_data:
   pgadmin_data:
+  grafana_data:
