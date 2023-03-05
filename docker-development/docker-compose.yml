@@ -4,9 +4,9 @@ services:
     image: postgres:alpine3.17
     restart: always
     environment:
-      POSTGRES_USER: ${PG_USER}
-      POSTGRES_PASSWORD: ${PG_PWD}
-      POSTGRES_DB: ${PG_DB}
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postgres
+        POSTGRES_DB: dashbuild
     volumes:
       - type: volume
         source: db_data
@@ -18,8 +18,8 @@ services:
     image: dpage/pgadmin4:6.20
     restart: always
     environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGA_EMAIL}
-      PGADMIN_DEFAULT_PASSWORD: ${PGA_PWD}
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
     volumes:
       - type: volume
         source: pgadmin_data
@@ -37,6 +37,15 @@ services:
     ports:
       - 3000:3000
 
+  app-dev:
+    image: dashbuild-dev
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 5173:5173
+      
 volumes:
   db_data:
   pgadmin_data:
