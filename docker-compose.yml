@@ -36,6 +36,15 @@ services:
         target: /var/lib/grafana
     ports:
       - 3000:3000
+
+  app-dev:
+    image: dashbuild-dev
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 5173:5173
       
 volumes:
   db_data:
