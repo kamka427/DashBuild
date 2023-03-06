@@ -1,0 +1,29 @@
+name: CI
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  svelte-lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          cache: npm
+      - run: 'npm i && npm run lint'
+  svelte-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          cache: npm
+      - run: npm install
+        env:
+          SKIP_PREPARE: true
+      - run: npm run test:unit
