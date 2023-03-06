@@ -15,6 +15,7 @@ async function main() {
 		email: faker.internet.email(),
 		team: 'team' + faker.helpers.arrayElement(['A', 'B', 'C', 'D', 'E'])
 	}));
+
 	await prisma.user.createMany({
 		data: fakeUsers
 	});
@@ -28,6 +29,7 @@ async function main() {
 		userId: faker.helpers.arrayElement(fakeUsers).id,
 		representation: {}
 	}));
+
 	await prisma.dashboard.createMany({
 		data: fakeDashboards
 	});

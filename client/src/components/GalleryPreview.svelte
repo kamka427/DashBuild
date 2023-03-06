@@ -10,7 +10,7 @@
 		'src/placeholders/dash6.png',
 		'src/placeholders/dash1.png',
 		'src/placeholders/dash2.png',
-		'src/placeholders/dash3.png',
+		'src/placeholders/dash3.png'
 	];
 </script>
 

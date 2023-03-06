@@ -9,7 +9,7 @@ const config = {
 
 	kit: {
 		adapter: adapterNode()
-	},
+	}
 };
 
 export default config;

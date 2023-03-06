@@ -21,7 +21,9 @@
 				>
 				<span>
 					<p class="text-sm">Signed in as</p>
-					<a href="/protected/profile" class="text-md hover:underline">{$page.data.session.user?.name}</a>
+					<a href="/protected/profile" class="text-md hover:underline"
+						>{$page.data.session.user?.name}</a
+					>
 				</span>
 				{#if $page.data.session.user?.image}
 					<img src={$page.data.session.user.image} alt="" class="h-8 w-8 rounded-full" />

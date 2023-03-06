@@ -7,9 +7,8 @@
 		'../../src/placeholders/dash5.png',
 		'../../src/placeholders/dash6.png',
 		'../../src/placeholders/dash2.png',
-		'../../src/placeholders/dash4.png',
+		'../../src/placeholders/dash4.png'
 	];
-
 </script>
 
 <main>
@@ -23,13 +22,13 @@
 					class="h-12 w-1/2 rounded-md bg-gray-200 px-2 text-black shadow-lg hover:bg-gray-300"
 				/>
 				<div class="flex gap-4">
-					<select class="h-12 bg-gray-200 p-2 text-black shadow-lg hover:bg-gray-300 rounded-md">
+					<select class="h-12 rounded-md bg-gray-200 p-2 text-black shadow-lg hover:bg-gray-300">
 						<option value="none">Tags</option>
 						{#each tags as tag}
 							<option value={tag}>{tag}</option>
 						{/each}
 					</select>
-					<select class="h-12 bg-gray-200 p-2 text-black shadow-lg hover:bg-gray-300 rounded-md">
+					<select class="h-12 rounded-md bg-gray-200 p-2 text-black shadow-lg hover:bg-gray-300">
 						<option value="none">Teams</option>
 						{#each tags as tag}
 							<option value={tag}>{tag}</option>

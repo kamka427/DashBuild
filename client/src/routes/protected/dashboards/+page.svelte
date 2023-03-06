@@ -6,7 +6,7 @@
 		'../../src/placeholders/dash1.png',
 		'../../src/placeholders/dash2.png',
 		'../../src/placeholders/dash3.png',
-		'../../src/placeholders/dash4.png',
+		'../../src/placeholders/dash4.png'
 	];
 </script>
 
