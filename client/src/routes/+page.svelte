@@ -1,6 +1,5 @@
 <script lang="ts">
 	import GalleryPreview from '../components/GalleryPreview.svelte';
-	import { signIn, signOut } from '@auth/sveltekit/client';
 	import { page } from '$app/stores';
 </script>
 
