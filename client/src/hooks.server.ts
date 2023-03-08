@@ -18,7 +18,7 @@ import { sequence } from '@sveltejs/kit/hooks';
 
 const prisma = new PrismaClient();
 
-async function authorization({ event, resolve }): Promise<any> {
+async function authorization({ event, resolve }): Promise<Handle> {
 	if (event.url.pathname.startsWith('/protected')) {
 		const session = await event.locals.getSession();
 		if (!session) {
@@ -27,7 +27,7 @@ async function authorization({ event, resolve }): Promise<any> {
 	}
 
 	const result = await resolve(event, {
-		transformPageChunk: ({ html }): any => html
+		transformPageChunk: ({ html }) => html
 	});
 	return result;
 }
@@ -41,7 +41,7 @@ export const handle = sequence(
 				credentials: {
 					email: { label: 'Email', type: 'email' }
 				},
-				async authorize(credentials, req) {
+				async authorize(credentials) {
 					const user = await prisma.user.findUnique({
 						where: {
 							email: credentials.email
