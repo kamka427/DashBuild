@@ -2,6 +2,22 @@
 import { PrismaClient } from '@prisma/client';
 import { faker } from '@faker-js/faker';
 
+const testDashboardPreviews = [
+	'../src/placeholders/dash1.png',
+	'../src/placeholders/dash2.png',
+	'../src/placeholders/dash3.png',
+	'../src/placeholders/dash4.png',
+	'../src/placeholders/dash5.png',
+	'../src/placeholders/dash6.png'
+];
+
+const testPanelPreviews = [
+	'../src/placeholders/panel1.png',
+	'../src/placeholders/panel2.png',
+	'../src/placeholders/panel3.png',
+	'../src/placeholders/panel4.png'
+];
+
 const prisma = new PrismaClient();
 async function main() {
 	await prisma.panelsOnDashboards.deleteMany();
@@ -25,7 +41,7 @@ async function main() {
 		name: faker.commerce.productName(),
 		description: faker.commerce.productDescription(),
 		published: faker.datatype.boolean(),
-		preview: faker.image.imageUrl(),
+		preview: faker.helpers.arrayElement(testDashboardPreviews),
 		userId: faker.helpers.arrayElement(fakeUsers).id,
 		representation: {}
 	}));
@@ -38,7 +54,7 @@ async function main() {
 		id: faker.datatype.uuid(),
 		name: faker.commerce.productName(),
 		description: faker.commerce.productDescription(),
-		preview: faker.image.imageUrl(),
+		preview: faker.helpers.arrayElement(testPanelPreviews),
 		representation: {}
 	}));
 
