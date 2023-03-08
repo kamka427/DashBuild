@@ -4,10 +4,10 @@ import { faker } from '@faker-js/faker';
 
 const prisma = new PrismaClient();
 async function main() {
-	await prisma.panelsOnDashboards.deleteMany({});
-	await prisma.dashboard.deleteMany({});
-	await prisma.panel.deleteMany({});
-	await prisma.user.deleteMany({});
+	await prisma.panelsOnDashboards.deleteMany();
+	await prisma.dashboard.deleteMany();
+	await prisma.panel.deleteMany();
+	await prisma.user.deleteMany();
 
 	const fakeUsers = Array.from({ length: 10 }).map(() => ({
 		id: faker.datatype.uuid(),
@@ -25,7 +25,7 @@ async function main() {
 		name: faker.commerce.productName(),
 		description: faker.commerce.productDescription(),
 		published: faker.datatype.boolean(),
-		thumbnail: Buffer.from(faker.image.imageUrl()),
+		preview: faker.image.imageUrl(),
 		userId: faker.helpers.arrayElement(fakeUsers).id,
 		representation: {}
 	}));
@@ -38,7 +38,7 @@ async function main() {
 		id: faker.datatype.uuid(),
 		name: faker.commerce.productName(),
 		description: faker.commerce.productDescription(),
-		thumbnail: Buffer.from(faker.image.imageUrl()),
+		preview: faker.image.imageUrl(),
 		representation: {}
 	}));
 

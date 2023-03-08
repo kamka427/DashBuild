@@ -54,7 +54,7 @@ CREATE TABLE "Dashboard" (
     "description" TEXT,
     "published" BOOLEAN NOT NULL,
     "version" INTEGER NOT NULL DEFAULT 1,
-    "thumbnail" BYTEA,
+    "preview" TEXT,
     "representation" JSONB NOT NULL,
     "userId" TEXT NOT NULL,
 
@@ -66,7 +66,7 @@ CREATE TABLE "Panel" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "description" TEXT,
-    "thumbnail" BYTEA,
+    "preview" TEXT,
     "representation" JSONB NOT NULL,
 
     CONSTRAINT "Panel_pkey" PRIMARY KEY ("id")
