@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: client
+        working-directory: app
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v3
@@ -18,13 +18,13 @@ jobs:
         with:
           node-version: 18
           cache: npm
-          cache-dependency-path: client/package-lock.json
+          cache-dependency-path: app/package-lock.json
       - run: 'npm i && npm run lint'
   svelte-test:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: client
+        working-directory: app
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v3
@@ -32,7 +32,7 @@ jobs:
         with:
           node-version: 18
           cache: npm
-          cache-dependency-path: client/package-lock.json
+          cache-dependency-path: app/package-lock.json
       - run: npm install
         env:
           SKIP_PREPARE: true
