@@ -8,6 +8,6 @@
 
 <style lang="postcss">
 	:global(body) {
-		@apply dark:bg-zinc-900
+		@apply dark:bg-zinc-900;
 	}
 </style>
