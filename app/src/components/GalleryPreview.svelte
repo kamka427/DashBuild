@@ -14,7 +14,7 @@
 	];
 </script>
 
-<div class="container flex flex-col gap-4 rounded-xl bg-neutral-200 shadow-lg dark:bg-slate-500">
+<div class="container flex flex-col gap-4 rounded-xl bg-neutral-200 shadow-lg dark:bg-zinc-700">
 	<h1 class=" p-4 text-center text-xl">Gallery of already built Dashboards</h1>
 	<div class="flex flex-wrap justify-center gap-10">
 		{#each dashboards as dash}

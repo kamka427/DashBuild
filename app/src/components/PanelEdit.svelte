@@ -3,7 +3,7 @@
 	export let source: string;
 </script>
 
-<div class="flex h-full w-full flex-col gap-3 rounded-lg bg-slate-200 p-2 text-black shadow-lg">
+<div class="flex h-full w-full flex-col gap-3 rounded-lg bg-slate-200 p-2 text-black shadow-lg dark:bg-zinc-700 dark:text-white">
 	<h1 class="text-2xl">Customize Panel: Title</h1>
 	<div class="flex flex-col gap-6 lg:flex-row">
 		<div class="flex flex-col gap-3">

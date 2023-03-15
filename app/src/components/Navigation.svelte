@@ -3,7 +3,7 @@
 	import Close from '../svgs/Close.svelte';
 </script>
 
-<nav class="py-2 shadow-lg dark:bg-gray-800 dark:text-slate-100">
+<nav class="py-2 shadow-lg dark:bg-zinc-800 dark:text-slate-100">
 	<div class="container mx-auto flex items-center justify-between">
 		<div class="flex items-center gap-4">
 			<a class="text-3xl hover:underline" href="/">DashBuild</a>

@@ -2,7 +2,7 @@
 	export let source: string;
 </script>
 
-<div class="flex flex-col gap-3 rounded-md bg-gray-200 p-3 text-black shadow-xl">
+<div class="flex flex-col gap-3 rounded-md bg-gray-200 p-3 text-black shadow-xl dark:bg-zinc-700 dark:text-white">
 	<div class="flex items-center justify-between">
 		<h1 class="text-xl">Dashboard Title</h1>
 		<div class="flex items-center gap-6">
