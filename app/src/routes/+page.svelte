@@ -1,14 +1,34 @@
 <script lang="ts">
-	import GalleryPreview from '../components/GalleryPreview.svelte';
 	import { page } from '$app/stores';
+	import Carousel from 'svelte-carousel';
+	import { browser } from '$app/environment';
+
+	export let dashboards = [
+		'src/placeholders/dash1.png',
+		'src/placeholders/dash2.png',
+		'src/placeholders/dash3.png',
+		'src/placeholders/dash4.png',
+		'src/placeholders/dash5.png',
+		'src/placeholders/dash6.png',
+		'src/placeholders/dash1.png',
+		'src/placeholders/dash2.png',
+		'src/placeholders/dash3.png'
+	];
 </script>
 
-<main class="container m-12 mx-auto flex flex-wrap gap-12 dark:text-slate-100 lg:flex-nowrap">
+<main class="container m-12 mx-auto flex flex-col gap-4 dark:text-white">
+	<div>
+		<h1 class="text-4xl">Welcome to DashBuild</h1>
+		<h2 class="text-2xl">Build. Dashboards. Easily.</h2>
+	</div>
+	{#if browser}
+		<Carousel autoplay autoplayDuration={5000} particlesToShow={2}>
+			{#each dashboards as dashboard}
+				<img src={dashboard} alt="carousel" class="rounded-md" />
+			{/each}
+		</Carousel>
+	{/if}
 	<div class="container space-y-6">
-		<div>
-			<h1 class="text-4xl">Welcome to DashBuild</h1>
-			<h2 class="text-2xl">Build. Dashboards. Easily.</h2>
-		</div>
 		<p>
 			Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia, enim temporibus sequi illum
 			maxime asperiores iusto aperiam illo nesciunt, quidem perspiciatis! Odit, esse? Eum labore
@@ -30,5 +50,4 @@
 			</div>
 		{/if}
 	</div>
-	<GalleryPreview />
 </main>
