@@ -39,7 +39,7 @@ jobs:
         env:
           SKIP_PREPARE: true
       - run: npm run test:unit
-  Playwright":
+  Playwright:
     name: Run Playwright Tests
     runs-on: ubuntu-latest
     defaults:
