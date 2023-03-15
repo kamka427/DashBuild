@@ -40,20 +40,20 @@ jobs:
           SKIP_PREPARE: true
       - run: npm run test:unit
   Playwright":
-  name: Run Playwright Tests
-  runs-on: ubuntu-latest
-  defaults:
-    run:
-      working-directory: app
-  timeout-minutes: 5
-  steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-node@v3
-      with:
-        node-version: 18
-        cache: npm
-        cache-dependency-path: app/package-lock.json
-    - run: npm install
-      env:
-        SKIP_PREPARE: true
-    - run: npm run test
+    name: Run Playwright Tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+      - run: npm install
+        env:
+          SKIP_PREPARE: true
+      - run: npm run test
