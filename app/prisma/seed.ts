@@ -3,19 +3,19 @@ import { PrismaClient } from '@prisma/client';
 import { faker } from '@faker-js/faker';
 
 const testDashboardPreviews = [
-	'../src/placeholders/dash1.png',
-	'../src/placeholders/dash2.png',
-	'../src/placeholders/dash3.png',
-	'../src/placeholders/dash4.png',
-	'../src/placeholders/dash5.png',
-	'../src/placeholders/dash6.png'
+	'../src/lib/placeholders/dash1.png',
+	'../src/lib/placeholders/dash2.png',
+	'../src/lib/placeholders/dash3.png',
+	'../src/lib/placeholders/dash4.png',
+	'../src/lib/placeholders/dash5.png',
+	'../src/lib/placeholders/dash6.png'
 ];
 
 const testPanelPreviews = [
-	'../src/placeholders/panel1.png',
-	'../src/placeholders/panel2.png',
-	'../src/placeholders/panel3.png',
-	'../src/placeholders/panel4.png'
+	'../src/lib/placeholders/panel1.png',
+	'../src/lib/placeholders/panel2.png',
+	'../src/lib/placeholders/panel3.png',
+	'../src/lib/placeholders/panel4.png'
 ];
 
 const prisma = new PrismaClient();
@@ -41,6 +41,7 @@ async function main() {
 		name: faker.commerce.productName(),
 		description: faker.commerce.productDescription(),
 		published: faker.datatype.boolean(),
+		tags: [faker.commerce.productMaterial(), faker.commerce.productMaterial(), faker.commerce.productMaterial()],
 		preview: faker.helpers.arrayElement(testDashboardPreviews),
 		userId: faker.helpers.arrayElement(fakeUsers).id,
 		representation: {}
