@@ -19,7 +19,7 @@ import { sequence } from '@sveltejs/kit/hooks';
 const prisma = new PrismaClient();
 
 async function authorization({ event, resolve }): Promise<Handle> {
-	if (event.url.pathname.startsWith('/protected')) {
+	if (event.url.pathname.startsWith('/dashboards')) {
 		const session = await event.locals.getSession();
 		if (!session) {
 			throw redirect(303, '/');

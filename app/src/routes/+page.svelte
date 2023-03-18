@@ -40,12 +40,12 @@
 			<div class="space-x-2">
 				<button
 					class="rounded-3xl bg-green-600 px-6 py-4 text-slate-100 shadow-lg hover:bg-green-800"
-					><a href="/protected/create"> Create a new Dashboard </a>
+					><a href="/dashboards/create"> Create a new Dashboard </a>
 				</button>
 				<button
 					class="rounded-3xl bg-blue-600 px-6 py-4 text-slate-100 shadow-lg hover:bg-blue-800"
 				>
-					<a href="/protected/dashboards"> Jump to my Dashboards </a>
+					<a href="/dashboards/my-dashboards"> Jump to my Dashboards </a>
 				</button>
 			</div>
 		{/if}

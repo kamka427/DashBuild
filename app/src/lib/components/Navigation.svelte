@@ -9,19 +9,19 @@
 			<a class="text-3xl hover:underline" href="/">DashBuild</a>
 			{#if $page.data.session}
 				<a class="text-xl hover:underline" href="/">Home</a>
-				<a class="text-xl hover:underline" href="/protected/gallery">Gallery</a>
-				<a class="text-xl hover:underline" href="/protected/dashboards">My Dashboards</a>
+				<a class="text-xl hover:underline" href="/dashboards/gallery">Gallery</a>
+				<a class="text-xl hover:underline" href="/dashboards/my-dashboards">My Dashboards</a>
 			{/if}
 		</div>
 		{#if $page.data.session}
 			<div class="flex items-center gap-4">
 				<a
 					class="rounded-2xl bg-green-600 px-6 py-1 text-slate-100 shadow-lg hover:bg-green-800"
-					href="/protected/create">Create</a
+					href="/dashboards/create">Create</a
 				>
 				<span>
 					<p class="text-sm">Signed in as</p>
-					<a href="/protected/profile" class="text-md hover:underline"
+					<a href="/dashboards/profile" class="text-md hover:underline"
 						>{$page.data.session.user?.name}</a
 					>
 				</span>
