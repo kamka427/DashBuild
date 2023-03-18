@@ -16,6 +16,9 @@
 	];
 </script>
 
+<svelte:head>
+	<title>DashBuild</title>
+</svelte:head>
 <main class="container m-12 mx-auto flex flex-col gap-4 dark:text-white">
 	<div>
 		<h1 class="text-4xl">Welcome to DashBuild</h1>
@@ -30,11 +33,14 @@
 	{/if}
 	<div class="container space-y-6">
 		<p>
-			Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia, enim temporibus sequi illum
-			maxime asperiores iusto aperiam illo nesciunt, quidem perspiciatis! Odit, esse? Eum labore
-			aliquam amet possimus asperiores est. Lorem, ipsum dolor sit amet consectetur adipisicing
-			elit. Facilis explicabo minus accusantium eligendi, nostrum molestiae adipisci voluptatem
-			minima rem velit facere, nam, id cumque exercitationem autem quidem tenetur vel modi.
+			Welcome to our new web app, where you can easily build and share dashboards to monitor and
+			visualize your data. With our intuitive user interface, you can quickly create custom
+			dashboards with a variety of charts, graphs, and visualizations to suit your needs. Once
+			you've created your dashboard, you can easily deploy it to Grafana, a powerful and flexible
+			platform for data visualization and monitoring. Whether you're a data analyst, engineer, or
+			business owner, our web app makes it easy to create and share compelling dashboards to help
+			you make informed decisions and stay on top of your data. Sign up today and start building
+			your own dashboards in minutes!
 		</p>
 		{#if $page.data.session}
 			<div class="space-x-2">

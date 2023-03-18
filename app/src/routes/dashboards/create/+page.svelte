@@ -11,6 +11,9 @@
 	];
 </script>
 
+<svelte:head>
+	<title>Create Dashboard</title>
+</svelte:head>
 <main>
 	<div class="container mx-auto my-12 space-y-6 dark:text-white">
 		<div class="flex-col space-y-6">
