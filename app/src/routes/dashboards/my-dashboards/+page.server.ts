@@ -1,5 +1,6 @@
-import type { PageServerLoad } from './$types';
+import type { PageServerLoad, Actions } from './$types';
 import { PrismaClient } from '@prisma/client';
+import { fail } from '@sveltejs/kit';
 
 const prisma = new PrismaClient();
 
@@ -22,6 +23,9 @@ export const load: PageServerLoad = async () => {
 						team: true
 					}
 				}
+			},
+			orderBy: {
+				name: 'asc'
 			}
 		}),
 		teams: prisma.user.findMany({
@@ -35,4 +39,43 @@ export const load: PageServerLoad = async () => {
 			}
 		})
 	};
+};
+
+export const actions: Actions = {
+	publishDashboard: async ({ request }) => {
+		const { dashboardId, publishState } = Object.fromEntries(await request.formData()) as {
+			dashboardId: string;
+			publishState: string;
+		};
+		try {
+			await prisma.dashboard.update({
+				where: {
+					id: dashboardId
+				},
+				data: {
+					published: publishState === 'true' ? false : true
+				}
+			});
+		} catch (error) {
+			console.log(error);
+			return fail(500, { message: 'Could not publish dashboard' });
+		}
+	},
+	unpublishDashboard: async ({ request }) => {
+		const { dashboardId } = Object.fromEntries(await request.formData()) as { dashboardId: string };
+
+		try {
+			await prisma.dashboard.update({
+				where: {
+					id: dashboardId
+				},
+				data: {
+					published: false
+				}
+			});
+		} catch (error) {
+			console.log(error);
+			return fail(500, { message: 'Could not unpublish dashboard' });
+		}
+	}
 };

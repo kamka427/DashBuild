@@ -21,7 +21,7 @@
 				Tags: {dashboard.tags.join(' | ')}
 			</p>
 			{#if currentPage === 'my-dashboards'}
-				<Published published={dashboard.published} />
+				<Published published={dashboard.published} dashboardId={dashboard.id} />
 			{/if}
 		</section>
 	</section>
