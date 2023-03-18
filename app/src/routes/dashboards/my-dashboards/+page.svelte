@@ -5,7 +5,24 @@
 	import { onDestroy } from 'svelte';
 	import type { PageData } from './$types';
 
-	export let data: PageData;
+	interface Data {
+		dashboards: {
+			id: string;
+			name: string;
+			description: string;
+			tags: string[];
+			user: {
+				team: string;
+			};
+		}[];
+		teams: {
+			team: string;
+		}[];
+		tags: {
+			tags: string[];
+		}[];
+	}
+	export let data: Data;
 
 	const searchedDashboards = data.dashboards.map((dashboard) => ({
 		...dashboard,

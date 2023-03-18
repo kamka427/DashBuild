@@ -1,5 +1,14 @@
 <script lang="ts">
-	export let data;
+	interface Data {
+		teams: {
+			team: string;
+		}[];
+		tags: {
+			tags: string[];
+		}[];
+	}
+
+	export let data: Data;
 	export let value: string;
 
 	export const teams = Array.from(new Set(data.teams.map((team) => team.team)));
