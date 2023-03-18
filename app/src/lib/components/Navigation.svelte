@@ -3,7 +3,7 @@
 	import Close from '../svgs/Close.svelte';
 </script>
 
-<nav class="py-2 shadow-lg dark:bg-zinc-800 dark:text-slate-100">
+<nav class="py-2 shadow-lg dark:bg-zinc-800 dark:text-gray-200">
 	<div class="container mx-auto flex items-center justify-between">
 		<div class="flex items-center gap-4">
 			<a class="text-3xl hover:underline" href="/">DashBuild</a>
@@ -16,7 +16,7 @@
 		{#if $page.data.session}
 			<div class="flex items-center gap-4">
 				<a
-					class="rounded-2xl bg-green-600 px-6 py-1 text-slate-100 shadow-lg hover:bg-green-800"
+					class="rounded-2xl bg-green-600 px-6 py-1 text-gray-200 shadow-lg hover:bg-green-800"
 					href="/dashboards/create">Create</a
 				>
 				<span>
@@ -33,7 +33,7 @@
 			</div>
 		{:else}
 			<a
-				class="flex gap-2 rounded-2xl bg-green-600 px-6 py-1 text-slate-100 shadow-lg hover:bg-green-800"
+				class="flex gap-2 rounded-2xl bg-green-600 px-6 py-1 text-gray-200 shadow-lg hover:bg-green-800"
 				href="/auth/signin"
 			>
 				Sign In

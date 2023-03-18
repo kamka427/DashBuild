@@ -14,6 +14,7 @@ export const load: PageServerLoad = async () => {
 				published: true,
 				tags: true,
 				representation: true,
+				version: true,
 				user: {
 					select: {
 						id: true,

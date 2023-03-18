@@ -7,7 +7,7 @@
 </script>
 
 <div class="flex items-center justify-center">
-	<button class="flex rounded-md bg-zinc-300 p-2 shadow-md" on:click={togglePublished}>
+	<button class="flex rounded-md bg-gray-300 hover:bg-gray-400 p-2 shadow-md dark:bg-zinc-500 dark:hover:bg-zinc-400" on:click={togglePublished}>
 		Published:
 		{#if published}
 			<svg
