@@ -7,7 +7,8 @@
 </script>
 
 <div class="flex items-center justify-center">
-	<button on:click={togglePublished}>
+	<button class="flex rounded-md bg-zinc-300 p-2 shadow-md" on:click={togglePublished}>
+		Published:
 		{#if published}
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
