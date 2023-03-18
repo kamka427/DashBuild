@@ -1,7 +1,7 @@
 <script>
-	import NewPanel from '$lib/components/NewPanel.svelte';
-	import PanelEdit from '$lib/components/PanelEdit.svelte';
-	import PanelView from '$lib/components/PanelView.svelte';
+	import NewPanelCard from '$lib/components/NewPanelCard.svelte';
+	import PanelEditorCard from '$lib/components/PanelEditorCard.svelte';
+	import PanelCard from '$lib/components/PanelCard.svelte';
 
 	export let panels = [
 		'../src/lib/placeholders/panel1.png',
@@ -50,10 +50,10 @@
 			</div>
 			<div class="grid grid-cols-2 grid-rows-2 place-items-center gap-3">
 				{#each panels as panel}
-					<PanelView source={panel} />
+					<PanelCard source={panel} />
 				{/each}
-				<PanelEdit source="../src/lib/placeholders/panel3.png" />
-				<NewPanel />
+				<PanelEditorCard source="../src/lib/placeholders/panel3.png" />
+				<NewPanelCard />
 			</div>
 			<div class="flex flex-col justify-end gap-3 sm:flex-row">
 				<button class="rounded-md bg-red-600 px-8 py-2 text-white shadow-lg hover:bg-red-800">

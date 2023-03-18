@@ -11,6 +11,7 @@ export const load: PageServerLoad = async () => {
 				name: true,
 				description: true,
 				preview: true,
+				published: true,
 				tags: true,
 				representation: true,
 				user: {
@@ -20,6 +21,9 @@ export const load: PageServerLoad = async () => {
 						team: true
 					}
 				}
+			},
+			where: {
+				published: true
 			}
 		}),
 		teams: prisma.user.findMany({

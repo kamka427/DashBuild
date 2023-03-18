@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Dashboard } from '@prisma/client';
-	import Published from './Published.svelte';
+	import Published from './PublishButton.svelte';
 	import { page } from '$app/stores';
 	const currentPage = $page.url.pathname.split('/')[2];
 	export let dashboard: Dashboard & { user: { team: string } };

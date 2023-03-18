@@ -1,6 +1,6 @@
 <script lang="ts">
-	import FilterComponent from '$lib/components/FilterComponent.svelte';
-	import GeneralView from '$lib/components/GeneralView.svelte';
+	import DashboardFilters from '$lib/components/DashboardFilters.svelte';
+	import DashboardCard from '$lib/components/DashboardCard.svelte';
 	import { createSearchStore, searchHandler } from '$lib/stores/search';
 	import { onDestroy } from 'svelte';
 
@@ -40,7 +40,7 @@
 		<div class="flex-col space-y-6">
 			<div class="flex flex-col justify-between gap-2 lg:flex-row">
 				<h1 class="text-4xl">My Dashboards</h1>
-				<FilterComponent
+				<DashboardFilters
 					bind:search={$searchStore.search}
 					bind:tag={$searchStore.tagFilter}
 					bind:team={$searchStore.teamFilter}
@@ -49,7 +49,7 @@
 			</div>
 			<div class="grid grid-cols-2 place-items-center gap-3">
 				{#each $searchStore.filtered as dashboard}
-					<GeneralView {dashboard} />
+					<DashboardCard {dashboard} />
 				{/each}
 			</div>
 		</div>
