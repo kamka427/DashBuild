@@ -12,7 +12,14 @@ export const load: PageServerLoad = async () => {
 				description: true,
 				preview: true,
 				tags: true,
-				representation: true
+				representation: true,
+				user: {
+					select: {
+						id: true,
+						name: true,
+						team: true
+					}
+				}
 			}
 		}),
 		teams: prisma.user.findMany({

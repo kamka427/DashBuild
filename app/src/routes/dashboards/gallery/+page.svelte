@@ -1,18 +1,31 @@
 <script lang="ts">
-	import type { PageData } from './$types';
 	import { createSearchStore, searchHandler } from '$lib/stores/search';
 	import { onDestroy } from 'svelte';
 	import FilterComponent from '$lib/components/FilterComponent.svelte';
 	import Pagination from '$lib/components/Pagination.svelte';
 	import GeneralView from '$lib/components/GeneralView.svelte';
-	export let data: PageData;
 
-	const searchedDashboards = data.dashboards.map((dashboard) => ({
-		...dashboard,
-		searchTerms: `${dashboard.name} ${dashboard.description}`
-	}));
+	interface Data {
+		dashboards: {
+			id: string;
+			name: string;
+			description: string;
+			tags: string[];
+			user: {
+				team: string;
+			};
+		}[];
+		teams: {
+			team: string;
+		}[];
+		tags: {
+			tags: string[];
+		}[];
+	}
 
-	const searchStore = createSearchStore(searchedDashboards);
+	export let data: Data;
+
+	const searchStore = createSearchStore(data.dashboards);
 
 	const unsubscribe = searchStore.subscribe((model) => searchHandler(model));
 
@@ -29,7 +42,12 @@
 		<div class="flex-col space-y-6">
 			<div class="flex flex-col items-center justify-between gap-2 lg:flex-row">
 				<h1 class="text-4xl">Gallery</h1>
-				<FilterComponent bind:value={$searchStore.search} {data} />
+				<FilterComponent
+					bind:search={$searchStore.search}
+					bind:tag={$searchStore.tagFilter}
+					bind:team={$searchStore.teamFilter}
+					{data}
+				/>
 			</div>
 			<div class="grid grid-cols-2 grid-rows-1 place-items-center gap-3">
 				{#each $searchStore.filtered as dashboard}
