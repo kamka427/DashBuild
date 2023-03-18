@@ -1,6 +1,7 @@
 <script lang="ts">
 	import DashboardView from '$lib/components/DashboardView.svelte';
 	import FilterComponent from '$lib/components/FilterComponent.svelte';
+	import GeneralView from '$lib/components/GeneralView.svelte';
 	import { createSearchStore, searchHandler } from '$lib/stores/search';
 	import { onDestroy } from 'svelte';
 	import type { PageData } from './$types';
@@ -33,7 +34,7 @@
 			</div>
 			<div class="grid grid-cols-2 place-items-center gap-3">
 				{#each $searchStore.filtered as dashboard}
-					<DashboardView {dashboard} />
+					<GeneralView {dashboard} />
 				{/each}
 			</div>
 		</div>

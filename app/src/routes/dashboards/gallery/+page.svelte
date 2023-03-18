@@ -5,6 +5,7 @@
 	import FilterComponent from '$lib/components/FilterComponent.svelte';
 	import GalleryDashboard from '$lib/components/GalleryDashboard.svelte';
 	import Pagination from '$lib/components/Pagination.svelte';
+	import GeneralView from '$lib/components/GeneralView.svelte';
 
 	export let data: PageData;
 
@@ -34,7 +35,7 @@
 			</div>
 			<div class="grid grid-cols-2 grid-rows-1 place-items-center gap-3">
 				{#each $searchStore.filtered as dashboard}
-					<GalleryDashboard {dashboard} />
+					<GeneralView {dashboard} />
 				{/each}
 			</div>
 			<Pagination />
