@@ -41,7 +41,11 @@ async function main() {
 		name: faker.commerce.productName(),
 		description: faker.commerce.productDescription(),
 		published: faker.datatype.boolean(),
-		tags: [faker.commerce.productMaterial(), faker.commerce.productMaterial(), faker.commerce.productMaterial()],
+		tags: [
+			faker.commerce.productMaterial(),
+			faker.commerce.productMaterial(),
+			faker.commerce.productMaterial()
+		],
 		preview: faker.helpers.arrayElement(testDashboardPreviews),
 		userId: faker.helpers.arrayElement(fakeUsers).id,
 		representation: {}

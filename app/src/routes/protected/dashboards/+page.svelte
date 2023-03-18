@@ -19,7 +19,6 @@
 	onDestroy(() => {
 		unsubscribe();
 	});
-
 </script>
 
 <main>
@@ -27,7 +26,7 @@
 		<div class="flex-col space-y-6">
 			<div class="flex flex-col justify-between gap-2 lg:flex-row">
 				<h1 class="text-4xl">My Dashboards</h1>
-				<FilterComponent bind:value={$searchStore.search} tags={["te"]} teams={["te"]} />
+				<FilterComponent bind:value={$searchStore.search} tags={['te']} teams={['te']} />
 			</div>
 			<div class="grid grid-cols-2 place-items-center gap-3">
 				{#each $searchStore.filtered as dashboard}
