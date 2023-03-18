@@ -1,7 +1,9 @@
 <script lang="ts">
-	export let tags: string[];
-	export let teams: string[];
+	export let data;
 	export let value: string;
+
+	export const teams = Array.from(new Set(data.teams.map((team) => team.team)));
+	export const tags = Array.from(new Set(data.tags.map((tag) => tag.tags).flat()));
 </script>
 
 <input

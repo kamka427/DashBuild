@@ -5,7 +5,6 @@
 	import FilterComponent from '$lib/components/FilterComponent.svelte';
 	import Pagination from '$lib/components/Pagination.svelte';
 	import GeneralView from '$lib/components/GeneralView.svelte';
-
 	export let data: PageData;
 
 	const searchedDashboards = data.dashboards.map((dashboard) => ({
@@ -30,7 +29,7 @@
 		<div class="flex-col space-y-6">
 			<div class="flex flex-col items-center justify-between gap-2 lg:flex-row">
 				<h1 class="text-4xl">Gallery</h1>
-				<FilterComponent bind:value={$searchStore.search} tags={['te']} teams={['te']} />
+				<FilterComponent bind:value={$searchStore.search} {data} />
 			</div>
 			<div class="grid grid-cols-2 grid-rows-1 place-items-center gap-3">
 				{#each $searchStore.filtered as dashboard}

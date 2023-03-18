@@ -12,7 +12,9 @@
 	<section class="flex items-center justify-between">
 		<h1 class="text-xl">{dashboard.name}</h1>
 		<section class="flex items-center gap-6">
-			<p class="rounded-md bg-slate-400 p-2 shadow-md">Team: {dashboard.user.team}</p>
+			{#if currentPage === 'gallery'}
+				<p class="rounded-md bg-slate-400 p-2 shadow-md">Team: {dashboard.user.team}</p>
+			{/if}
 			<p class="rounded-md bg-slate-300 p-2 shadow-md">Tags: {dashboard.tags}</p>
 			{#if currentPage === 'my-dashboards'}
 				<Published published={dashboard.published} />
@@ -20,6 +22,7 @@
 		</section>
 	</section>
 	<img src={dashboard.preview} class="w-max rounded-md bg-gray-300 shadow-xl" alt="" />
+	<p>{dashboard.description}</p>
 	<section class="flex flex-col justify-end gap-3 lg:flex-row">
 		{#if currentPage === 'gallery'}
 			<button class="rounded-md bg-cyan-600 px-8 py-2 text-white shadow-lg hover:bg-cyan-800"

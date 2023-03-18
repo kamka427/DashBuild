@@ -21,6 +21,16 @@ export const load: PageServerLoad = async () => {
 					}
 				}
 			}
+		}),
+		teams: prisma.user.findMany({
+			select: {
+				team: true
+			}
+		}),
+		tags: prisma.dashboard.findMany({
+			select: {
+				tags: true
+			}
 		})
 	};
 };

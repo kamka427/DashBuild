@@ -9,7 +9,7 @@
 
 	const searchedDashboards = data.dashboards.map((dashboard) => ({
 		...dashboard,
-		searchTerms: `${dashboard.name} ${dashboard.description}`
+		searchTerms: `${dashboard.name} ${dashboard.description} ${dashboard.tags} ${dashboard.user.team}`
 	}));
 
 	const searchStore = createSearchStore(searchedDashboards);
@@ -29,7 +29,7 @@
 		<div class="flex-col space-y-6">
 			<div class="flex flex-col justify-between gap-2 lg:flex-row">
 				<h1 class="text-4xl">My Dashboards</h1>
-				<FilterComponent bind:value={$searchStore.search} tags={['te']} teams={['te']} />
+				<FilterComponent bind:value={$searchStore.search} {data} />
 			</div>
 			<div class="grid grid-cols-2 place-items-center gap-3">
 				{#each $searchStore.filtered as dashboard}

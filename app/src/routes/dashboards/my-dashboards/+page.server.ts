@@ -5,6 +5,25 @@ const prisma = new PrismaClient();
 
 export const load: PageServerLoad = async () => {
 	return {
-		dashboards: prisma.dashboard.findMany()
+		dashboards: prisma.dashboard.findMany({
+			select: {
+				id: true,
+				name: true,
+				description: true,
+				preview: true,
+				tags: true,
+				representation: true
+			}
+		}),
+		teams: prisma.user.findMany({
+			select: {
+				team: true
+			}
+		}),
+		tags: prisma.dashboard.findMany({
+			select: {
+				tags: true
+			}
+		})
 	};
 };

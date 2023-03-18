@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
 
-export const createSearchStore = (data) => {
+export const createSearchStore = (data: any) => {
 	const { subscribe, set, update } = writable({
 		data: data,
 		filtered: data,
@@ -14,9 +14,19 @@ export const createSearchStore = (data) => {
 	};
 };
 
-export const searchHandler = (store) => {
+export const searchHandler = (store: { search: string; filtered: any; data: any[] }) => {
 	const searchTerm = store.search.toLowerCase() || '';
-	store.filtered = store.data.filter((item) => {
-		return item.name.toLowerCase().includes(searchTerm);
-	});
+	const searchTerms = searchTerm.split(' ');
+	store.filtered = store.data.filter(
+		(item: { name: string; description: string; tags: any[]; user: { team: string } }) => {
+			return searchTerms.every((term: string) => {
+				return (
+					item.name.toLowerCase().includes(term) ||
+					item.description.toLowerCase().includes(term) ||
+					item.tags.join(' ').toLowerCase().includes(term) ||
+					item.user.team.toLowerCase().includes(term)
+				);
+			});
+		}
+	);
 };
