@@ -1,5 +1,4 @@
 <script lang="ts">
-	import DashboardView from '$lib/components/DashboardView.svelte';
 	import FilterComponent from '$lib/components/FilterComponent.svelte';
 	import GeneralView from '$lib/components/GeneralView.svelte';
 	import { createSearchStore, searchHandler } from '$lib/stores/search';

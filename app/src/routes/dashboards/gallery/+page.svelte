@@ -3,7 +3,6 @@
 	import { createSearchStore, searchHandler } from '$lib/stores/search';
 	import { onDestroy } from 'svelte';
 	import FilterComponent from '$lib/components/FilterComponent.svelte';
-	import GalleryDashboard from '$lib/components/GalleryDashboard.svelte';
 	import Pagination from '$lib/components/Pagination.svelte';
 	import GeneralView from '$lib/components/GeneralView.svelte';
 

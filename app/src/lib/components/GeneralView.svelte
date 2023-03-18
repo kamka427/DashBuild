@@ -3,7 +3,7 @@
 	import Published from './Published.svelte';
 	import { page } from '$app/stores';
 	const currentPage = $page.url.pathname.split('/')[2];
-	export let dashboard: Dashboard;
+	export let dashboard: Dashboard & { user: { team: string } };
 </script>
 
 <main
@@ -12,7 +12,7 @@
 	<section class="flex items-center justify-between">
 		<h1 class="text-xl">{dashboard.name}</h1>
 		<section class="flex items-center gap-6">
-			<p class="rounded-md bg-slate-400 p-2 shadow-md">Team:</p>
+			<p class="rounded-md bg-slate-400 p-2 shadow-md">Team: {dashboard.user.team}</p>
 			<p class="rounded-md bg-slate-300 p-2 shadow-md">Tags: {dashboard.tags}</p>
 			{#if currentPage === 'my-dashboards'}
 				<Published published={dashboard.published} />
