@@ -4,15 +4,15 @@
 	import { browser } from '$app/environment';
 
 	export let dashboards = [
-		'src/placeholders/dash1.png',
-		'src/placeholders/dash2.png',
-		'src/placeholders/dash3.png',
-		'src/placeholders/dash4.png',
-		'src/placeholders/dash5.png',
-		'src/placeholders/dash6.png',
-		'src/placeholders/dash1.png',
-		'src/placeholders/dash2.png',
-		'src/placeholders/dash3.png'
+		'src/lib/placeholders/dash1.png',
+		'src/lib/placeholders/dash2.png',
+		'src/lib/placeholders/dash3.png',
+		'src/lib/placeholders/dash4.png',
+		'src/lib/placeholders/dash5.png',
+		'src/lib/placeholders/dash6.png',
+		'src/lib/placeholders/dash1.png',
+		'src/lib/placeholders/dash2.png',
+		'src/lib/placeholders/dash3.png'
 	];
 </script>
 

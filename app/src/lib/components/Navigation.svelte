@@ -32,20 +32,12 @@
 				<a href="/auth/signout"><Close /></a>
 			</div>
 		{:else}
-			<div class="flex items-center gap-4">
-				<a
-					class="flex gap-2 rounded-2xl bg-green-600 px-6 py-1 text-slate-100 shadow-lg hover:bg-green-800"
-					href="/auth/signin"
-				>
-					Sign in
-				</a>
-				<a
-					class="flex gap-2 rounded-2xl bg-blue-600 px-6 py-1 text-slate-100 shadow-lg hover:bg-blue-800"
-					href="/auth/register"
-				>
-					Register
-				</a>
-			</div>
+			<a
+				class="flex gap-2 rounded-2xl bg-green-600 px-6 py-1 text-slate-100 shadow-lg hover:bg-green-800"
+				href="/auth/signin"
+			>
+				Sign In
+			</a>
 		{/if}
 	</div>
 </nav>

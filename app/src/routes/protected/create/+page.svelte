@@ -1,13 +1,13 @@
 <script>
-	import NewPanel from '../../../components/NewPanel.svelte';
-	import PanelEdit from '../../../components/PanelEdit.svelte';
-	import PanelView from '../../../components/PanelView.svelte';
+	import NewPanel from '$lib/components/NewPanel.svelte';
+	import PanelEdit from '$lib/components/PanelEdit.svelte';
+	import PanelView from '$lib/components/PanelView.svelte';
 
 	export let panels = [
-		'../../src/placeholders/panel1.png',
-		'../../src/placeholders/panel2.png',
-		'../../src/placeholders/panel3.png',
-		'../../src/placeholders/panel4.png'
+		'../src/lib/placeholders/panel1.png',
+		'../src/lib/placeholders/panel2.png',
+		'../src/lib/placeholders/panel3.png',
+		'../src/lib/placeholders/panel4.png'
 	];
 </script>
 
@@ -18,11 +18,11 @@
 				<h1 class="text-4xl">Create Dashboard</h1>
 				<div class="flex flex-col gap-2 sm:flex-row">
 					<div class="flex items-center gap-2">
-						<label class="font-semibold" for="dashboardtitle">Dashboard title:</label>
+						<label class="font-semibold" for="dashboardtitle">Dashboard Title:</label>
 						<input
 							id="dashboardtitle"
 							type="text"
-							placeholder="lorem"
+							placeholder="Title of the dashboard"
 							class="h-8 rounded-md bg-gray-200 px-2 text-black shadow-lg hover:bg-gray-300"
 						/>
 					</div>
@@ -49,7 +49,7 @@
 				{#each panels as panel}
 					<PanelView source={panel} />
 				{/each}
-				<PanelEdit source="../../src/placeholders/panel3.png" />
+				<PanelEdit source="../src/lib/placeholders/panel3.png" />
 				<NewPanel />
 			</div>
 			<div class="flex flex-col justify-end gap-3 sm:flex-row">

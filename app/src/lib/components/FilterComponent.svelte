@@ -1,8 +1,6 @@
 <script lang="ts">
-	import type { T } from 'vitest/dist/types-7cd96283';
-
-	let tags = ['val1', 'val2', 'val3', 'val4'];
-
+	export let tags: string[];
+	export let teams: string[];
 	export let value: string;
 </script>
 
@@ -25,8 +23,8 @@
 		class="h-12 rounded-md bg-gray-200 p-2 text-black shadow-lg hover:bg-gray-300 dark:bg-zinc-700 dark:text-white dark:hover:bg-zinc-600"
 	>
 		<option value="none">Teams</option>
-		{#each tags as tag}
-			<option value={tag}>{tag}</option>
+		{#each teams as team}
+			<option value={team}>{team}</option>
 		{/each}
 	</select>
 </div>
