@@ -48,9 +48,7 @@
 					class="rounded-3xl bg-green-600 px-6 py-4 text-gray-200 shadow-lg hover:bg-green-800"
 					><a href="/dashboards/create"> Create a new Dashboard </a>
 				</button>
-				<button
-					class="rounded-3xl bg-blue-600 px-6 py-4 text-gray-200 shadow-lg hover:bg-blue-800"
-				>
+				<button class="rounded-3xl bg-blue-600 px-6 py-4 text-gray-200 shadow-lg hover:bg-blue-800">
 					<a href="/dashboards/my-dashboards"> Jump to my Dashboards </a>
 				</button>
 			</div>

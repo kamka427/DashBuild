@@ -13,9 +13,13 @@
 		<h1 class="text-xl">{dashboard.name} [ver. {dashboard.version}]</h1>
 		<section class="flex items-center gap-6">
 			{#if currentPage === 'gallery'}
-				<p class="rounded-md bg-gray-300 p-2 shadow-md dark:bg-zinc-500">Team: {dashboard.user.team}</p>
+				<p class="rounded-md bg-gray-300 p-2 shadow-md dark:bg-zinc-500">
+					Team: {dashboard.user.team}
+				</p>
 			{/if}
-			<p class="rounded-md bg-gray-300 p-2 shadow-md dark:bg-zinc-500">Tags: {dashboard.tags.join(" | ")}</p>
+			<p class="rounded-md bg-gray-300 p-2 shadow-md dark:bg-zinc-500">
+				Tags: {dashboard.tags.join(' | ')}
+			</p>
 			{#if currentPage === 'my-dashboards'}
 				<Published published={dashboard.published} />
 			{/if}
