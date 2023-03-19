@@ -61,21 +61,18 @@ export const actions: Actions = {
 			return fail(500, { message: 'Could not publish dashboard' });
 		}
 	},
-	unpublishDashboard: async ({ request }) => {
+	deleteDashboard: async ({ request }) => {
 		const { dashboardId } = Object.fromEntries(await request.formData()) as { dashboardId: string };
 
 		try {
-			await prisma.dashboard.update({
+			await prisma.dashboard.delete({
 				where: {
 					id: dashboardId
-				},
-				data: {
-					published: false
 				}
 			});
 		} catch (error) {
 			console.log(error);
-			return fail(500, { message: 'Could not unpublish dashboard' });
+			return fail(500, { message: 'Could not delete dashboard' });
 		}
 	}
 };
