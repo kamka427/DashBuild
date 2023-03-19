@@ -49,7 +49,7 @@
 	<label class="input-group">
 		<span>Columns</span>
 		<input
-			class="input input-bordered"
+			class="input-bordered input"
 			id="team"
 			bind:value={columns}
 			min="1"

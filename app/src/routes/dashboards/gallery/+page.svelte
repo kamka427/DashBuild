@@ -33,7 +33,7 @@
 	onDestroy(() => {
 		unsubscribe();
 	});
-	
+
 	export let columnsToShow = 2;
 </script>
 

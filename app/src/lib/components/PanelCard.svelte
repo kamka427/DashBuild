@@ -37,8 +37,8 @@
 					<h2 class="text-xl">Properties</h2>
 					{#each props as prop}
 						<label class="input-group">
-							<span class="bg-accent text-accent-content w-24">{prop}</span>
-							<input type="text" placeholder="..." class="input input-bordered w-full" />
+							<span class="w-24 bg-accent text-accent-content">{prop}</span>
+							<input type="text" placeholder="..." class="input-bordered input w-full" />
 						</label>
 					{/each}
 				</div>

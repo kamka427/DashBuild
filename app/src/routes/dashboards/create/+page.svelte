@@ -19,8 +19,7 @@
 
 	export let data: Data;
 
-	export let panelForm = data.panels
-
+	export let panelForm = data.panels;
 </script>
 
 <svelte:head>
@@ -31,13 +30,13 @@
 		<BreadCrumbs location="Create Dashboard" />
 		<DashboardProperties bind:dashboardName bind:rowCount bind:colCount />
 		<div class="btn-group">
-			<button class="btn btn-secondary">Discard</button>
-			<button class="btn btn-primary">Save Dashboard</button>
+			<button class="btn-secondary btn">Discard</button>
+			<button class="btn-primary btn">Save Dashboard</button>
 		</div>
 	</div>
 	<div class="grid grid-cols-{colCount} grid-rows-{rowCount} place-items-start gap-2">
 		{#each panelForm as panel}
 			<PanelCard {panel} />
-		{/each}	
+		{/each}
 	</div>
 </main>
