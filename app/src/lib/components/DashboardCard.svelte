@@ -12,7 +12,7 @@
 		: 'No description provided';
 </script>
 
-<main class="card card-compact h-full w-full bg-base-300 text-base-content">
+<main class="card card-compact bg-base-300 text-base-content h-full w-full">
 	<figure>
 		<img src={dashboard.preview} class="w-max shadow-xl" alt="" />
 	</figure>
@@ -54,7 +54,7 @@
 					</form>
 					<button class="btn-secondary btn">Modify</button>
 				{/if}
-				<button class="btn-primary btn">View</button>
+				<a href="/dashboards/view/{dashboard.id}" class="btn-primary btn">View</a>
 			</div>
 		</div>
 	</div>
