@@ -1,37 +1,59 @@
 <script lang="ts">
-	export let source: string;
-	console.log(source);
+	import Add from '$lib/svgs/Add.svelte';
+
+	interface Panel {
+		id: string;
+		name: string;
+		description: string;
+		preview: string;
+		representation: string;
+	}
+
+	export let panel: Panel;
+
+	const shortDescription = panel.description
+		? panel.description.length > 150
+			? panel.description.substring(0, 150) + '...'
+			: panel.description
+		: 'No description provided';
+
+	type componentState = 'preview' | 'edit';
+	export let state = 'preview' as componentState;
+
+	let props = ['Center', 'Radius', 'Color'];
 </script>
 
-<div
-	class="flex flex-col gap-3 rounded-md bg-gray-200 p-3 text-black shadow-xl dark:bg-zinc-700 dark:text-white"
->
-	<div class="flex items-center justify-between">
-		<h1 class="text-xl">Panel Title</h1>
-		<button>
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				class="h-8 w-8 cursor-pointer text-red-800"
-				fill="none"
-				viewBox="0 0 24 24"
-				stroke="currentColor"
-			>
-				<path
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					stroke-width="4"
-					d="M6 18L18 6M6 6l12 12"
-				/>
-			</svg>
-		</button>
-	</div>
-	<img src={source} class="w-max rounded-md shadow-xl" alt="" />
-	<div class="flex flex-col justify-end gap-3 lg:flex-row">
-		<button class="rounded-md bg-cyan-600 px-8 py-2 text-white shadow-lg hover:bg-green-800 "
-			>Resize</button
-		>
-		<button class="rounded-md bg-green-600 px-8 py-2 text-white shadow-lg hover:bg-green-800"
-			>Customize</button
-		>
-	</div>
+<div class="card-compact card bg-base-300 text-base-content">
+	<figure>
+		<img src={panel.preview} class="w-max rounded-md shadow-xl" alt="Dashboard thumbnail" />
+	</figure>
+	{#if state === 'preview' || state === 'edit'}
+		<div class="card-body gap-4">
+			<h2 class="card-title">{panel.name}</h2>
+			<p class="h-6">{shortDescription}</p>
+			{#if state === 'edit'}
+				<div class="divider" />
+				<div class="flex w-1/2 flex-col gap-3">
+					<h2 class="text-xl">Properties</h2>
+					{#each props as prop}
+						<label class="input-group">
+							<span class="bg-accent text-accent-content w-24">{prop}</span>
+							<input type="text" placeholder="..." class="input input-bordered w-full" />
+						</label>
+					{/each}
+				</div>
+			{/if}
+			<div class="card-actions justify-end">
+				<div class="btn-group">
+					<button class="btn-secondary btn">Remove</button>
+					<button
+						class="btn-primary btn"
+						on:click={() => {
+							state = state === 'preview' ? 'edit' : 'preview';
+						}}>{state === 'preview' ? 'Customize' : 'Save'}</button
+					>
+				</div>
+			</div>
+		</div>
+	{/if}
 </div>
