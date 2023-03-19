@@ -3,6 +3,8 @@
 	import DashboardCard from '$lib/components/DashboardCard.svelte';
 	import { createSearchStore, searchHandler } from '$lib/stores/search';
 	import { onDestroy } from 'svelte';
+	import Pagination from '$lib/components/Pagination.svelte';
+	import BreadCrumbs from '$lib/components/BreadCrumbs.svelte';
 
 	interface Data {
 		dashboards: {
@@ -30,28 +32,28 @@
 	onDestroy(() => {
 		unsubscribe();
 	});
+
+	export let columnsToShow = 2;
 </script>
 
 <svelte:head>
 	<title>My Dashboards</title>
 </svelte:head>
-<main>
-	<div class="container mx-auto my-12 space-y-6 dark:text-white">
-		<div class="flex-col space-y-6">
-			<div class="flex flex-col justify-between gap-2 lg:flex-row">
-				<h1 class="text-4xl">My Dashboards</h1>
-				<DashboardFilters
-					bind:search={$searchStore.search}
-					bind:tag={$searchStore.tagFilter}
-					bind:team={$searchStore.teamFilter}
-					{data}
-				/>
-			</div>
-			<div class="grid grid-cols-2 place-items-center gap-3">
-				{#each $searchStore.filtered as dashboard}
-					<DashboardCard {dashboard} />
-				{/each}
-			</div>
-		</div>
+<main class="container mx-auto space-y-6">
+	<div class="flex flex-col items-center justify-between gap-2 lg:flex-row">
+		<BreadCrumbs location="My Dashboards" />
+		<DashboardFilters
+			bind:search={$searchStore.search}
+			bind:tag={$searchStore.tagFilter}
+			bind:team={$searchStore.teamFilter}
+			bind:columns={columnsToShow}
+			{data}
+		/>
 	</div>
+	<div class="grid grid-cols-{columnsToShow} place-items-center gap-3">
+		{#each $searchStore.filtered as dashboard}
+			<DashboardCard {dashboard} />
+		{/each}
+	</div>
+	<Pagination />
 </main>
