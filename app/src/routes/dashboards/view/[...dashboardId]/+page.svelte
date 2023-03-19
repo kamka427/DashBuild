@@ -23,7 +23,7 @@
 			<img src="../{data.dashboard.preview}" alt="Dashboard" class="rounded-xl" />
 		</div>
 		<div class="flex flex-col gap-2">
-			<div class="stats bg-base-300 mx-auto w-full shadow">
+			<div class="stats mx-auto w-full bg-base-300 shadow">
 				<div class="stat flex flex-row">
 					<div class="stat-title text-sm">Version</div>
 					<div class="stat-value text-sm">{data.dashboard.version}</div>
@@ -41,15 +41,15 @@
 					<div class="stat-value text-sm">{data.dashboard.published === true ? 'Yes' : 'No'}</div>
 				</div>
 			</div>
-			<div class="card card-compact bg-base-300 text-base-content  w-full shadow-xl">
+			<div class="card-compact card w-full bg-base-300  text-base-content shadow-xl">
 				<div class="card-body">
 					<h2 class="card-title">{data.dashboard.name}</h2>
 					<p class="h-6">{data.dashboard.description}</p>
 					<div class="card-actions justify-end">
 						<div class="btn-group">
-							<button class="btn btn-error">Delete</button>
-							<button class="btn btn-primary">Edit</button>
-							<button class="btn btn-secondary">Copy</button>
+							<button class="btn-error btn">Delete</button>
+							<button class="btn-primary btn">Edit</button>
+							<button class="btn-secondary btn">Copy</button>
 						</div>
 					</div>
 				</div>

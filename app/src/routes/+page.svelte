@@ -45,10 +45,10 @@
 				{/if}
 			</div>
 		</article>
-		<aside class="carousel container w-full ">
+		<aside class="container carousel w-full ">
 			{#each data.dashboards as dashboard, index}
 				<div id="slide{index + 1}" class="carousel-item relative w-full">
-					<div class="card bg-base-300 text-base-content container">
+					<div class="container card bg-base-300 text-base-content">
 						<div class="card-body">
 							<h2 class="card-title">{dashboard.name}</h2>
 						</div>

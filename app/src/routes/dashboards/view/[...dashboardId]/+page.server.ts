@@ -3,15 +3,15 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export const load: PageServerLoad = async ({url}) => {
+export const load: PageServerLoad = async ({ url }) => {
 	return {
 		dashboard: prisma.dashboard.findUnique({
 			where: {
-                id: url.pathname.split('/')[3]
-            },
-            include: {
-                user: true
-            }
+				id: url.pathname.split('/')[3]
+			},
+			include: {
+				user: true
+			}
 		})
 	};
 };
