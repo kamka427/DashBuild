@@ -42,18 +42,16 @@ export const load: PageServerLoad = async () => {
 };
 
 export const actions: Actions = {
-	publishDashboard: async ({ request }) => {
-		const { dashboardId, publishState } = Object.fromEntries(await request.formData()) as {
-			dashboardId: string;
-			publishState: string;
-		};
+	publishDashboard: async ({ url }) => {
+		const dashboardId = url.searchParams.get('dashboardId') as string;
+		const publishState = url.searchParams.get('publishState') as string;
 		try {
 			await prisma.dashboard.update({
 				where: {
 					id: dashboardId
 				},
 				data: {
-					published: publishState === 'true' ? false : true
+					published: publishState === 'true' ? true : false
 				}
 			});
 		} catch (error) {
@@ -61,9 +59,8 @@ export const actions: Actions = {
 			return fail(500, { message: 'Could not publish dashboard' });
 		}
 	},
-	deleteDashboard: async ({ request }) => {
-		const { dashboardId } = Object.fromEntries(await request.formData()) as { dashboardId: string };
-
+	deleteDashboard: async ({ url }) => {
+		const dashboardId = url.searchParams.get('dashboardId') as string;
 		try {
 			await prisma.dashboard.delete({
 				where: {

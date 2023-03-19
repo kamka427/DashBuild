@@ -40,19 +40,22 @@
 			{/if}
 		</div>
 		<div class="card-actions justify-end">
-			<form action="?/deleteDashboard" method="POST">
-				<input type="hidden" name="dashboardId" value={dashboard.id} />
-				<div class="btn-group">
-					{#if currentPage === 'gallery'}
-						<button class="btn-secondary btn">Copy</button>
-					{/if}
-					{#if currentPage === 'my-dashboards'}
-						<button class="btn-error btn" type="submit">Delete</button>
-						<button class="btn-secondary btn">Modify</button>
-					{/if}
-					<button class="btn-primary btn">View</button>
-				</div>
-			</form>
+			<div class="btn-group">
+				{#if currentPage === 'gallery'}
+					<button class="btn-secondary btn">Copy</button>
+				{/if}
+				{#if currentPage === 'my-dashboards'}
+					<form
+						action="?/deleteDashboard&dashboardId={dashboard.id}"
+						method="POST"
+						class="btn-error btn"
+					>
+						<button type="submit"> DELETE </button>
+					</form>
+					<button class="btn-secondary btn">Modify</button>
+				{/if}
+				<button class="btn-primary btn">View</button>
+			</div>
 		</div>
 	</div>
 </main>

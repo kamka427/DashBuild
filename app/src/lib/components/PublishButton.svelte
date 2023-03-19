@@ -3,15 +3,18 @@
 	export let dashboardId: string;
 </script>
 
-<form action="?/publishDashboard" method="POST" class="stat flex flex-row">
-	<input type="hidden" name="dashboardId" value={dashboardId} />
-	<input type="hidden" name="publishState" value={published} />
+<div class="stat flex">
 	<div class="stat-title text-sm">Published</div>
-	<button type="submit" class="stat-value text-sm underline">
-		{#if published}
-			True
-		{:else}
-			False
-		{/if}
-	</button>
-</form>
+	<form
+		method="POST"
+		action="?/publishDashboard&dashboardId={dashboardId}&publishState={!published}"
+	>
+		<button type="submit" class="stat-value text-sm underline">
+			{#if published}
+				True
+			{:else}
+				False
+			{/if}
+		</button>
+	</form>
+</div>
