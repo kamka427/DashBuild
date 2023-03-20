@@ -35,16 +35,16 @@
 				<div class="stat-title text-sm">Tags</div>
 				<div class="stat-value text-sm">{dashboard.tags.join(', ')}</div>
 			</div>
-			{#if currentPage === 'my-dashboards'}
+			{#if currentPage === 'dashboards'}
 				<Published published={dashboard.published} dashboardId={dashboard.id} />
 			{/if}
 		</div>
 		<div class="card-actions justify-end">
 			<div class="btn-group">
 				{#if currentPage === 'gallery'}
-					<button class="btn-secondary btn">Copy</button>
+					<a href="/p/create/{dashboard.id}" class="btn-secondary btn">Copy</a>
 				{/if}
-				{#if currentPage === 'my-dashboards'}
+				{#if currentPage === 'dashboards'}
 					<form
 						action="?/deleteDashboard&dashboardId={dashboard.id}"
 						method="POST"
@@ -52,9 +52,9 @@
 					>
 						<button type="submit"> DELETE </button>
 					</form>
-					<button class="btn-secondary btn">Modify</button>
+					<a href="/p/update/{dashboard.id}" class="btn-secondary btn">Modify</a>
 				{/if}
-				<a href="/dashboards/view/{dashboard.id}" class="btn-primary btn">View</a>
+				<a href="/p/view/{dashboard.id}" class="btn-primary btn">View</a>
 			</div>
 		</div>
 	</div>

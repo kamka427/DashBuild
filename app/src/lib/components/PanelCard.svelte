@@ -1,6 +1,4 @@
 <script lang="ts">
-	import Add from '$lib/svgs/Add.svelte';
-
 	interface Panel {
 		id: string;
 		name: string;
@@ -9,9 +7,11 @@
 		representation: string;
 	}
 
-	export let panel: Panel;
+	export let panel: Panel | null;
 
-	const shortDescription = panel.description
+	export let hideButtons: boolean | null = false;
+
+	const shortDescription = panel?.description
 		? panel.description.length > 150
 			? panel.description.substring(0, 150) + '...'
 			: panel.description
@@ -25,11 +25,11 @@
 
 <div class="card-compact card bg-base-300 text-base-content">
 	<figure>
-		<img src={panel.preview} class="w-max rounded-md shadow-xl" alt="Dashboard thumbnail" />
+		<img src="../{panel?.preview}" class="w-max rounded-md shadow-xl" alt="Dashboard thumbnail" />
 	</figure>
 	{#if state === 'preview' || state === 'edit'}
 		<div class="card-body gap-4">
-			<h2 class="card-title">{panel.name}</h2>
+			<h2 class="card-title">{panel?.name}</h2>
 			<p class="h-6">{shortDescription}</p>
 			{#if state === 'edit'}
 				<div class="divider" />
@@ -44,15 +44,17 @@
 				</div>
 			{/if}
 			<div class="card-actions justify-end">
-				<div class="btn-group">
-					<button class="btn-secondary btn">Remove</button>
-					<button
-						class="btn-primary btn"
-						on:click={() => {
-							state = state === 'preview' ? 'edit' : 'preview';
-						}}>{state === 'preview' ? 'Customize' : 'Save'}</button
-					>
-				</div>
+				{#if !hideButtons}
+					<div class="btn-group">
+						<button class="btn-secondary btn">Remove</button>
+						<button
+							class="btn-primary btn"
+							on:click={() => {
+								state = state === 'preview' ? 'edit' : 'preview';
+							}}>{state === 'preview' ? 'Customize' : 'Save'}</button
+						>
+					</div>
+				{/if}
 			</div>
 		</div>
 	{/if}
