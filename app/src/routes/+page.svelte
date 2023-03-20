@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import BreadCrumbs from '$lib/components/BreadCrumbs.svelte';
 
 	interface Data {
 		dashboards: {
@@ -17,7 +16,6 @@
 	<title>DashBuild</title>
 </svelte:head>
 <main class="container mx-auto">
-	<BreadCrumbs location="DashBuild" />
 	<div class="flex flex-col items-start gap-3 lg:flex-row">
 		<article class="hero text-base-content">
 			<div class="hero-content flex-col items-start">
@@ -36,10 +34,10 @@
 				{#if $page.data.session}
 					<div class="card-actions">
 						<button class="btn-primary btn"
-							><a href="/dashboards/create"> Create a new Dashboard </a>
+							><a href="/p/create"> Create a new Dashboard </a>
 						</button>
 						<button class="btn-secondary btn">
-							<a href="/dashboards/my-dashboards"> Jump to my Dashboards </a>
+							<a href="/p/dashboards"> Jump to my Dashboards </a>
 						</button>
 					</div>
 				{/if}
