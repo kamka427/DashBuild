@@ -1,0 +1,8 @@
+{
+	"panels": {
+		"timeseries": {
+			"centeredZero": [true, false],
+			"lineStyle": ["solid", "dashed", "dotted"]
+		}
+	}
+}
