@@ -1,8 +1,8 @@
-<div class="card-compact card bg-base-300 text-base-content w-full">
-	<figure class="bg-base-200 flex h-full w-full items-center justify-center">
+<div class="card-compact card w-full bg-base-300 text-base-content">
+	<figure class="flex h-full w-full items-center justify-center bg-base-200">
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
-			class="text-base-content h-64 w-64"
+			class="h-64 w-64 text-base-content"
 			fill="none"
 			viewBox="0 0 24 24"
 			stroke="currentColor"
