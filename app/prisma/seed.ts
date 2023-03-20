@@ -25,56 +25,54 @@ async function main() {
 	await prisma.panel.deleteMany();
 	await prisma.user.deleteMany();
 
-	const fakeUsers = Array.from({ length: 10 }).map(() => ({
+	await prisma.user.createMany({
+		data: {
+			id: faker.datatype.uuid(),
+			name: 'Admin',
+			email: 'admin@admin.com',
+			team: 'Admins'
+		}
+	});
+
+	const fakeUsers = Array.from({ length: Math.floor(Math.random() * 15) + 5 }).map(() => ({
 		id: faker.datatype.uuid(),
 		name: faker.name.fullName(),
 		email: faker.internet.email(),
-		team: 'team' + faker.helpers.arrayElement(['A', 'B', 'C', 'D', 'E'])
+		team: faker.company.name()
 	}));
 
 	await prisma.user.createMany({
 		data: fakeUsers
 	});
 
-	const fakeDashboards = Array.from({ length: 10 }).map(() => ({
-		id: faker.datatype.uuid(),
-		name: faker.commerce.productName(),
-		description: faker.commerce.productDescription(),
-		published: faker.datatype.boolean(),
-		tags: [
-			faker.commerce.productMaterial(),
-			faker.commerce.productMaterial(),
-			faker.commerce.productMaterial()
-		],
-		preview: faker.helpers.arrayElement(testDashboardPreviews),
-		userId: faker.helpers.arrayElement(fakeUsers).id,
-		representation: {}
-	}));
-
-	await prisma.dashboard.createMany({
-		data: fakeDashboards
-	});
-
-	const fakePanels = Array.from({ length: 10 }).map(() => ({
-		id: faker.datatype.uuid(),
-		name: faker.commerce.productName(),
-		description: faker.commerce.productDescription(),
-		preview: faker.helpers.arrayElement(testPanelPreviews),
-		representation: {}
-	}));
-
-	await prisma.panel.createMany({
-		data: fakePanels
-	});
-
-	const fakeDashboardPanels = Array.from({ length: 10 }).map(() => ({
-		dashboardId: faker.helpers.arrayElement(fakeDashboards).id,
-		panelId: faker.helpers.arrayElement(fakePanels).id
-	}));
-
-	await prisma.panelsOnDashboards.createMany({
-		data: fakeDashboardPanels
-	});
+	for (let i = 0; i < Math.floor(Math.random() * 35) + 15; i++) {
+		await prisma.dashboard.create({
+			data: {
+				id: faker.datatype.uuid(),
+				name: faker.company.bs(),
+				description: faker.company.bs() + ' ' + faker.company.bs() + ' ' + faker.company.bs(),
+				published: faker.datatype.boolean(),
+				tags: [faker.company.bsBuzz(), faker.company.bsBuzz()],
+				preview: faker.helpers.arrayElement(testDashboardPreviews),
+				userId: faker.helpers.arrayElement(fakeUsers).id,
+				representation: {},
+				panels: {
+					create: Array.from({ length: Math.floor(Math.random() * 6) + 1 }).map(() => ({
+						panel: {
+							create: {
+								id: faker.datatype.uuid(),
+								name: faker.company.bs(),
+								description:
+									faker.company.bs() + ' ' + faker.company.bsBuzz() + ' ' + faker.company.bsBuzz(),
+								preview: faker.helpers.arrayElement(testPanelPreviews),
+								representation: {}
+							}
+						}
+					}))
+				}
+			}
+		});
+	}
 }
 main()
 	.then(async () => {

@@ -1,10 +1,19 @@
 <script lang="ts">
-	export let location: string;
+	import { page } from '$app/stores';
+
+	export let base: string | null =
+		$page.url.pathname.split('/')[2].slice(0, 1).toUpperCase() +
+		$page.url.pathname.split('/')[2].slice(1);
+
+	export let title: string | null = null;
 </script>
 
 <div class="breadcrumbs text-base-content">
 	<ul>
-		<li class="text-3xl"><a href="/">Home</a></li>
-		<li class="text-4xl">{location}</li>
+		<li><a class="text-2xl" href="/">DashBuild</a></li>
+		<li><p class="text-2xl">{base}</p></li>
+		{#if title}
+			<li><p class="text-2xl">{title}</p></li>
+		{/if}
 	</ul>
 </div>
