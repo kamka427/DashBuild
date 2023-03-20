@@ -1,10 +1,10 @@
 <script lang="ts">
-	import DashboardFilters from '$lib/components/DashboardFilters.svelte';
-	import DashboardCard from '$lib/components/DashboardCard.svelte';
+	import BreadCrumbs from '$lib/components/BreadCrumbs.svelte';
+	import Pagination from '$lib/components/Pagination.svelte';
 	import { createSearchStore, searchHandler } from '$lib/stores/search';
 	import { onDestroy } from 'svelte';
-	import Pagination from '$lib/components/Pagination.svelte';
-	import BreadCrumbs from '$lib/components/BreadCrumbs.svelte';
+	import DashboardFilters from '$lib/components/DashboardFilters.svelte';
+	import DashboardCard from '$lib/components/DashboardCard.svelte';
 
 	interface Data {
 		dashboards: {
@@ -23,6 +23,7 @@
 			tags: string[];
 		}[];
 	}
+
 	export let data: Data;
 
 	const searchStore = createSearchStore(data.dashboards);
@@ -37,11 +38,11 @@
 </script>
 
 <svelte:head>
-	<title>My Dashboards</title>
+	<title>Gallery</title>
 </svelte:head>
 <main class="container mx-auto space-y-6">
 	<div class="flex flex-col items-center justify-between gap-2 lg:flex-row">
-		<BreadCrumbs location="My Dashboards" />
+		<BreadCrumbs />
 		<DashboardFilters
 			bind:search={$searchStore.search}
 			bind:tag={$searchStore.tagFilter}

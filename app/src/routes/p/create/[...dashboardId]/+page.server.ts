@@ -10,7 +10,12 @@ export const load: PageServerLoad = async ({ url }) => {
 				id: url.pathname.split('/')[3]
 			},
 			include: {
-				user: true
+				user: true,
+				panels: {
+					include: {
+						panel: true
+					}
+				}
 			}
 		})
 	};
