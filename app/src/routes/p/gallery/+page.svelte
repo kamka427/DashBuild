@@ -1,6 +1,5 @@
 <script lang="ts">
 	import BreadCrumbs from '$lib/components/BreadCrumbs.svelte';
-	import Pagination from '$lib/components/Pagination.svelte';
 	import { createSearchStore, searchHandler } from '$lib/stores/search';
 	import { onDestroy } from 'svelte';
 	import DashboardFilters from '$lib/components/DashboardFilters.svelte';
@@ -56,5 +55,4 @@
 			<DashboardCard {dashboard} />
 		{/each}
 	</div>
-	<Pagination />
 </main>

@@ -3,7 +3,6 @@
 	import DashboardCard from '$lib/components/DashboardCard.svelte';
 	import { createSearchStore, searchHandler } from '$lib/stores/search';
 	import { onDestroy } from 'svelte';
-	import Pagination from '$lib/components/Pagination.svelte';
 	import BreadCrumbs from '$lib/components/BreadCrumbs.svelte';
 
 	interface Data {
@@ -55,5 +54,4 @@
 			<DashboardCard {dashboard} />
 		{/each}
 	</div>
-	<Pagination />
 </main>
