@@ -1,6 +1,10 @@
 {
-	"panelsFields": {
+	"panelFields": {
 		"timeseries": {
+			"centeredZero": [true, false],
+			"lineStyle": ["solid", "dashed", "dotted"]
+		},
+		"stat": {
 			"centeredZero": [true, false],
 			"lineStyle": ["solid", "dashed", "dotted"]
 		}
@@ -52,87 +56,135 @@
 		"version": 0,
 		"weekStart": ""
 	},
-	"panelTemplates": [
-		{
-			"timeseries": {
-				"datasource": {
-					"uid": "grafana",
-					"type": "datasource"
+	"panelTemplates": {
+		"timeseries": {
+			"datasource": {
+				"uid": "grafana",
+				"type": "datasource"
+			},
+			"type": "timeseries",
+			"title": "Panel Title",
+			"gridPos": {
+				"x": 0,
+				"y": 0,
+				"w": 12,
+				"h": 9
+			},
+			"id": 2,
+			"options": {
+				"tooltip": {
+					"mode": "single",
+					"sort": "none"
 				},
-				"type": "timeseries",
-				"title": "Panel Title",
-				"gridPos": {
-					"x": 0,
-					"y": 0,
-					"w": 12,
-					"h": 9
-				},
-				"id": 2,
-				"options": {
-					"tooltip": {
-						"mode": "single",
-						"sort": "none"
-					},
-					"legend": {
-						"showLegend": true,
-						"displayMode": "list",
-						"placement": "bottom",
-						"calcs": []
-					}
-				},
-				"fieldConfig": {
-					"defaults": {
-						"custom": {
-							"drawStyle": "line",
-							"lineInterpolation": "linear",
-							"barAlignment": 0,
-							"lineWidth": 1,
-							"fillOpacity": 0,
-							"gradientMode": "none",
-							"spanNulls": false,
-							"showPoints": "auto",
-							"pointSize": 5,
-							"stacking": {
-								"mode": "none",
-								"group": "A"
-							},
-							"axisPlacement": "auto",
-							"axisLabel": "",
-							"axisColorMode": "text",
-							"scaleDistribution": {
-								"type": "linear"
-							},
-							"axisCenteredZero": false,
-							"hideFrom": {
-								"tooltip": false,
-								"viz": false,
-								"legend": false
-							},
-							"thresholdsStyle": {
-								"mode": "off"
-							}
+				"legend": {
+					"showLegend": true,
+					"displayMode": "list",
+					"placement": "bottom",
+					"calcs": []
+				}
+			},
+			"fieldConfig": {
+				"defaults": {
+					"custom": {
+						"drawStyle": "line",
+						"lineInterpolation": "linear",
+						"barAlignment": 0,
+						"lineWidth": 1,
+						"fillOpacity": 0,
+						"gradientMode": "none",
+						"spanNulls": false,
+						"showPoints": "auto",
+						"pointSize": 5,
+						"stacking": {
+							"mode": "none",
+							"group": "A"
 						},
-						"color": {
-							"mode": "palette-classic"
+						"axisPlacement": "auto",
+						"axisLabel": "",
+						"axisColorMode": "text",
+						"scaleDistribution": {
+							"type": "linear"
 						},
-						"mappings": [],
-						"thresholds": {
-							"mode": "absolute",
-							"steps": [
-								{
-									"value": null,
-									"color": "green"
-								},
-								{
-									"value": 80,
-									"color": "red"
-								}
-							]
+						"axisCenteredZero": false,
+						"hideFrom": {
+							"tooltip": false,
+							"viz": false,
+							"legend": false
+						},
+						"thresholdsStyle": {
+							"mode": "off"
 						}
 					},
-					"overrides": []
-				}
+					"color": {
+						"mode": "palette-classic"
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"value": null,
+								"color": "green"
+							},
+							{
+								"value": 80,
+								"color": "red"
+							}
+						]
+					}
+				},
+				"overrides": []
 			}
+		},
+		"stat": {
+			"datasource": {
+				"uid": "grafana",
+				"type": "datasource"
+			},
+			"type": "stat",
+			"title": "Panel Title",
+			"gridPos": {
+				"x": 0,
+				"y": 0,
+				"w": 12,
+				"h": 9
+			},
+			"id": 2,
+			"options": {
+				"reduceOptions": {
+					"values": false,
+					"calcs": ["lastNotNull"],
+					"fields": ""
+				},
+				"orientation": "auto",
+				"textMode": "auto",
+				"colorMode": "value",
+				"graphMode": "area",
+				"justifyMode": "auto"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"value": null,
+								"color": "green"
+							},
+							{
+								"value": 80,
+								"color": "red"
+							}
+						]
+					},
+					"color": {
+						"mode": "thresholds"
+					}
+				},
+				"overrides": []
+			},
+			"pluginVersion": "9.4.3"
 		}
-	]
+	}
 }
