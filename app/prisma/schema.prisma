@@ -68,6 +68,9 @@ model Dashboard {
   version        Int                  @default(1)
   preview      String?
   representation Json
+  pythonCode     String?
+  grafanaUrl     String?
+  columns        Int                  @default(2)
   tags           String[]
   user           User                 @relation(fields: [userId], references: [id])
   userId         String
@@ -80,6 +83,7 @@ model Panel {
   description    String?
   preview      String?
   representation Json
+  width           Int                  @default(1)
   dashboards     PanelsOnDashboards[]
 }
 
