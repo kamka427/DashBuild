@@ -2,7 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native"]
 }
 
@@ -12,20 +12,20 @@ datasource db {
 }
 
 model Account {
-  id                String  @id @default(cuid())
-  userId            String
-  type              String
-  provider          String
-  providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
-  expires_in        Int?
-  ext_expires_in    Int?
+  id                       String  @id @default(cuid())
+  userId                   String
+  type                     String
+  provider                 String
+  providerAccountId        String
+  refresh_token            String? @db.Text
+  access_token             String? @db.Text
+  expires_in               Int?
+  ext_expires_in           Int?
   refresh_token_expires_in Int?
-  token_type        String?
-  scope             String?
-  id_token          String? @db.Text
-  session_state     String?
+  token_type               String?
+  scope                    String?
+  id_token                 String? @db.Text
+  session_state            String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -66,7 +66,7 @@ model Dashboard {
   description    String?
   published      Boolean
   version        Int                  @default(1)
-  preview      String?
+  preview        String?
   representation Json
   pythonCode     String?
   grafanaUrl     String?
@@ -74,16 +74,18 @@ model Dashboard {
   tags           String[]
   user           User                 @relation(fields: [userId], references: [id])
   userId         String
-  panels         PanelsOnDashboards[] 
+  panels         PanelsOnDashboards[]
 }
 
 model Panel {
   id             String               @id @default(cuid())
   name           String
   description    String?
-  preview      String?
+  preview        String?
   representation Json
-  width           Int                  @default(1)
+  grafanaUrl     String?
+  width          Int                  @default(1)
+  positionNumber Int                  @default(1)
   dashboards     PanelsOnDashboards[]
 }
 
