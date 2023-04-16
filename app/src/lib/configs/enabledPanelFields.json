@@ -1,0 +1,12 @@
+{
+    "enabledPanelFields": {
+		"timeseries": {
+			"centeredZero": [true, false],
+			"lineStyle": ["solid", "dashed", "dotted"]
+		},
+		"stat": {
+			"centeredZero": [true, false],
+			"lineStyle": ["solid", "dashed", "dotted"]
+		}
+	}
+}
