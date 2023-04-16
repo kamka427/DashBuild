@@ -1,6 +1,5 @@
 <script lang="ts">
 	export let dashboardName: string;
-	export let rowCount: number;
 	export let colCount: number;
 </script>
 
@@ -13,18 +12,6 @@
 			placeholder="Title of the dashboard"
 			class="input-bordered input"
 			bind:value={dashboardName}
-		/>
-	</label>
-	<label class="input-group">
-		<span>Rows</span>
-		<input
-			id="columns"
-			type="number"
-			placeholder="2"
-			class="input-bordered input w-20"
-			bind:value={rowCount}
-			min="1"
-			max="10"
 		/>
 	</label>
 	<label class="input-group">
