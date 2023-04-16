@@ -1,6 +1,6 @@
 <script lang="ts">
 	import DashboardProperties from '$lib/components/DashboardProperties.svelte';
-	import PanelCard from '$lib/components/PanelCard.svelte';
+	import PanelPreviewCard from '$lib/components/PanelPreviewCard.svelte';
 	import BreadCrumbs from '$lib/components/BreadCrumbs.svelte';
 	import NewPanelCard from '$lib/components/NewPanelCard.svelte';
 
@@ -19,7 +19,6 @@
 		};
 	}
 
-	let rowCount = 2;
 	let colCount = 2;
 
 	export let data: Data;
@@ -43,8 +42,8 @@
 	</div>
 	<div class="grid grid-cols-{colCount} grid-rows-{rowCount} place-items-start gap-2">
 		{#each panelList as panel}
-			<PanelCard {panel} />
+			<PanelPreviewCard {panel} />
 		{/each}
-		<NewPanelCard />
+		<!-- <NewPanelCard /> -->
 	</div>
 </main>

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import BreadCrumbs from '$lib/components/BreadCrumbs.svelte';
-	import PanelCard from '$lib/components/PanelCard.svelte';
+	import PanelPreviewCard from '$lib/components/PanelPreviewCard.svelte';
 	import PublishButton from '$lib/components/PublishButton.svelte';
 	import type { Dashboard } from '@prisma/client';
 	interface Data {
@@ -76,7 +76,7 @@
 		<h2 class="text-3xl">Panels</h2>
 		<div class="grid grid-cols-2 grid-rows-2 place-items-start gap-2">
 			{#each panels as panel}
-				<PanelCard hideButtons {panel} />
+				<PanelPreviewCard {panel} />
 			{/each}
 		</div>
 	</div>
