@@ -14,10 +14,10 @@
 
 	export let addAction: any;
 
-	export let selectedType: string;
+	export let selectedPanel: {};
 
-	function setSelection(type: string) {
-		selectedType = type;
+	function setSelection(panel: {}) {
+		selectedPanel = panel;
 	}
 </script>
 
@@ -61,7 +61,8 @@
 							}}
 							class="btn btn-ghost rounded-md"
 						>
-							{panel}
+							<img class="h-8" src={panel.thumbnail} alt="" />
+							{panel.name}
 						</button>
 					</li>
 				{/each}
