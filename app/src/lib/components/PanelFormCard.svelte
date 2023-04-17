@@ -17,7 +17,7 @@
 		};
 	}
 
-	export let panel: Panel | null;
+	export let panel: Panel;
 
 	export let hideButtons: boolean | null = false;
 
@@ -41,8 +41,18 @@
 	</figure>
 	{#if state === 'preview' || state === 'edit'}
 		<div class="card-body gap-4">
-			<input class="card-title input" type="text" value={panel?.name} placeholder="Panel title" />
-			<input class="input" type="text" value={panel?.description} placeholder="Panel description" />
+			<input
+				bind:value={panel.name}
+				class="card-title input"
+				type="text"
+				placeholder="Panel title"
+			/>
+			<input
+				bind:value={panel.description}
+				class="input"
+				type="text"
+				placeholder="Panel description"
+			/>
 			{#if state === 'edit'}
 				<div class="divider" />
 				<h2 class="text-xl">Properties</h2>
