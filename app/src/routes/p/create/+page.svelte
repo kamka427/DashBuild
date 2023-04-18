@@ -17,6 +17,7 @@
 					representation: {
 						[key: string]: any;
 					};
+					width: number;
 				};
 			}[];
 		};
@@ -54,28 +55,38 @@
 				id: panelForm.length.toString(),
 				name: `${panel.name}`,
 				description: panel.JSON.description || 'No description provided',
-				preview: panel.thumbnail || '..src/assets/panel.png',
-				representation: panel.JSON
+				preview: panel.thumbnail,
+				representation: panel.JSON,
+				width: 1
 			}
 		];
 	}
+
+	$: console.log(panelForm);
+	$: console.log(colCount);
 
 	function removePanel(panelId: string) {
 		panelForm = panelForm.filter((panel) => panel.id !== panelId);
 	}
 
+	let draggedPanel;
+	let currentPanel;
+	let dragOn = false;
+
 	function drag(ev) {
-		ev.dataTransfer.setData('text/plain', ev.target.id);
+		draggedPanel = panelForm.find((panel) => panel.id === ev.target.id);
 	}
+
 	function drop(ev) {
-		let panelId = ev.dataTransfer.getData('text/plain');
+		console.log('drop');
+		currentPanel = panelForm.find((panel) => panel.id === ev.target.id);
 
-		panelForm = [
-			...panelForm.filter((panel) => panel.id !== panelId),
-			...panelForm.filter((panel) => panel.id === panelId)
-		];
+		let draggedPanelIndex = panelForm.findIndex((panel) => panel.id === draggedPanel.id);
+		let currentPanelIndex = panelForm.findIndex((panel) => panel.id === currentPanel.id);
 
-		ev.dataTransfer.clearData();
+		let temp = panelForm[draggedPanelIndex];
+		panelForm[draggedPanelIndex] = panelForm[currentPanelIndex];
+		panelForm[currentPanelIndex] = temp;
 	}
 
 	async function callGrafanaApi() {
@@ -130,45 +141,41 @@
 	</form>
 	<div class="flex flex-col items-center justify-between gap-2 lg:flex-row">
 		<BreadCrumbs />
-		<div class="btn-group">
-			<button
-				class="btn-secondary btn"
-				on:click={() => {
-					panelForm = [];
-				}}>Reset</button
-			>
-			<button
-				on:click={() => {
-					callGrafanaApi();
-				}}
-				class="btn-primary btn">Save Dashboard</button
-			>
-		</div>
+		<DashboardProperties bind:dashboardName bind:colCount bind:tags bind:teamName bind:published />
 	</div>
-	<DashboardProperties bind:dashboardName bind:colCount bind:tags bind:teamName bind:published />
-	<div class="grid grid-cols-{colCount} place-items-start gap-2">
+	<div class="grid grid-cols-{colCount} gap-4">
 		{#each panelForm as panel}
-			<div
-				on:dragstart={(e) => {
+			<PanelFormCard
+			bind:dragOn
+				{panel}
+				{colCount}
+				removeAction={() => removePanel(panel.id)}
+				dragEvent={(e) => {
 					drag(e);
 				}}
-				on:drop={(e) => {
+				dropEvent={(e) => {
 					drop(e);
 				}}
-				on:dragover={(e) => {
-					e.preventDefault();
-				}}
-				class="panel-card"
-				id={panel.id}
-				draggable="true"
-			>
-				<PanelFormCard {panel} removeAction={() => removePanel(panel.id)} />
-			</div>
+			/>
 		{/each}
 		<NewPanelCard
 			panels={data.predefinedPanels}
 			bind:selectedPanel
 			addAction={() => addPanel(selectedPanel)}
 		/>
+	</div>
+	<div class="btn-group">
+		<button
+			class="btn-secondary btn"
+			on:click={() => {
+				panelForm = [];
+			}}>Reset</button
+		>
+		<button
+			on:click={() => {
+				callGrafanaApi();
+			}}
+			class="btn-primary btn">Save Dashboard</button
+		>
 	</div>
 </main>
