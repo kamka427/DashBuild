@@ -1,22 +1,14 @@
 import { SvelteKitAuth } from '@auth/sveltekit';
-import GitHub from '@auth/core/providers/github';
+import Email from '@auth/core/providers/email';
 import Azure from '@auth/core/providers/azure-ad';
 import CredentialsProvider from '@auth/core/providers/credentials';
-import {
-	GITHUB_ID,
-	GITHUB_SECRET,
-	AZURE_ID,
-	AZURE_SECRET,
-	AZURE_TENANT_ID
-} from '$env/static/private';
-import type { Provider } from '@auth/core/providers';
+import { AZURE_ID, AZURE_SECRET, AZURE_TENANT_ID } from '$env/static/private';
 import type { AuthConfig, Profile } from '@auth/core/types';
-import { PrismaClient } from '@prisma/client';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { redirect, type Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 
-const prisma = new PrismaClient();
+import { prisma } from '$lib/prisma';
 
 async function authorization({ event, resolve }): Promise<Response> {
 	if (event.url.pathname.startsWith('/p')) {
@@ -36,31 +28,23 @@ export const handle = sequence(
 	SvelteKitAuth({
 		adapter: PrismaAdapter(prisma) as AuthConfig['adapter'],
 		providers: [
-			CredentialsProvider({
-				name: 'Email for testing',
-				credentials: {
-					email: { label: 'Email', type: 'email' }
-				},
-				async authorize(credentials) {
-					const user = await prisma.user.findUnique({
-						where: {
-							email: credentials.email as string
-						}
-					});
-					if (user) {
-						return user;
-					} else {
-						return null;
+			Email({
+				server: {
+					host: process.env.SMTP_HOST,
+					port: Number(process.env.SMTP_PORT),
+					auth: {
+						user: process.env.SMTP_USER,
+						pass: process.env.SMTP_PASSWORD
 					}
-				}
+				},
+				from: process.env.EMAIL_FROM
 			}),
-			GitHub({ clientId: GITHUB_ID, clientSecret: GITHUB_SECRET }) as Provider<Profile>,
 			Azure({
 				clientId: AZURE_ID,
 				clientSecret: AZURE_SECRET,
 				tenantId: AZURE_TENANT_ID,
 				authorization: { params: { scope: 'openid profile user.Read email' } }
-			}) as Provider<Profile>
+			}) as any
 		],
 		session: {
 			strategy: 'jwt',
