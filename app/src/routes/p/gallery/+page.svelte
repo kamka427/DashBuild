@@ -4,31 +4,11 @@
 	import { onDestroy } from 'svelte';
 	import DashboardFilters from '$lib/components/DashboardFilters.svelte';
 	import DashboardCard from '$lib/components/DashboardCard.svelte';
+	import type { PageData } from './$types';
 
-	interface Data {
-		dashboards: {
-			id: string;
-			name: string;
-			description: string;
-			tags: string[];
-			user: {
-				team: string;
-			};
-		}[];
-		teams: {
-			team: string;
-		}[];
-		tags: {
-			tags: string[];
-		}[];
-	}
-
-	export let data: Data;
-
+	export let data: PageData;
 	const searchStore = createSearchStore(data.dashboards);
-
 	const unsubscribe = searchStore.subscribe((model) => searchHandler(model));
-
 	onDestroy(() => {
 		unsubscribe();
 	});

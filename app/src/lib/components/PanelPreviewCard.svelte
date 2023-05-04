@@ -1,13 +1,7 @@
 <script lang="ts">
-	import { panelFields } from '$lib/configs/panelTemplates.json';
+	import type { Panel } from '@prisma/client';
 
-	interface Panel {
-		id: string;
-		name: string;
-		description: string;
-		preview: string;
-		representation: string;
-	}
+	
 
 	export let panel: Panel | null;
 
@@ -24,7 +18,7 @@
 
 <div class="card-compact card bg-base-300 text-base-content w-full">
 	<figure>
-		<img src="../{panel?.preview}" class="w-max rounded-md shadow-xl" alt="Dashboard thumbnail" />
+		<img src="../{panel?.thumbnailPath}" class="w-max rounded-md shadow-xl" alt="Dashboard thumbnail" />
 	</figure>
 		<div class="card-body gap-4">
 			<h2 class="card-title">{panel?.name}</h2>

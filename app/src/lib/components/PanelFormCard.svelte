@@ -1,34 +1,19 @@
 <script lang="ts">
 	import { enabledPanelFields } from '$lib/configs/enabledPanelFields.json';
-	import exp from 'constants';
+	import type { Panel } from '@prisma/client';
 
-	interface Panel {
-		id: string;
-		name: string;
-		description: string;
-		preview: string;
-		representation: {
-			[key: string]: any;
-		};
-		width: number;
-	}
 
-	interface PanelFields {
-		[key: string]: {
-			[key: string]: string[];
-		};
-	}
 
-	export let panel: Panel;
+	export let panel: Panel
 
 	type componentState = 'preview' | 'edit';
 	export let state = 'preview' as componentState;
 
 	function getPanelType(panel: Panel) {
-		return panel.representation.type;
+		return panel?.grafanaJSON?.type;
 	}
 
-	const type = getPanelType(panel);
+	const type = getPanelType(panel as Panel) as string;
 
 	const props = enabledPanelFields[type] ? Object.keys(enabledPanelFields[type]) : [];
 
@@ -44,13 +29,12 @@
 </script>
 
 <div
-class="col-span-{panel?.width}"
+	class="col-span-{panel?.width}"
 	on:dragstart={(e) => {
 		dragEvent(e);
 		isDragged = true;
 		dragOn = true;
 	}}
-
 	on:dragend={(e) => {
 		isDragged = false;
 		dragOn = false;
@@ -73,14 +57,11 @@ class="col-span-{panel?.width}"
 		dropEvent(e);
 		dragOn = false;
 	}}
-
-
 	on:mouseleave={(e) => {
 		e.preventDefault();
 		isDropTarget = false;
 		dragOn = false;
 	}}
-	
 >
 	{#if isDropTarget === true && dragOn == true}
 		<svg
@@ -88,7 +69,7 @@ class="col-span-{panel?.width}"
 			class="border-base-300 h-[35em] w-full border 
 		"
 		>
-	<text
+			<text
 				x="50%"
 				y="50%"
 				text-anchor="middle"
@@ -96,14 +77,9 @@ class="col-span-{panel?.width}"
 				class="text-base-content"
 				fill="currentColor"
 			>
-
 				Drop to swap panels
-
-
-	</text>
-
-
-</svg>
+			</text>
+		</svg>
 	{:else}
 		<div
 			draggable="true"
@@ -111,7 +87,7 @@ class="col-span-{panel?.width}"
 			class="card-compact card bg-base-300 text-base-content  h-full w-full"
 		>
 			<figure>
-				<img src="../{panel?.preview}" class="rounded-md shadow-xl" alt="Dashboard thumbnail" />
+				<img src="../{panel?.thumbnailPath}" class="rounded-md shadow-xl" alt="Dashboard thumbnail" />
 			</figure>
 			{#if state === 'preview' || state === 'edit'}
 				<div id={panel.id} class="card-body gap-4">

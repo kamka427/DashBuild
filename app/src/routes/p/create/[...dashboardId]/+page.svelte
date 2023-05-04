@@ -3,20 +3,11 @@
 	import PanelPreviewCard from '$lib/components/PanelPreviewCard.svelte';
 	import BreadCrumbs from '$lib/components/BreadCrumbs.svelte';
 	import NewPanelCard from '$lib/components/NewPanelCard.svelte';
+	import type { Dashboard } from '@prisma/client';
 
 	interface Data {
-		dashboard: {
-			name: string;
-			panels: {
-				panel: {
-					id: string;
-					name: string;
-					description: string;
-					preview: string;
-					representation: string;
-				};
-			}[];
-		};
+		dashboard: Dashboard
+		
 	}
 
 	let colCount = 2;
@@ -40,7 +31,7 @@
 			<button class="btn-primary btn">Save Dashboard</button>
 		</div>
 	</div>
-	<div class="grid grid-cols-{colCount} grid-rows-{rowCount} place-items-start gap-2">
+	<div class="grid grid-cols-{colCount}  place-items-start gap-2">
 		{#each panelList as panel}
 			<PanelPreviewCard {panel} />
 		{/each}

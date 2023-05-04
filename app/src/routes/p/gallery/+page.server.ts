@@ -6,22 +6,8 @@ const prisma = new PrismaClient();
 export const load: PageServerLoad = async () => {
 	return {
 		dashboards: prisma.dashboard.findMany({
-			select: {
-				id: true,
-				name: true,
-				description: true,
-				preview: true,
-				published: true,
-				tags: true,
-				representation: true,
-				version: true,
-				user: {
-					select: {
-						id: true,
-						name: true,
-						team: true
-					}
-				}
+			include: {
+				user: true
 			},
 			where: {
 				published: true

@@ -3,35 +3,13 @@
 	import PanelFormCard from '$lib/components/PanelFormCard.svelte';
 	import BreadCrumbs from '$lib/components/BreadCrumbs.svelte';
 	import NewPanelCard from '$lib/components/NewPanelCard.svelte';
-	import { dashboardTemplate } from '$lib/configs/dashboardTemplate.json';
+	import type { Dashboard, Panel } from '@prisma/client';
 
 	interface Data {
-		dashboard: {
-			name: string;
-			panels: {
-				panel: {
-					id: string;
-					name: string;
-					description: string;
-					preview: string;
-					representation: {
-						[key: string]: any;
-					};
-					width: number;
-				};
-			}[];
-		};
+		dashboard: Dashboard;
 		GRAFANA_URL: string;
 		GRAFANA_API_TOKEN: string;
-		predefinedPanels: any;
-	}
-
-	interface Panel {
-		id: string;
-		name: string;
-		description: string;
-		preview: string;
-		representation: string;
+		predefinedPanels: string[];
 	}
 
 	export let data: Data;
@@ -46,17 +24,32 @@
 	export let published = false;
 
 	export let panelForm: Panel[] = [];
-	export let selectedPanel = {};
+	export let selectedPanel = {} as {
+		name: string;
+		JSON: {
+			description: string;
+		};
+		thumbnail: string;
+	};
 
-	function addPanel(panel: {}) {
+	function addPanel(panel: {
+		name: string;
+		JSON: {
+			description: string;
+		};
+		Python: string;
+		thumbnail: string;
+	}) {
 		panelForm = [
 			...panelForm,
 			{
 				id: panelForm.length.toString(),
 				name: `${panel.name}`,
 				description: panel.JSON.description || 'No description provided',
-				preview: panel.thumbnail,
-				representation: panel.JSON,
+				thumbnailPath: panel.thumbnail,
+				grafanaJSON: panel.JSON,
+				pythonCode: panel.Python,
+				grafanaUrl: '',
 				width: 1
 			}
 		];
@@ -69,17 +62,16 @@
 		panelForm = panelForm.filter((panel) => panel.id !== panelId);
 	}
 
-	let draggedPanel;
-	let currentPanel;
+	let draggedPanel: Panel;
+	let currentPanel: Panel;
 	let dragOn = false;
 
-	function drag(ev) {
-		draggedPanel = panelForm.find((panel) => panel.id === ev.target.id);
+	function drag(ev: { target: { id: string } }) {
+		draggedPanel = panelForm.find((panel) => panel.id === ev?.target?.id) as Panel;
 	}
 
-	function drop(ev) {
-		console.log('drop');
-		currentPanel = panelForm.find((panel) => panel.id === ev.target.id);
+	function drop(ev: { target: { id: string } }) {
+		currentPanel = panelForm.find((panel) => panel.id === ev?.target?.id) as Panel;
 
 		let draggedPanelIndex = panelForm.findIndex((panel) => panel.id === draggedPanel.id);
 		let currentPanelIndex = panelForm.findIndex((panel) => panel.id === currentPanel.id);
@@ -89,56 +81,33 @@
 		panelForm[currentPanelIndex] = temp;
 	}
 
-	async function callGrafanaApi() {
-		let grafanaPayload = {
-			dashboard: {
-				...dashboardTemplate,
-				title: dashboardName,
-				panels: panelForm.map((panel) => panel.representation)
-			}
-		};
+	// async function callGrafanaApi() {
+	// 	let grafanaPayload = {
+	// 		dashboard: {
+	// 			...dashboardTemplate,
+	// 			title: dashboardName,
+	// 			panels: panelForm.map((panel) => panel.grafanaJSON)
+	// 		}
+	// 	};
 
-		const response = await fetch(`${GRAFANA_URL}/api/dashboards/db`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: GRAFANA_API_TOKEN
-			},
-			body: JSON.stringify(grafanaPayload)
-		});
+	// 	const response = await fetch(`${GRAFANA_URL}/api/dashboards/db`, {
+	// 		method: 'POST',
+	// 		headers: {
+	// 			'Content-Type': 'application/json',
+	// 			Authorization: GRAFANA_API_TOKEN
+	// 		},
+	// 		body: JSON.stringify(grafanaPayload)
+	// 	});
 
-		const data = await response.json();
-		console.log(data);
-	}
-
-	function combineDashboardAndPanelData() {
-		return {
-			data: {
-				name: dashboardName,
-				published: published,
-				tags: tags,
-				teamName: teamName,
-				panels: panelForm
-			}
-		};
-	}
+	// 	const data = await response.json();
+	// 	console.log(data);
+	// }
 </script>
 
 <svelte:head>
 	<title>Create Dashboard</title>
 </svelte:head>
-<img class="lol" src="" alt="" />
 <main class="container mx-auto space-y-6">
-	<form action="?/saveDashboard" method="POST">
-		<input
-			type="hidden"
-			name="dashboard"
-			value={() => {
-				combineDashboardAndPanelData();
-			}}
-		/>
-		<button type="submit" class="btn-primary btn">Call Grafana</button>
-	</form>
 	<div class="flex flex-col items-center justify-between gap-2 lg:flex-row">
 		<BreadCrumbs />
 		<DashboardProperties bind:dashboardName bind:colCount bind:tags bind:teamName bind:published />
@@ -146,7 +115,7 @@
 	<div class="grid grid-cols-{colCount} gap-4">
 		{#each panelForm as panel}
 			<PanelFormCard
-			bind:dragOn
+				bind:dragOn
 				{panel}
 				{colCount}
 				removeAction={() => removePanel(panel.id)}
@@ -164,18 +133,18 @@
 			addAction={() => addPanel(selectedPanel)}
 		/>
 	</div>
-	<div class="btn-group">
-		<button
-			class="btn-secondary btn"
-			on:click={() => {
-				panelForm = [];
-			}}>Reset</button
-		>
-		<button
-			on:click={() => {
-				callGrafanaApi();
-			}}
-			class="btn-primary btn">Save Dashboard</button
-		>
-	</div>
+
+	<form action="?/saveDashboard" method="POST" use:enhance class="">
+		<input type="hidden" value={dashboardName} name="dashboardName" />
+		<input type="hidden" value="test desc" name="dashboardDescription" />
+		<input type="hidden" value={colCount} name="colCount" />
+		<input type="hidden" value={tags} name="tags" />
+		<input type="hidden" value={teamName} name="teamName" />
+		<input type="hidden" value={published} name="published" />
+		<input type="hidden" value={JSON.stringify(panelForm)} name="panelForm" />
+		<div class="btn-group">
+			<button class="btn-secondary btn" type="reset">Reset</button>
+			<button type="submit" class="btn-primary btn">Save Dashboard</button>
+		</div>
+	</form>
 </main>

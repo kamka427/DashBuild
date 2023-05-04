@@ -1,15 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-
-	interface Data {
-		dashboards: {
-			id: string;
-			name: string;
-			preview: string;
-			published: boolean;
-		}[];
-	}
-	export let data: Data;
+	import type { PageData } from './$types';
+	export let data: PageData;
 </script>
 
 <svelte:head>
@@ -52,7 +44,7 @@
 						</div>
 						<figure>
 							<img
-								src={dashboard.preview}
+								src={dashboard.thumbnailPath}
 								class="w-full"
 								alt="A published dashboard in a carousel."
 							/>

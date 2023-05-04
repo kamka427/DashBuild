@@ -4,17 +4,10 @@
 	import { createSearchStore, searchHandler } from '$lib/stores/search';
 	import { onDestroy } from 'svelte';
 	import BreadCrumbs from '$lib/components/BreadCrumbs.svelte';
+	import type { Dashboard } from '@prisma/client';
 
 	interface Data {
-		dashboards: {
-			id: string;
-			name: string;
-			description: string;
-			tags: string[];
-			user: {
-				team: string;
-			};
-		}[];
+		dashboards: Dashboard;
 		teams: {
 			team: string;
 		}[];

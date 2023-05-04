@@ -2,26 +2,10 @@
 	import BreadCrumbs from '$lib/components/BreadCrumbs.svelte';
 	import PanelPreviewCard from '$lib/components/PanelPreviewCard.svelte';
 	import PublishButton from '$lib/components/PublishButton.svelte';
-	import type { Dashboard } from '@prisma/client';
-	interface Data {
-		dashboard: Dashboard & {
-			user: {
-				team: string;
-			};
-			panels: {
-				panel: {
-					id: string;
-					name: string;
-					description: string;
-					preview: string;
-					representation: string;
-				};
-			}[];
-		};
-	}
-	export let data: Data;
+	import type { PageData } from './$types';
+	export let data: PageData;
 
-	export let panels = data.dashboard.panels.map((panel) => panel.panel);
+	export const panels = data.dashboard.panels.map((panel) => panel.panel);
 </script>
 
 <svelte:head>
@@ -33,7 +17,7 @@
 
 	<div class="mt-6 flex gap-2">
 		<div class="container max-w-4xl ">
-			<img src="../{data.dashboard.preview}" alt="Dashboard" class="rounded-xl" />
+			<img src="../{data.dashboard.thumbnailPath}" alt="Dashboard" class="rounded-xl" />
 		</div>
 		<div class="flex flex-col gap-2">
 			<div class="stats mx-auto w-full bg-base-300 shadow">

@@ -1,17 +1,16 @@
 import type { PageServerLoad, Actions } from './$types';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, type Panel } from '@prisma/client';
 import { GRAFANA_URL, GRAFANA_API_TOKEN } from '$env/static/private';
-import { fail } from '@sveltejs/kit';
 import fs from 'fs';
 import path from 'path';
 import { panelTemplates } from '$lib/configs/panelTemplates.json';
-import mergeImages from 'merge-images';
+import sharp from 'sharp';
 const prisma = new PrismaClient();
 
-function mapPythonToJSON(panelString) {
+function mapPythonToJSON(panelString: string) {
 	const panelObject = {};
 	const panelLines = panelString.split('\n');
-	panelLines.forEach((line) => {
+	panelLines.forEach((line: string) => {
 		const lineSplit = line.split('=');
 		if (lineSplit.length > 1) {
 			const key = lineSplit[0].trim();
@@ -39,6 +38,18 @@ function mapPythonToJSON(panelString) {
 	return panelTemplate;
 }
 
+function mapJSONToPython(panelObject: any) {
+	let panelString = '';
+	panelString += `${panelObject.type} = {\n`;
+	Object.keys(panelObject).forEach((key) => {
+		if (key !== 'type') {
+			panelString += `\t${key}: ${panelObject[key]},\n`;
+		}
+	});
+	panelString += '}\n';
+	return panelString;
+}
+
 function loadPredefinedPythonPanels() {
 	const panels: any[] = [];
 	const panelsPath = path.join(process.cwd(), 'src', 'lib', 'pythonPanels');
@@ -50,8 +61,9 @@ function loadPredefinedPythonPanels() {
 			const panelEntry = {
 				name: panelObject.title,
 				JSON: panelObject,
+				Python: panelString,
 				thumbnail: `../src/lib/pythonPanels/${file.replace('.py', '')}.png`
-			}
+			};
 			panels.push(panelEntry);
 		}
 	});
@@ -68,11 +80,11 @@ function loadPredefinedJSONPanels() {
 			const panelEntry = {
 				name: panel.title,
 				JSON: panel,
+				Python: mapJSONToPython(panel),
 				thumbnail: `../src/lib/jsonPanels/${file.replace('.json', '')}.png`
-			}
+			};
 
 			panels.push(panelEntry);
-
 		}
 	});
 
@@ -85,30 +97,44 @@ function combinePredefinedPanels() {
 	return [...pythonPanels, ...jsonPanels];
 }
 
-function generateDashboardThumbnail(panelList) {
-	const panelPromises = panelList.map((panel) => {
-		return mergeImages([panel.thumbnail, { x: 0, y: 0 }]);
-	});
-	return Promise.all(panelPromises).then((images) => {
-		return mergeImages(images, {
-			width: 800,
-			height: 600,
-			quality: 1
-		});
-	});
-}
+function generateDashboardThumbnail(panelList, dashboardName) {
+	const locations = {
+		'0': 'northwest',
+		'1': 'northeast',
+		'2': 'southwest',
+		'3': 'southeast'
+	} 
 
+	const onlytofour = panelList.slice(0, 4);
+	const inputs = onlytofour.map((panel, index) => {
+		console.log(panel);
+		return {
+			input: `${path.resolve('app', panel.thumbnailPath)}`,
+			gravity: locations[index]
+		};
+	});
+
+	sharp({
+		create: {
+			width: 1600,
+			height: 800,
+			channels: 4,
+			background: { r: 0, g: 0, b: 0, alpha: 1 },
+		}
+	})
+		.composite(inputs)
+		.png()
+		.toFile(`thumbnails/${dashboardName}.png`, (err, info) => {
+			if (err) {
+				console.log(err);
+			}
+			console.log(info);
+		});
+}
 
 export const load: PageServerLoad = async () => {
 	return {
 		panels: prisma.panel.findMany({
-			select: {
-				id: true,
-				name: true,
-				description: true,
-				preview: true,
-				representation: true
-			},
 			orderBy: {
 				name: 'asc'
 			}
@@ -119,37 +145,85 @@ export const load: PageServerLoad = async () => {
 	};
 };
 
+function generateUuid() {
+	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+		const r = (Math.random() * 16) | 0,
+			v = c === 'x' ? r : (r & 0x3) | 0x8;
+		return v.toString(16);
+	});
+}
+
 export const actions: Actions = {
-	saveDashboard: async ({ request }) => {
-		const { name, published, tags, teamName, panels } = Object.fromEntries(
-			await request.formData()
-		) as unknown as {
-			name: string;
-			published: boolean;
-			tags: string;
+	saveDashboard: async (event) => {
+		const {
+			dashboardName,
+			dashboardDescription,
+			colCount,
+			tags,
+			published,
+			panelForm,
+			thumbnailPath
+		} = Object.fromEntries(await event.request.formData()) as unknown as {
+			dashboardName: string;
+			dashboardDescription: string;
+			colCount: number;
+			tags: string[];
 			teamName: string;
-			panels: any;
+			published: boolean;
+			panelForm: string;
+			thumbnailPath: string;
 		};
-		try {
-			await prisma.dashboard.create({
-				data: {
-					name: name,
-					description: '',
-					published: published,
-					tags: tags,
-					preview: '',
-					representation: {},
-					user: {
-						connect: {
-							team: teamName
+
+		let panelFormJSON = JSON.parse(panelForm);
+		generateDashboardThumbnail(panelFormJSON, dashboardName);
+
+		console.log(panelFormJSON);
+
+		const session = await event.locals.getSession();
+
+		const user = await prisma.user.findUnique({
+			where: {
+				email: session?.user?.email
+			}
+		});
+
+		await prisma.dashboard.create({
+			data: {
+				id: generateUuid(),
+				name: dashboardName,
+				description: dashboardDescription,
+				published: Boolean(published),
+				tags: tags,
+				thumbnailPath: thumbnailPath,
+				grafanaJSON: {},
+				pythonCode: '',
+				columns: Number(colCount),
+				grafanaUrl: '',
+				userId: user.id,
+				panels: {
+					create: panelFormJSON.map((panelElem: Panel) => ({
+						panel: {
+							create: {
+								id: generateUuid(),
+								name: panelElem.name,
+								description: panelElem.description,
+								thumbnailPath: panelElem.thumbnailPath,
+								grafanaJSON: panelElem.grafanaJSON,
+								pythonCode: panelElem.pythonCode,
+								grafanaUrl: panelElem.grafanaUrl,
+								width: panelElem.width
+							}
 						}
-					},
-					panels: panels
+					}))
 				}
-			});
-		} catch (error) {
-			console.log(error);
-			return fail(500, { message: 'Could not create dashboard' });
-		}
+			}
+		});
+		console.log('dashboard saved');
+		return {
+			status: 200,
+			body: {
+				message: 'Dashboard saved'
+			}
+		};
 	}
 };

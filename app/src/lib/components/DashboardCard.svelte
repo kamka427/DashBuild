@@ -14,7 +14,7 @@
 
 <main class="card card-compact h-full w-full bg-base-300 text-base-content">
 	<figure>
-		<img src={dashboard.preview} class="w-max shadow-xl" alt="" />
+		<img src={dashboard.thumbnailPath} class="w-max shadow-xl" alt="" />
 	</figure>
 	<div class="card-body gap-4">
 		<h1 class="card-title">{dashboard.name}</h1>
