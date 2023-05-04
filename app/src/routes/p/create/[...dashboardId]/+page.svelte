@@ -6,8 +6,7 @@
 	import type { Dashboard } from '@prisma/client';
 
 	interface Data {
-		dashboard: Dashboard
-		
+		dashboard: Dashboard;
 	}
 
 	let colCount = 2;

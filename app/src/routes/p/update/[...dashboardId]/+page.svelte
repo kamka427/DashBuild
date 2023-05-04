@@ -8,8 +8,7 @@
 	let colCount = 2;
 
 	export let data: PageData;
-	export const panelList = data.dashboard.panels.map((panel) => panel.panel) 
-
+	export const panelList = data.dashboard.panels.map((panel) => panel.panel);
 </script>
 
 <svelte:head>

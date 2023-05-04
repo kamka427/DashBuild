@@ -16,7 +16,7 @@
 	<BreadCrumbs title={data.dashboard.name} />
 
 	<div class="mt-6 flex gap-2">
-		<div class="container max-w-4xl ">
+		<div class="container max-w-4xl">
 			<img src="../{data.dashboard.thumbnailPath}" alt="Dashboard" class="rounded-xl" />
 		</div>
 		<div class="flex flex-col gap-2">

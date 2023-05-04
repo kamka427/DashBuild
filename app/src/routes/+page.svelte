@@ -35,7 +35,7 @@
 				{/if}
 			</div>
 		</article>
-		<aside class="container carousel w-full ">
+		<aside class="container carousel w-full">
 			{#each data.dashboards as dashboard, index}
 				<div id="slide{index + 1}" class="carousel-item relative w-full">
 					<div class="container card bg-base-300 text-base-content">

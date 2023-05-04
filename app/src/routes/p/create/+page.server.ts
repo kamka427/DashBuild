@@ -1,11 +1,11 @@
 import type { PageServerLoad, Actions } from './$types';
-import { PrismaClient, type Panel } from '@prisma/client';
+import type { Panel } from '@prisma/client';
 import { GRAFANA_URL, GRAFANA_API_TOKEN } from '$env/static/private';
 import fs from 'fs';
 import path from 'path';
 import { panelTemplates } from '$lib/configs/panelTemplates.json';
 import sharp from 'sharp';
-const prisma = new PrismaClient();
+import { prisma } from '$lib/prisma';
 
 function mapPythonToJSON(panelString: string) {
 	const panelObject = {};
@@ -103,7 +103,7 @@ function generateDashboardThumbnail(panelList, dashboardName) {
 		'1': 'northeast',
 		'2': 'southwest',
 		'3': 'southeast'
-	} 
+	};
 
 	const onlytofour = panelList.slice(0, 4);
 	const inputs = onlytofour.map((panel, index) => {
@@ -119,7 +119,7 @@ function generateDashboardThumbnail(panelList, dashboardName) {
 			width: 1600,
 			height: 800,
 			channels: 4,
-			background: { r: 0, g: 0, b: 0, alpha: 1 },
+			background: { r: 0, g: 0, b: 0, alpha: 1 }
 		}
 	})
 		.composite(inputs)
