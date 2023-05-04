@@ -4,7 +4,6 @@ import { GRAFANA_URL, GRAFANA_API_TOKEN } from '$env/static/private';
 import fs from 'fs';
 import path from 'path';
 import { panelTemplates } from '$lib/configs/panelTemplates.json';
-import sharp from 'sharp';
 import { prisma } from '$lib/prisma';
 
 function mapPythonToJSON(panelString: string) {
@@ -95,41 +94,6 @@ function combinePredefinedPanels() {
 	const pythonPanels = loadPredefinedPythonPanels();
 	const jsonPanels = loadPredefinedJSONPanels();
 	return [...pythonPanels, ...jsonPanels];
-}
-
-function generateDashboardThumbnail(panelList, dashboardName) {
-	const locations = {
-		'0': 'northwest',
-		'1': 'northeast',
-		'2': 'southwest',
-		'3': 'southeast'
-	};
-
-	const onlytofour = panelList.slice(0, 4);
-	const inputs = onlytofour.map((panel, index) => {
-		console.log(panel);
-		return {
-			input: `${path.resolve('app', panel.thumbnailPath)}`,
-			gravity: locations[index]
-		};
-	});
-
-	sharp({
-		create: {
-			width: 1600,
-			height: 800,
-			channels: 4,
-			background: { r: 0, g: 0, b: 0, alpha: 1 }
-		}
-	})
-		.composite(inputs)
-		.png()
-		.toFile(`thumbnails/${dashboardName}.png`, (err, info) => {
-			if (err) {
-				console.log(err);
-			}
-			console.log(info);
-		});
 }
 
 export const load: PageServerLoad = async () => {
