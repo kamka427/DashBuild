@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import { availableThemes } from '$lib/configs/themes.json';
 
-	const initials = $page.data.session?.user?.name
+	export const initials = $page.data.session?.user?.name
 		?.split(' ')
 		.map((word) => word[0])
 		.join('');

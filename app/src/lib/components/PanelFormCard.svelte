@@ -4,8 +4,7 @@
 
 	export let panel: Panel;
 
-	type componentState = 'preview' | 'edit';
-	export let state = 'preview' as componentState;
+	export let state: 'preview' | 'edit' = 'preview';
 
 	function getPanelType(panel: Panel) {
 		return panel?.grafanaJSON?.type;

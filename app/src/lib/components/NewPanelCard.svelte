@@ -1,8 +1,8 @@
 <script lang="ts">
-	export let panels: string[];
+	import type { Panel } from "@prisma/client";
 
-	type state = 'selected' | 'unselected';
-	export let state = 'unselected';
+	export let panels: Panel[];
+	export let state: 'selected' | 'unselected' = 'unselected';
 
 	function toggleState() {
 		if (state === 'unselected') {
@@ -12,7 +12,7 @@
 		}
 	}
 
-	export let addAction: any;
+	export let addAction: Function;
 
 	export let selectedPanel: {};
 
