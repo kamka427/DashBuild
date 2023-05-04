@@ -1,7 +1,5 @@
 <script>
 	import { page } from '$app/stores';
-	import { availableThemes } from '$lib/configs/themes.json';
-
 	export const initials = $page.data.session?.user?.name
 		?.split(' ')
 		.map((word) => word[0])
@@ -9,7 +7,7 @@
 </script>
 
 <nav class="bg-base-300 text-base-content">
-	<div class="container navbar mx-auto">
+	<div class="navbar container mx-auto">
 		<div class="navbar-start">
 			<a class="btn-ghost btn text-xl normal-case" href="/">DashBuild</a>
 			{#if $page.data.session}
@@ -24,7 +22,7 @@
 			<div class="menu menu-horizontal items-center gap-6 px-1">
 				<select class="select" data-choose-theme>
 					<option value="">System</option>
-					{#each availableThemes as theme}
+					{#each ['light', 'dark'] as theme}
 						<option value={theme}>{theme.charAt(0).toUpperCase() + theme.slice(1)}</option>
 					{/each}
 				</select>
@@ -36,15 +34,15 @@
 					{#if $page.data.session.user?.image}
 						<div class="avatar">
 							<div class="w-12 rounded-full">
-									<img src={$page.data.session.user.image} alt="The icon of the logged in user." />
+								<img src={$page.data.session.user.image} alt="The icon of the logged in user." />
 							</div>
 						</div>
 					{:else}
 						<div class="placeholder avatar">
-							<div class="w-12 rounded-full bg-neutral-focus text-neutral-content">
-									<span class="text-xl">
-										{initials}
-									</span>
+							<div class="bg-neutral-focus text-neutral-content w-12 rounded-full">
+								<span class="text-xl">
+									{initials}
+								</span>
 							</div>
 						</div>
 					{/if}
