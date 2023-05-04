@@ -53,9 +53,9 @@ async function main() {
 				description: faker.company.bs() + ' ' + faker.company.bs() + ' ' + faker.company.bs(),
 				published: faker.datatype.boolean(),
 				tags: [faker.company.bsBuzz(), faker.company.bsBuzz()],
-				preview: faker.helpers.arrayElement(testDashboardPreviews),
+				thumbnailPath: faker.helpers.arrayElement(testDashboardPreviews),
 				userId: faker.helpers.arrayElement(fakeUsers).id,
-				representation: {},
+				grafanaJSON: {},
 				panels: {
 					create: Array.from({ length: Math.floor(Math.random() * 6) + 1 }).map(() => ({
 						panel: {
@@ -64,8 +64,8 @@ async function main() {
 								name: faker.company.bs(),
 								description:
 									faker.company.bs() + ' ' + faker.company.bsBuzz() + ' ' + faker.company.bsBuzz(),
-								preview: faker.helpers.arrayElement(testPanelPreviews),
-								representation: {}
+								thumbnailPath: faker.helpers.arrayElement(testPanelPreviews),
+								grafanaJSON: {}
 							}
 						}
 					}))
