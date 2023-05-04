@@ -54,7 +54,7 @@ model User {
   sessions      Session[]
   team          String?
   dashboards    Dashboard[]
-  isAdmin       Boolean     @default(false)
+  role          String      @default("user")
 }
 
 model VerificationToken {
