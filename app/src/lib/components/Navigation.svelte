@@ -31,24 +31,20 @@
 				{#if $page.data.session}
 					<span>
 						<p class="text-sm">Signed in as</p>
-						<a href="/p/profile" class="link-hover link">{$page.data.session.user?.name}</a>
+						<p>{$page.data.session.user?.name}</p>
 					</span>
 					{#if $page.data.session.user?.image}
 						<div class="avatar">
 							<div class="w-12 rounded-full">
-								<a href="/p/profile">
 									<img src={$page.data.session.user.image} alt="The icon of the logged in user." />
-								</a>
 							</div>
 						</div>
 					{:else}
 						<div class="placeholder avatar">
 							<div class="w-12 rounded-full bg-neutral-focus text-neutral-content">
-								<a href="/p/profile">
 									<span class="text-xl">
 										{initials}
 									</span>
-								</a>
 							</div>
 						</div>
 					{/if}
