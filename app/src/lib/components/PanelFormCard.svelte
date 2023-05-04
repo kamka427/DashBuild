@@ -2,9 +2,7 @@
 	import { enabledPanelFields } from '$lib/configs/enabledPanelFields.json';
 	import type { Panel } from '@prisma/client';
 
-
-
-	export let panel: Panel
+	export let panel: Panel;
 
 	type componentState = 'preview' | 'edit';
 	export let state = 'preview' as componentState;
@@ -66,7 +64,7 @@
 	{#if isDropTarget === true && dragOn == true}
 		<svg
 			id={panel.id}
-			class="border-base-300 h-[35em] w-full border 
+			class="h-[35em] w-full border border-base-300
 		"
 		>
 			<text
@@ -84,16 +82,20 @@
 		<div
 			draggable="true"
 			id={panel.id}
-			class="card-compact card bg-base-300 text-base-content  h-full w-full"
+			class="card-compact card h-full w-full bg-base-300 text-base-content"
 		>
 			<figure>
-				<img src="../{panel?.thumbnailPath}" class="rounded-md shadow-xl" alt="Dashboard thumbnail" />
+				<img
+					src="../{panel?.thumbnailPath}"
+					class="rounded-md shadow-xl"
+					alt="Dashboard thumbnail"
+				/>
 			</figure>
 			{#if state === 'preview' || state === 'edit'}
 				<div id={panel.id} class="card-body gap-4">
 					<input
 						bind:value={panel.name}
-						class="card-title input"
+						class="input card-title"
 						type="text"
 						placeholder="Panel title"
 					/>
@@ -110,7 +112,7 @@
 							{#each props as prop}
 								<label class="input-group">
 									<span class="bg-accent text-accent-content">{prop}</span>
-									<select class="select select-bordered">
+									<select class="select-bordered select">
 										{#each enabledPanelFields[type][prop] as option}
 											<option value={option}>{option}</option>
 										{/each}
@@ -120,7 +122,7 @@
 						</div>
 					{/if}
 					<div
-						class="card-actions flex 
+						class="card-actions flex
 			justify-end"
 					>
 						<div class="btn-group">

@@ -21,13 +21,13 @@
 	}
 </script>
 
-<div class="card-compact card bg-base-300 text-base-content w-full">
+<div class="card-compact card w-full bg-base-300 text-base-content">
 	{#if state === 'unselected'}
-		<figure class="bg-base-200 flex h-full w-full items-center justify-center">
+		<figure class="flex h-full w-full items-center justify-center bg-base-200">
 			<button on:click={toggleState}>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
-					class="text-base-content h-64 w-64"
+					class="h-64 w-64 text-base-content"
 					fill="none"
 					viewBox="0 0 24 24"
 					stroke="currentColor"
@@ -50,7 +50,7 @@
 	{#if state === 'selected'}
 		<div class="card-body">
 			<h2 class="card-title">Select the new panel</h2>
-			<ul class="menu bg-base-100 rounded-md">
+			<ul class="menu rounded-md bg-base-100">
 				{#each panels as panel}
 					<li>
 						<button
@@ -59,7 +59,7 @@
 								addAction(panel);
 								toggleState();
 							}}
-							class="btn btn-ghost rounded-md"
+							class="btn-ghost btn rounded-md"
 						>
 							<img class="h-8" src={panel.thumbnail} alt="" />
 							{panel.name}
@@ -67,7 +67,7 @@
 					</li>
 				{/each}
 				<li>
-					<button class="btn btn-secondary rounded-md" on:click={toggleState}>Discard</button>
+					<button class="btn-secondary btn rounded-md" on:click={toggleState}>Discard</button>
 				</li>
 			</ul>
 		</div>

@@ -1,5 +1,5 @@
 {
-    "enabledPanelFields": {
+	"enabledPanelFields": {
 		"timeseries": {
 			"centeredZero": [true, false],
 			"lineStyle": ["solid", "dashed", "dotted"]
