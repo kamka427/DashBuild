@@ -10,7 +10,7 @@ import {
 	AZURE_TENANT_ID
 } from '$env/static/private';
 import type { Provider } from '@auth/core/providers';
-import type { Profile } from '@auth/core/types';
+import type { AuthConfig, Profile } from '@auth/core/types';
 import { PrismaClient } from '@prisma/client';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { redirect, type Handle } from '@sveltejs/kit';
@@ -18,7 +18,7 @@ import { sequence } from '@sveltejs/kit/hooks';
 
 const prisma = new PrismaClient();
 
-async function authorization({ event, resolve }): Promise<Handle> {
+async function authorization({ event, resolve }): Promise<Response> {
 	if (event.url.pathname.startsWith('/p')) {
 		const session = await event.locals.getSession();
 		if (!session) {
@@ -34,7 +34,7 @@ async function authorization({ event, resolve }): Promise<Handle> {
 
 export const handle = sequence(
 	SvelteKitAuth({
-		adapter: PrismaAdapter(prisma),
+		adapter: PrismaAdapter(prisma) as AuthConfig['adapter'],
 		providers: [
 			CredentialsProvider({
 				name: 'Email for testing',
@@ -44,7 +44,7 @@ export const handle = sequence(
 				async authorize(credentials) {
 					const user = await prisma.user.findUnique({
 						where: {
-							email: credentials.email
+							email: credentials.email as string
 						}
 					});
 					if (user) {
