@@ -5,17 +5,9 @@
 	import { onDestroy } from 'svelte';
 	import BreadCrumbs from '$lib/components/BreadCrumbs.svelte';
 	import type { Dashboard } from '@prisma/client';
+	import type { PageData } from './$types';
 
-	interface Data {
-		dashboards: Dashboard;
-		teams: {
-			team: string;
-		}[];
-		tags: {
-			tags: string[];
-		}[];
-	}
-	export let data: Data;
+	export let data: PageData;
 
 	const searchStore = createSearchStore(data.dashboards);
 

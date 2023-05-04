@@ -4,15 +4,9 @@
 	import BreadCrumbs from '$lib/components/BreadCrumbs.svelte';
 	import NewPanelCard from '$lib/components/NewPanelCard.svelte';
 	import type { Dashboard, Panel } from '@prisma/client';
+	import type { PageData } from './$types';
 
-	interface Data {
-		dashboard: Dashboard;
-		GRAFANA_URL: string;
-		GRAFANA_API_TOKEN: string;
-		predefinedPanels: string[];
-	}
-
-	export let data: Data;
+	export let data: PageData;
 
 	export const GRAFANA_URL = data.GRAFANA_URL;
 	export const GRAFANA_API_TOKEN = data.GRAFANA_API_TOKEN;
@@ -134,7 +128,7 @@
 		/>
 	</div>
 
-	<form action="?/saveDashboard" method="POST" use:enhance class="">
+	<form action="?/saveDashboard" method="POST" class="">
 		<input type="hidden" value={dashboardName} name="dashboardName" />
 		<input type="hidden" value="test desc" name="dashboardDescription" />
 		<input type="hidden" value={colCount} name="colCount" />

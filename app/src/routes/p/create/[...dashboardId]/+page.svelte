@@ -3,15 +3,11 @@
 	import PanelPreviewCard from '$lib/components/PanelPreviewCard.svelte';
 	import BreadCrumbs from '$lib/components/BreadCrumbs.svelte';
 	import NewPanelCard from '$lib/components/NewPanelCard.svelte';
-	import type { Dashboard } from '@prisma/client';
-
-	interface Data {
-		dashboard: Dashboard;
-	}
+	import type { PageData } from './$types';
 
 	let colCount = 2;
 
-	export let data: Data;
+	export let data: PageData;
 
 	let panelList = data.dashboard.panels.map((panel) => panel.panel);
 

@@ -3,7 +3,7 @@ import { prisma } from '$lib/prisma';
 
 export const load: PageServerLoad = async ({ url }) => {
 	return {
-		dashboard: prisma.dashboard.findUnique({
+		dashboard: prisma.dashboard.findUniqueOrThrow({
 			where: {
 				id: url.pathname.split('/')[3]
 			},
