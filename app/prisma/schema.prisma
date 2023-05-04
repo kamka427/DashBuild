@@ -11,6 +11,10 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+generator dbml {
+  provider = "prisma-dbml-generator"
+}
+
 model Account {
   id                       String  @id @default(cuid())
   userId                   String
@@ -62,32 +66,32 @@ model VerificationToken {
 }
 
 model Dashboard {
-  id             String               @id @default(cuid())
-  name           String
-  description    String?
-  published      Boolean
-  version        Int                  @default(1)
-  preview        String?
-  representation Json
-  pythonCode     String?
-  grafanaUrl     String?
-  columns        Int                  @default(2)
-  tags           String[]
-  user           User                 @relation(fields: [userId], references: [id])
-  userId         String
-  panels         PanelsOnDashboards[]
+  id            String               @id @default(cuid())
+  name          String
+  description   String?
+  published     Boolean
+  version       Int                  @default(1)
+  thumbnailPath String?
+  grafanaJSON   Json?
+  pythonCode    String?
+  grafanaUrl    String?
+  columns       Int                  @default(2)
+  tags          String[]
+  user          User                 @relation(fields: [userId], references: [id])
+  userId        String
+  panels        PanelsOnDashboards[]
 }
 
 model Panel {
-  id             String               @id @default(cuid())
-  name           String
-  description    String?
-  preview        String?
-  representation Json
-  grafanaUrl     String?
-  width          Int                  @default(1)
-  positionNumber Int                  @default(1)
-  dashboards     PanelsOnDashboards[]
+  id            String               @id @default(cuid())
+  name          String
+  description   String?
+  thumbnailPath String?
+  grafanaJSON   Json?
+  pythonCode    String?
+  grafanaUrl    String?
+  width         Int                  @default(1)
+  dashboards    PanelsOnDashboards[]
 }
 
 model PanelsOnDashboards {
