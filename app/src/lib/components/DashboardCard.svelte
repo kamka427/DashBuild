@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { Dashboard } from '@prisma/client';
-	import Published from './PublishButton.svelte';
 	import { page } from '$app/stores';
 	const currentPage = $page.url.pathname.split('/')[2];
 	export let dashboard: Dashboard & { user: { team: string } };
@@ -12,7 +11,7 @@
 		: 'No description provided';
 </script>
 
-<main class="card card-compact h-full w-full bg-base-300 text-base-content">
+<main class="card card-compact bg-base-300 text-base-content h-full w-full">
 	<figure>
 		<img src={dashboard.thumbnailPath} class="w-max shadow-xl" alt="" />
 	</figure>
@@ -36,7 +35,10 @@
 				<div class="stat-value text-sm">{dashboard.tags.join(', ')}</div>
 			</div>
 			{#if currentPage === 'dashboards'}
-				<Published published={dashboard.published} dashboardId={dashboard.id} />
+				<div class="stat flex flex-row">
+					<div class="stat-title text-sm">Published</div>
+					<div class="stat-value text-sm">{dashboard.published}</div>
+				</div>
 			{/if}
 		</div>
 		<div class="card-actions justify-end">
@@ -45,13 +47,6 @@
 					<a href="/p/create/{dashboard.id}" class="btn-secondary btn">Copy</a>
 				{/if}
 				{#if currentPage === 'dashboards'}
-					<form
-						action="?/deleteDashboard&dashboardId={dashboard.id}"
-						method="POST"
-						class="btn-error btn"
-					>
-						<button type="submit"> DELETE </button>
-					</form>
 					<a href="/p/update/{dashboard.id}" class="btn-secondary btn">Modify</a>
 				{/if}
 				<a href="/p/view/{dashboard.id}" class="btn-primary btn">View</a>

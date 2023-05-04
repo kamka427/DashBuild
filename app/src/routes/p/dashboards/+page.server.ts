@@ -26,33 +26,27 @@ export const load: PageServerLoad = async () => {
 };
 
 export const actions: Actions = {
-	publishDashboard: async ({ url }) => {
-		const dashboardId = url.searchParams.get('dashboardId') as string;
-		const publishState = url.searchParams.get('publishState') as string;
-		try {
-			await prisma.dashboard.update({
-				where: {
-					id: dashboardId
-				},
-				data: {
-					published: publishState === 'true' ? true : false
-				}
-			});
-		} catch (error) {
-			console.log(error);
-			return fail(500, { message: 'Could not publish dashboard' });
-		}
-	},
-	deleteDashboard: async ({ url }) => {
-		const dashboardId = url.searchParams.get('dashboardId') as string;
+	deleteDashboard: async (event) => {
+		const { dashboardId } = (await Object.fromEntries(
+			await event.request.formData()
+		)) as unknown as {
+			dashboardId: string;
+		};
+
 		try {
 			await prisma.dashboard.delete({
 				where: {
 					id: dashboardId
 				}
 			});
+
+			return {
+				status: 200,
+				body: {
+					message: 'Dashboard deleted'
+				}
+			};
 		} catch (error) {
-			console.log(error);
 			return fail(500, { message: 'Could not delete dashboard' });
 		}
 	}
