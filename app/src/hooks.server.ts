@@ -2,7 +2,7 @@ import { SvelteKitAuth } from '@auth/sveltekit';
 import Email from '@auth/core/providers/email';
 import Azure from '@auth/core/providers/azure-ad';
 import CredentialsProvider from '@auth/core/providers/credentials';
-import { AZURE_ID, AZURE_SECRET, AZURE_TENANT_ID } from '$env/static/private';
+import { AZURE_ID, AZURE_SECRET, AZURE_TENANT_ID, AUTH_SECRET } from '$env/static/private';
 import type { AuthConfig, Profile } from '@auth/core/types';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { redirect, type Handle } from '@sveltejs/kit';
@@ -28,6 +28,7 @@ export const handle = sequence(
 	SvelteKitAuth({
 		adapter: PrismaAdapter(prisma) as AuthConfig['adapter'],
 		providers: [
+			// @ts-ignore
 			Email({
 				server: {
 					host: process.env.SMTP_HOST,
@@ -38,7 +39,7 @@ export const handle = sequence(
 					}
 				},
 				from: process.env.EMAIL_FROM
-			}),
+			}) as any,
 			Azure({
 				clientId: AZURE_ID,
 				clientSecret: AZURE_SECRET,
@@ -46,6 +47,8 @@ export const handle = sequence(
 				authorization: { params: { scope: 'openid profile user.Read email' } }
 			}) as any
 		],
+		secret: AUTH_SECRET,
+		trustHostHeader: true,
 		session: {
 			strategy: 'jwt',
 			maxAge: 60 * 60 * 24 * 30, // 30 days
