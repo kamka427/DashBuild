@@ -48,8 +48,6 @@
 								on:submit={(e) => {
 									if (!confirm('Are you sure you want to delete this dashboard?'))
 										e.preventDefault();
-									else
-										console.log(data.dashboard.id)
 								}}
 							>
 								<input

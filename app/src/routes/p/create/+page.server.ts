@@ -6,6 +6,7 @@ import { prisma } from '$lib/prisma';
 import sharp from 'sharp';
 import dashboardTemplate from '$lib/configs/dashboardTemplate.json';
 import { fail } from '@sveltejs/kit';
+import fs from 'fs';
 
 async function fetchPanels() {
 	const resp = await fetch('http://127.0.0.1:8000');
@@ -29,7 +30,6 @@ async function fetchPanels() {
 		});
 	});
 
-	console.log(process.cwd());
 	return panels;
 }
 
@@ -54,9 +54,8 @@ function generateDashboardThumbnail(panelList, dashboardName) {
 		'3': 'southeast'
 	};
 
-	const onlytofour = panelList.slice(0, 4);
-	const inputs = onlytofour.map((panel, index) => {
-		console.log(panel);
+	const firstFourPanels = panelList.slice(0, 4);
+	const inputs = firstFourPanels.map((panel, index) => {
 		return {
 			input: `${path.resolve('app', panel.thumbnailPath)}`,
 			gravity: locations[index]
@@ -131,6 +130,26 @@ async function callGrafanaApi(grafanaJSON: string) {
 	console.log(resp);
 	return resp;
 }
+import { promisify } from 'util';
+const writeFilePromise = promisify(fs.writeFile);
+
+async function updatePanelThumbnailsWithApi(uuidAndSlug: string, panelId: string) {
+	const response = await fetch(
+		`${GRAFANA_URL}/render/d-solo/${uuidAndSlug}?orgId=1&from=1683393012358&to=1683414612358&panelId=${panelId}&width=500&height=250&tz=Europe%2FBudapest`,
+		{
+			headers: {
+				Authorization: GRAFANA_API_TOKEN
+			}
+		}
+	);
+
+	const buffer = await response.arrayBuffer();
+
+	const resp = await sharp(buffer).jpeg().toBuffer();
+	await writeFilePromise(`${path.resolve('app', '../src/lib/thumbnails')}/${panelId}.png`, buff);
+
+	return response;
+}
 
 export const actions: Actions = {
 	saveDashboard: async (event) => {
@@ -168,8 +187,11 @@ export const actions: Actions = {
 		const tagsList = tags.split(',').map((tag) => tag.trim());
 		const grafanaObject = await createGrafanaPayload(panelFormJSON, dashboardName, tagsList);
 		const resp = await callGrafanaApi(JSON.stringify(grafanaObject));
-
 		if (resp.status === 'success') {
+			const uidAndSlug = resp.uid + '/' + resp.slug;
+
+			updatePanelThumbnailsWithApi(uidAndSlug, 1);
+
 			await prisma.dashboard.create({
 				data: {
 					id: resp.uid,

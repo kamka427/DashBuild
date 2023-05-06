@@ -55,7 +55,6 @@
 		];
 	}
 
-	console.log(panelForm);
 
 	function removePanel(panelId: string) {
 		panelForm = panelForm.filter((panel) => panel.id !== panelId);
@@ -80,7 +79,6 @@
 		panelForm[currentPanelIndex] = temp;
 	}
 
-	$: console.log(panelForm);
 </script>
 
 <svelte:head>

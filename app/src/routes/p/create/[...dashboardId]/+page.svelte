@@ -11,7 +11,6 @@
 
 	let panelList = data.dashboard.panels.map((panel) => panel.panel);
 
-	console.log(panelList);
 </script>
 
 <svelte:head>
