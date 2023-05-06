@@ -147,6 +147,27 @@ function generateDashboardThumbnail(panelList, dashboardName) {
 		});
 }
 
+function calculateGridPos(panel: Panel, colCount: number) {
+	let gridPos = {
+		h: 9,
+		w: 24 / colCount,
+		x: 0,
+		y: 0
+	};
+
+	let panelIndex = parseInt(panel.id);
+
+	let row = Math.floor(panelIndex / colCount);
+	let col = panelIndex % colCount;
+
+	gridPos.x = col * gridPos.w;
+	gridPos.y = row * gridPos.h;
+
+	panel.grafanaJSON.gridPos = gridPos;
+
+	return gridPos;
+}
+
 async function createGrafanaPayload(panelForm: Panel[], dashboardName: string, tags: string[]) {
 	let grafanaObject = {
 		dashboard: {
@@ -175,16 +196,6 @@ async function callGrafanaApi(grafanaJSON: string) {
 	return resp;
 }
 
-function calculatePanelPosInGrafana(panel: Panel, panelList: Panel[]) {
-	const panelIndex = panelList.indexOf(panel);
-	const row = Math.floor(panelIndex / 2);
-	const col = panelIndex % 2;
-	return {
-		row: row,
-		col: col
-	};
-}
-
 export const actions: Actions = {
 	saveDashboard: async (event) => {
 		const { dashboardName, dashboardDescription, colCount, tags, published, panelForm } =
@@ -200,6 +211,15 @@ export const actions: Actions = {
 
 		let panelFormJSON = JSON.parse(panelForm);
 		generateDashboardThumbnail(panelFormJSON, dashboardName);
+		panelFormJSON = panelFormJSON.map((panel) => {
+			return {
+				...panel,
+				grafanaJSON: {
+					...panel.grafanaJSON,
+					gridPos: calculateGridPos(panel, Number(colCount))
+				}
+			};
+		});
 
 		const session = await event.locals.getSession();
 
@@ -238,7 +258,7 @@ export const actions: Actions = {
 									thumbnailPath: panelElem.thumbnailPath,
 									grafanaJSON: panelElem.grafanaJSON,
 									pythonCode: panelElem.pythonCode,
-									grafanaUrl: panelElem.grafanaUrl,
+									grafanaUrl: `${resp.url}?orgId=1&viewPanel=${panelElem.id}`,
 									width: panelElem.width
 								}
 							}

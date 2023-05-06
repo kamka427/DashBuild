@@ -23,6 +23,7 @@
 		JSON: {
 			description: string;
 		};
+		Python: string;
 		thumbnail: string;
 	};
 
@@ -37,11 +38,14 @@
 		panelForm = [
 			...panelForm,
 			{
-				id: panelForm.length.toString(),
+				id: (panelForm.length + 1).toString(),
 				name: `${panel.name}`,
 				description: panel.JSON.description || 'No description provided',
 				thumbnailPath: panel.thumbnail,
-				grafanaJSON: panel.JSON,
+				grafanaJSON: {
+					...panel.JSON,
+					id: panelForm.length + 1
+				},
 				pythonCode: panel.Python,
 				grafanaUrl: '',
 				width: 1
@@ -71,6 +75,8 @@
 		panelForm[draggedPanelIndex] = panelForm[currentPanelIndex];
 		panelForm[currentPanelIndex] = temp;
 	}
+
+	$: console.log(panelForm);
 </script>
 
 <svelte:head>
@@ -85,7 +91,7 @@
 		{#each panelForm as panel}
 			<PanelFormCard
 				bind:dragOn
-				{panel}
+				bind:panel
 				{colCount}
 				removeAction={() => removePanel(panel.id)}
 				dragEvent={(e) => {
@@ -112,7 +118,13 @@
 		<input type="hidden" value={published} name="published" />
 		<input type="hidden" value={JSON.stringify(panelForm)} name="panelForm" />
 		<div class="btn-group">
-			<button class="btn-secondary btn" type="reset">Reset</button>
+			<button
+				class="btn-secondary btn"
+				type="reset"
+				on:click={() => {
+					panelForm = [];
+				}}>Reset</button
+			>
 			<button type="submit" class="btn-primary btn">Save Dashboard</button>
 		</div>
 	</form>
