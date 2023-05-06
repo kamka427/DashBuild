@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Panel } from "@prisma/client";
+	import type { Panel } from '@prisma/client';
 
 	export let panels: Panel[];
 	export let state: 'selected' | 'unselected' = 'unselected';
@@ -21,13 +21,13 @@
 	}
 </script>
 
-<div class="card-compact card w-full bg-base-300 text-base-content">
+<div class="card-compact card bg-base-300 text-base-content w-full">
 	{#if state === 'unselected'}
-		<figure class="flex h-full w-full items-center justify-center bg-base-200">
+		<figure class="bg-base-200 flex h-full w-full items-center justify-center">
 			<button on:click={toggleState}>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
-					class="h-64 w-64 text-base-content"
+					class="text-base-content h-64 w-64"
 					fill="none"
 					viewBox="0 0 24 24"
 					stroke="currentColor"
@@ -50,7 +50,7 @@
 	{#if state === 'selected'}
 		<div class="card-body">
 			<h2 class="card-title">Select the new panel</h2>
-			<ul class="menu rounded-md bg-base-100">
+			<ul class="menu bg-base-100 rounded-md">
 				{#each panels as panel}
 					<li>
 						<button
@@ -61,8 +61,8 @@
 							}}
 							class="btn-ghost btn rounded-md"
 						>
-							<img class="h-8" src={panel.thumbnail} alt="" />
-							{panel.name}
+							<img class="h-8" src={panel.thumbnailPath} alt="" />
+							{panel.title}
 						</button>
 					</li>
 				{/each}

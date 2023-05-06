@@ -3,100 +3,33 @@ import type { Panel } from '@prisma/client';
 import { GRAFANA_URL, GRAFANA_API_TOKEN } from '$env/static/private';
 import fs from 'fs';
 import path from 'path';
-import { panelTemplates } from '$lib/configs/panelTemplates.json';
 import { prisma } from '$lib/prisma';
 import sharp from 'sharp';
 import dashboardTemplate from '$lib/configs/dashboardTemplate.json';
 import { fail } from '@sveltejs/kit';
 
-function mapPythonToJSON(panelString: string) {
-	const panelObject = {};
-	const panelLines = panelString.split('\n');
-	panelLines.forEach((line: string) => {
-		const lineSplit = line.split('=');
-		if (lineSplit.length > 1) {
-			const key = lineSplit[0].trim();
-			const value = lineSplit[1].trim().replace(/[,()]/g, '');
-			panelObject[key] = value;
-		}
-	});
-	const firstKey = Object.keys(panelObject)[0];
-	panelObject['type'] = panelObject[firstKey].toLowerCase();
-	delete panelObject[firstKey];
+async function fetchPanels() {
+	const resp = await fetch('http://127.0.0.1:8000');
 
-	const panelTemplate = panelTemplates[panelObject['type']];
-	Object.keys(panelObject).forEach((key) => {
-		if (panelTemplate[key]) {
-			panelTemplate[key] = panelObject[key].replace(/['"]+/g, '');
-		} else if (panelTemplate['fieldConfig']['defaults']['custom'][key]) {
-			//add loop nester
-			panelTemplate['fieldConfig']['defaults']['custom'][key] = panelObject[key].replace(
-				/['"]+/g,
-				''
-			);
-		}
-	});
+	const data = await resp.json();
 
-	return panelTemplate;
-}
+	type responsePanel = {
+		title: string;
+		JSON: any;
+		thumbnailPath: string;
+	};
 
-function mapJSONToPython(panelObject: any) {
-	let panelString = '';
-	panelString += `${panelObject.type} = {\n`;
-	Object.keys(panelObject).forEach((key) => {
-		if (key !== 'type') {
-			panelString += `\t${key}: ${panelObject[key]},\n`;
-		}
-	});
-	panelString += '}\n';
-	return panelString;
-}
+	const panels: responsePanel[] = [];
 
-function loadPredefinedPythonPanels() {
-	const panels: any[] = [];
-	const panelsPath = path.join(process.cwd(), 'src', 'lib', 'pythonPanels');
-	fs.readdirSync(panelsPath).forEach((file) => {
-		if (file.endsWith('.py')) {
-			const panelString = fs.readFileSync(path.join(panelsPath, file), 'utf8');
-			const panelObject = mapPythonToJSON(panelString);
-
-			const panelEntry = {
-				name: panelObject.title,
-				JSON: panelObject,
-				Python: panelString,
-				thumbnail: `../src/lib/pythonPanels/${file.replace('.py', '')}.png`
-			};
-			panels.push(panelEntry);
-		}
+	data.map((panel: responsePanel) => {
+		panels.push({
+			title: panel.title,
+			JSON: panel,
+			thumbnailPath: `../src/lib/placeholders/dash1.png`
+		});
 	});
 
 	return panels;
-}
-function loadPredefinedJSONPanels() {
-	const panels: any[] = [];
-	const panelsPath = path.join(process.cwd(), 'src', 'lib', 'jsonPanels');
-	fs.readdirSync(panelsPath).forEach((file) => {
-		if (file.endsWith('.json')) {
-			const panel = JSON.parse(fs.readFileSync(path.join(panelsPath, file), 'utf8'));
-
-			const panelEntry = {
-				name: panel.title,
-				JSON: panel,
-				Python: mapJSONToPython(panel),
-				thumbnail: `../src/lib/jsonPanels/${file.replace('.json', '')}.png`
-			};
-
-			panels.push(panelEntry);
-		}
-	});
-
-	return panels;
-}
-
-function combinePredefinedPanels() {
-	const pythonPanels = loadPredefinedPythonPanels();
-	const jsonPanels = loadPredefinedJSONPanels();
-	return [...pythonPanels, ...jsonPanels];
 }
 
 export const load: PageServerLoad = async () => {
@@ -108,7 +41,7 @@ export const load: PageServerLoad = async () => {
 		}),
 		GRAFANA_URL: GRAFANA_URL,
 		GRAFANA_API_TOKEN: GRAFANA_API_TOKEN,
-		predefinedPanels: combinePredefinedPanels()
+		predefinedPanels: fetchPanels()
 	};
 };
 

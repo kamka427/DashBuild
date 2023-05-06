@@ -1,35 +1,45 @@
 import os
 import importlib
 import inspect
+import json
 from fastapi import FastAPI
+
+PANEL_PATH = os.getcwd()
+print(PANEL_PATH)
 
 app = FastAPI()
 
 # read fields of the object also
-def parse_objects():
-    objects = []
-    for file in os.listdir(os.getcwd()):
+def parse_grafanalib_panels():
+    panels = []
+    for file in os.listdir(PANEL_PATH):
         if file.endswith(".py"):
             module_name = file[:-3]
             module = importlib.import_module(module_name)
             for name, obj in inspect.getmembers(module):
-                print(name)
                 if 'Panel' in name:
-                    objects.append(obj)
-    return objects
+                    if hasattr(obj, 'to_json_data'):
+                        panels.append(obj.to_json_data())
+    return panels
 
-def get_json_data(objects):
+
+
+def parse_json_panels():
     json_data = []
-    for obj in objects:
-        if hasattr(obj, 'to_json_data'):
-            json_data.append(obj.to_json_data())
-
+    for file in os.listdir(PANEL_PATH):
+        if file.endswith(".json"):
+            with open(file) as json_file:
+                data = json.load(json_file)
+                json_data.append(data)
     return json_data
-
-
 
 @app.get("/")
 async def root():
-    objects = parse_objects()
-    json_data = get_json_data(objects)
-    return json_data
+    resp = []
+    json_panels = parse_json_panels()
+    grafanalib_panels = parse_grafanalib_panels()
+
+    resp.extend(json_panels)
+    resp.extend(grafanalib_panels)
+
+    return resp

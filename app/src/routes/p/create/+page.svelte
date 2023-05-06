@@ -19,35 +19,37 @@
 
 	export let panelForm: Panel[] = [];
 	export let selectedPanel = {} as {
-		name: string;
+		title: string;
 		JSON: {
 			description: string;
 		};
-		Python: string;
-		thumbnail: string;
+		thumbnailPath: string;
 	};
 
+
+	console.log(data)
+
 	function addPanel(panel: {
-		name: string;
+		title: string;
 		JSON: {
 			description: string;
 		};
 		Python: string;
-		thumbnail: string;
+		thumbnailPath: string;
 	}) {
 		panelForm = [
 			...panelForm,
 			{
 				id: (panelForm.length + 1).toString(),
-				name: `${panel.name}`,
+				name: `${panel.title}`,
 				description: panel.JSON.description || 'No description provided',
-				thumbnailPath: panel.thumbnail,
+				thumbnailPath: panel.thumbnailPath,
 				grafanaJSON: {
 					...panel.JSON,
 					id: panelForm.length + 1
 				},
 				pythonCode: panel.Python,
-				grafanaUrl: '',
+				grafanaUrl: null,
 				width: 1
 			}
 		];
