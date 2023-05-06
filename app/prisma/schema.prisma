@@ -71,9 +71,8 @@ model Dashboard {
   description   String?
   published     Boolean
   version       Int                  @default(1)
-  thumbnailPath String?
+  thumbnailPath String
   grafanaJSON   Json?
-  pythonCode    String?
   grafanaUrl    String?
   columns       Int                  @default(2)
   tags          String[]
@@ -88,7 +87,6 @@ model Panel {
   description   String?
   thumbnailPath String?
   grafanaJSON   Json?
-  pythonCode    String?
   grafanaUrl    String?
   width         Int                  @default(1)
   dashboards    PanelsOnDashboards[]
