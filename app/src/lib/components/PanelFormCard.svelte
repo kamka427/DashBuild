@@ -23,6 +23,10 @@
 	export let isDropTarget = false;
 	export let isDragged = false;
 	export let dragOn: boolean;
+
+	function updateJSON(key, value) {
+		panel.grafanaJSON[key] = value;
+	}
 </script>
 
 <div
@@ -63,7 +67,7 @@
 	{#if isDropTarget === true && dragOn == true}
 		<svg
 			id={panel.id}
-			class="h-[35em] w-full border border-base-300
+			class="border-base-300 h-[35em] w-full border
 		"
 		>
 			<text
@@ -81,7 +85,7 @@
 		<div
 			draggable="true"
 			id={panel.id}
-			class="card-compact card h-full w-full bg-base-300 text-base-content"
+			class="card-compact card bg-base-300 text-base-content h-full w-full"
 		>
 			<figure>
 				<img
@@ -97,6 +101,9 @@
 						class="input card-title"
 						type="text"
 						placeholder="Panel title"
+						on:input={() => {
+							updateJSON('title', panel.name);
+						}}
 					/>
 					<input
 						bind:value={panel.description}
@@ -113,7 +120,12 @@
 									<span class="bg-accent text-accent-content">{prop}</span>
 									<select class="select-bordered select">
 										{#each enabledPanelFields[type][prop] as option}
-											<option value={option}>{option}</option>
+											<option
+												value={option}
+												on:input={() => {
+													updateJSON(prop, option);
+												}}>{option}</option
+											>
 										{/each}
 									</select>
 								</label>
