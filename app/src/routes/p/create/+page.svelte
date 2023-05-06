@@ -3,7 +3,7 @@
 	import PanelFormCard from '$lib/components/PanelFormCard.svelte';
 	import BreadCrumbs from '$lib/components/BreadCrumbs.svelte';
 	import NewPanelCard from '$lib/components/NewPanelCard.svelte';
-	import type { Dashboard, Panel } from '@prisma/client';
+	import type { Panel } from '@prisma/client';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -49,9 +49,6 @@
 		];
 	}
 
-	$: console.log(panelForm);
-	$: console.log(colCount);
-
 	function removePanel(panelId: string) {
 		panelForm = panelForm.filter((panel) => panel.id !== panelId);
 	}
@@ -74,28 +71,6 @@
 		panelForm[draggedPanelIndex] = panelForm[currentPanelIndex];
 		panelForm[currentPanelIndex] = temp;
 	}
-
-	// async function callGrafanaApi() {
-	// 	let grafanaPayload = {
-	// 		dashboard: {
-	// 			...dashboardTemplate,
-	// 			title: dashboardName,
-	// 			panels: panelForm.map((panel) => panel.grafanaJSON)
-	// 		}
-	// 	};
-
-	// 	const response = await fetch(`${GRAFANA_URL}/api/dashboards/db`, {
-	// 		method: 'POST',
-	// 		headers: {
-	// 			'Content-Type': 'application/json',
-	// 			Authorization: GRAFANA_API_TOKEN
-	// 		},
-	// 		body: JSON.stringify(grafanaPayload)
-	// 	});
-
-	// 	const data = await response.json();
-	// 	console.log(data);
-	// }
 </script>
 
 <svelte:head>

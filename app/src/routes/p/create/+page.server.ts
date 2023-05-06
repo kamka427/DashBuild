@@ -1,10 +1,12 @@
 import type { PageServerLoad, Actions } from './$types';
-import type { Panel } from '@prisma/client';
+import type { Dashboard, Panel } from '@prisma/client';
 import { GRAFANA_URL, GRAFANA_API_TOKEN } from '$env/static/private';
 import fs from 'fs';
 import path from 'path';
 import { panelTemplates } from '$lib/configs/panelTemplates.json';
 import { prisma } from '$lib/prisma';
+import sharp from 'sharp';
+import dashboardTemplate from '$lib/configs/dashboardTemplate.json';
 
 function mapPythonToJSON(panelString: string) {
 	const panelObject = {};
@@ -117,26 +119,79 @@ function generateUuid() {
 	});
 }
 
+function generateDashboardThumbnail(panelList, dashboardName) {
+	const locations = {
+		'0': 'northwest',
+		'1': 'northeast',
+		'2': 'southwest',
+		'3': 'southeast'
+	};
+
+	const onlytofour = panelList.slice(0, 4);
+	const inputs = onlytofour.map((panel, index) => {
+		console.log(panel);
+		return {
+			input: `${path.resolve('app', panel.thumbnailPath)}`,
+			gravity: locations[index]
+		};
+	});
+
+	sharp({
+		create: {
+			width: 1600,
+			height: 800,
+			channels: 4,
+			background: { r: 0, g: 0, b: 0, alpha: 1 }
+		}
+	})
+		.composite(inputs)
+		.png()
+		.toFile(`thumbnails/${dashboardName}.png`, (err, info) => {
+			if (err) {
+				console.log(err);
+			}
+			console.log(info);
+		});
+}
+
+async function createGrafanaPayload(panelForm: Panel[], dashboardName: string) {
+	let grafanaPayload = {
+		dashboard: {
+			...dashboardTemplate,
+			title: dashboardName,
+			panels: panelForm.map((panel) => panel.grafanaJSON)
+		}
+	};
+
+	return grafanaPayload;
+}
+
+async function callGrafanaApi(grafanaJSON: JSON) {
+	const response = await fetch(`${GRAFANA_URL}/api/dashboards/db`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: GRAFANA_API_TOKEN
+		},
+		body: JSON.stringify(grafanaJSON)
+	});
+
+	const data = await response.json();
+	console.log(data);
+}
+
 export const actions: Actions = {
 	saveDashboard: async (event) => {
-		const {
-			dashboardName,
-			dashboardDescription,
-			colCount,
-			tags,
-			published,
-			panelForm,
-			thumbnailPath
-		} = Object.fromEntries(await event.request.formData()) as unknown as {
-			dashboardName: string;
-			dashboardDescription: string;
-			colCount: number;
-			tags: string[];
-			teamName: string;
-			published: boolean;
-			panelForm: string;
-			thumbnailPath: string;
-		};
+		const { dashboardName, dashboardDescription, colCount, tags, published, panelForm } =
+			Object.fromEntries(await event.request.formData()) as unknown as {
+				dashboardName: string;
+				dashboardDescription: string;
+				colCount: number;
+				tags: string[];
+				teamName: string;
+				published: boolean;
+				panelForm: string;
+			};
 
 		let panelFormJSON = JSON.parse(panelForm);
 		generateDashboardThumbnail(panelFormJSON, dashboardName);
@@ -145,9 +200,9 @@ export const actions: Actions = {
 
 		const session = await event.locals.getSession();
 
-		const user = await prisma.user.findUnique({
+		const user = await prisma.user.findUniqueOrThrow({
 			where: {
-				email: session?.user?.email
+				email: session?.user?.email as string
 			}
 		});
 
@@ -158,7 +213,7 @@ export const actions: Actions = {
 				description: dashboardDescription,
 				published: Boolean(published),
 				tags: tags,
-				thumbnailPath: thumbnailPath,
+				thumbnailPath: path.join(process.cwd(), '..', 'thumbnails', `${dashboardName}.png') `),
 				grafanaJSON: {},
 				pythonCode: '',
 				columns: Number(colCount),
@@ -182,7 +237,9 @@ export const actions: Actions = {
 				}
 			}
 		});
-		console.log('dashboard saved');
+
+		let grafanaPayload = await createGrafanaPayload(panelFormJSON, dashboardName);
+		await callGrafanaApi(grafanaPayload);
 		return {
 			status: 200,
 			body: {
