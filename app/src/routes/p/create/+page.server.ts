@@ -1,7 +1,6 @@
 import type { PageServerLoad, Actions } from './$types';
 import type { Panel } from '@prisma/client';
 import { GRAFANA_URL, GRAFANA_API_TOKEN } from '$env/static/private';
-import fs from 'fs';
 import path from 'path';
 import { prisma } from '$lib/prisma';
 import sharp from 'sharp';
@@ -21,14 +20,16 @@ async function fetchPanels() {
 
 	const panels: responsePanel[] = [];
 
+	// key is title and value is JSON
 	data.map((panel: responsePanel) => {
 		panels.push({
-			title: panel.title,
-			JSON: panel,
-			thumbnailPath: `../src/lib/placeholders/dash1.png`
+			title: panel.json_data.title,
+			JSON: panel.json_data,
+			thumbnailPath: `../src/lib/thumbnails/${panel.file_name}.png`
 		});
 	});
 
+	console.log(process.cwd());
 	return panels;
 }
 
@@ -65,19 +66,21 @@ function generateDashboardThumbnail(panelList, dashboardName) {
 	sharp({
 		create: {
 			width: 1600,
-			height: 800,
+			height: 600,
 			channels: 4,
-			background: { r: 0, g: 0, b: 0, alpha: 1 }
+			background: { r: 0, g: 0, b: 0, alpha: 0 }
 		}
 	})
 		.composite(inputs)
 		.png()
-		.toFile(`thumbnails/${dashboardName}.png`, (err, info) => {
+		.toFile(`${path.resolve('app', '../src/lib/thumbnails')}/${dashboardName}.png`, (err, info) => {
 			if (err) {
 				console.log(err);
 			}
 			console.log(info);
 		});
+
+	return `../src/lib/thumbnails/${dashboardName}.png`;
 }
 
 function calculateGridPos(panel: Panel, colCount: number) {
@@ -143,7 +146,7 @@ export const actions: Actions = {
 			};
 
 		let panelFormJSON = JSON.parse(panelForm);
-		generateDashboardThumbnail(panelFormJSON, dashboardName);
+		const thumbnailPath = generateDashboardThumbnail(panelFormJSON, dashboardName);
 		panelFormJSON = panelFormJSON.map((panel) => {
 			return {
 				...panel,
@@ -174,9 +177,8 @@ export const actions: Actions = {
 					description: dashboardDescription,
 					published: Boolean(published),
 					tags: tags,
-					thumbnailPath: path.join(process.cwd(), '..', 'thumbnails', `${dashboardName}.png')`),
+					thumbnailPath: thumbnailPath,
 					grafanaJSON: grafanaObject,
-					pythonCode: '',
 					columns: Number(colCount),
 					grafanaUrl: resp.url,
 					version: resp.version,

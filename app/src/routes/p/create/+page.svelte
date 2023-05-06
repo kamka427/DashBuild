@@ -5,6 +5,7 @@
 	import NewPanelCard from '$lib/components/NewPanelCard.svelte';
 	import type { Panel } from '@prisma/client';
 	import type { PageData } from './$types';
+	import { page } from '$app/stores';
 
 	export let data: PageData;
 
@@ -27,7 +28,6 @@
 	};
 
 
-	console.log(data)
 
 	function addPanel(panel: {
 		title: string;
@@ -54,6 +54,8 @@
 			}
 		];
 	}
+
+	console.log(panelForm);
 
 	function removePanel(panelId: string) {
 		panelForm = panelForm.filter((panel) => panel.id !== panelId);

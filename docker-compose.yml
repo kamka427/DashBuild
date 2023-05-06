@@ -10,7 +10,7 @@ services:
     volumes:
       - type: volume
         source: db_data
-        target: /var/lib/postgresql/data      
+        target: /var/lib/postgresql/data
     ports:
       - 5432:5432
 
@@ -51,3 +51,5 @@ volumes:
   db_data:
   pgadmin_data:
   grafana_data:
+
+

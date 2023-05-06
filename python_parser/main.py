@@ -19,19 +19,27 @@ def parse_grafanalib_panels():
             for name, obj in inspect.getmembers(module):
                 if 'Panel' in name:
                     if hasattr(obj, 'to_json_data'):
-                        panels.append(obj.to_json_data())
+                        file_name= file[:-3]
+                        json_data = obj.to_json_data()
+                       
+                        panels.append({"file_name": file_name, "json_data": json_data})
+
+
+    
     return panels
 
 
 
 def parse_json_panels():
-    json_data = []
+    panels = []
     for file in os.listdir(PANEL_PATH):
         if file.endswith(".json"):
             with open(file) as json_file:
-                data = json.load(json_file)
-                json_data.append(data)
-    return json_data
+                file_name= file[:-5]
+                json_data = json.load(json_file)
+                panels.append({"file_name": file_name, "json_data": json_data})
+                
+    return panels
 
 @app.get("/")
 async def root():
