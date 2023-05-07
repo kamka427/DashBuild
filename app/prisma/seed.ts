@@ -64,7 +64,7 @@ export async function generateDashboardThumbnail(panelList: Panel[], dashboardNa
 	})
 		.composite(inputs)
 		.png()
-		.toFile(`${path.resolve('app', "../src/lib/thumbnails")}/${dashboardName}.png`, (err, info) => {
+		.toFile(`${path.resolve('app', "../src/lib/thumbnails")}/seeder_${dashboardName}.png`, (err, info) => {
 			if (err) {
 				console.log(err);
 			}
@@ -72,7 +72,7 @@ export async function generateDashboardThumbnail(panelList: Panel[], dashboardNa
 			console.log(data);
 		});
 
-	return `../src/lib/thumbnails/${dashboardName}.png`;
+	return `../src/lib/thumbnails/seeder_${dashboardName}.png`;
 }
 
 const availablePanels = await fetchPanels();

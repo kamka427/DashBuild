@@ -105,3 +105,6 @@ dist
 
 # __pycache__ directory
 __pycache__/
+
+# Seeded thumbnails
+seeder_*
