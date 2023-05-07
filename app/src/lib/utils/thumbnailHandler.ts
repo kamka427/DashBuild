@@ -4,9 +4,10 @@ import sharp from 'sharp';
 import fs from 'fs';
 import { promisify } from 'util';
 import type { Panel } from '@prisma/client';
+import { fail } from '@sveltejs/kit';
 const writeFilePromise = promisify(fs.writeFile);
 
-export function generateDashboardThumbnail(panelList: Panel[], dashboardName: string) {
+export async function generateDashboardThumbnail(panelList: Panel[], uid: string) {
 	const locations: {
 		[key: string]: string;
 	} = {
@@ -15,6 +16,8 @@ export function generateDashboardThumbnail(panelList: Panel[], dashboardName: st
 		'2': 'southwest',
 		'3': 'southeast'
 	};
+
+	const thumbnailPath = `${THUMBNAIL_PATH}/${uid}_dashboard.png`;
 
 	const firstFourPanels = panelList.slice(0, 4);
 	const inputs = firstFourPanels.map((panel, index) => {
@@ -34,19 +37,41 @@ export function generateDashboardThumbnail(panelList: Panel[], dashboardName: st
 	})
 		.composite(inputs)
 		.png()
-		.toFile(`${path.resolve('app', THUMBNAIL_PATH)}/${dashboardName}.png`, (err, info) => {
+		.toFile(`${path.resolve('app', thumbnailPath)}`, (err) => {
+			if (err) {
+				fail(300, {
+					message: 'Error generating dashboard thumbnail',
+					error: err
+				});
+			}
+		});
+
+	return thumbnailPath;
+}
+
+export async function copyDefaultThumbnail(
+	uuid: string,
+	panelId: string,
+	defaultThumbnail: string
+) {
+	const imagePath = `${THUMBNAIL_PATH}/${uuid}_${panelId}.png`;
+
+	fs.copyFile(
+		`${path.resolve('app', THUMBNAIL_PATH)}/${defaultThumbnail}.png`,
+		`${path.resolve('app', imagePath)}`,
+		(err) => {
 			if (err) {
 				console.log(err);
 			}
-			console.log(info);
-		});
+		}
+	);
 
-	return `${THUMBNAIL_PATH}/${dashboardName}.png`;
+	return imagePath;
 }
 
-export async function updatePanelThumbnailsWithApi(uuidAndSlug: string, panelId: string) {
+export async function updatePanelThumbnailsWithApi(uidAndSlug: string, panelId: string) {
 	const response = await fetch(
-		`${GRAFANA_URL}/render/d-solo/${uuidAndSlug}?orgId=1&&panelId=${panelId}`,
+		`${GRAFANA_URL}/render/d-solo/${uidAndSlug}?orgId=1&&panelId=${panelId}?width=1000&height=500`,
 		{
 			headers: {
 				Authorization: GRAFANA_API_TOKEN
@@ -57,7 +82,18 @@ export async function updatePanelThumbnailsWithApi(uuidAndSlug: string, panelId:
 	const buffer = await response.arrayBuffer();
 
 	const buff = await sharp(buffer).jpeg().toBuffer();
-	await writeFilePromise(`${path.resolve('app', THUMBNAIL_PATH)}/${panelId}.png`, buff);
 
+	const uid = uidAndSlug.split('/')[0];
+	await writeFilePromise(`${path.resolve('app', THUMBNAIL_PATH)}/${uid}_${panelId}.png`, buff);
 	return response;
+}
+
+export async function updateAllThumbnails(uidAndSlug: string, panelList: Panel[]) {
+	const promises = panelList.map(async (panel) => {
+		await updatePanelThumbnailsWithApi(uidAndSlug, panel.id.toString());
+		return Promise.resolve();
+	});
+
+	await Promise.all(promises);
+	await generateDashboardThumbnail(panelList, uidAndSlug.split('/')[0]);
 }

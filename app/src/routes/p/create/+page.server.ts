@@ -9,9 +9,12 @@ import {
 	callGrafanaApi
 } from '$lib/utils/grafanaHandler';
 import {
+	copyDefaultThumbnail,
 	generateDashboardThumbnail,
+	updateAllThumbnails,
 	updatePanelThumbnailsWithApi
 } from '$lib/utils/thumbnailHandler';
+import { GRAFANA_URL, THUMBNAIL_PATH } from '$env/static/private';
 
 export const load: PageServerLoad = async () => {
 	return {
@@ -38,7 +41,6 @@ export const actions: Actions = {
 			};
 
 		let panelFormJSON = JSON.parse(panelForm);
-		const thumbnailPath = generateDashboardThumbnail(panelFormJSON, dashboardName);
 		panelFormJSON = panelFormJSON.map((panel: Panel & { grafanaJSON: any }) => {
 			return {
 				...panel,
@@ -51,23 +53,24 @@ export const actions: Actions = {
 
 		const session = await event.locals.getSession();
 
-		console.log(session?.user);
-
 		const user = await prisma.user.findUniqueOrThrow({
 			where: {
 				email: session?.user?.email as string
 			}
 		});
-
+		
 		const tagsList = tags.split(',').map((tag) => tag.trim());
 		const grafanaObject = await createGrafanaPayload(panelFormJSON, dashboardName, tagsList);
 		const resp = await callGrafanaApi(JSON.stringify(grafanaObject));
 		if (resp.status === 'success') {
 			const uidAndSlug = resp.uid + '/' + resp.slug;
-
-			updatePanelThumbnailsWithApi(uidAndSlug, '1');
-
-			console.log(thumbnailPath);
+			
+			const thumbnailPath = await generateDashboardThumbnail(panelFormJSON, resp.uid);
+			panelFormJSON.map(async (panel: Panel) => {
+				await copyDefaultThumbnail(resp.uid, panel.id, 'statPanel');
+				panel.thumbnailPath = `${THUMBNAIL_PATH}/${resp.uid}_${panel.id}.png`;
+				return panel;
+			});
 
 			await prisma.dashboard.create({
 				data: {
@@ -79,7 +82,7 @@ export const actions: Actions = {
 					thumbnailPath: thumbnailPath,
 					grafanaJSON: grafanaObject,
 					columns: Number(colCount),
-					grafanaUrl: resp.url,
+					grafanaUrl: `${GRAFANA_URL}${resp.url}`,
 					version: resp.version,
 					userId: user.id,
 					panels: {
@@ -89,9 +92,9 @@ export const actions: Actions = {
 									id: `${resp.uid}-${panelElem.id}`,
 									name: panelElem.name,
 									description: panelElem.description,
-									thumbnailPath: panelElem.thumbnailPath,
+									thumbnailPath: `${THUMBNAIL_PATH}/${resp.uid}_${panelElem.id}.png`,
 									grafanaJSON: panelElem.grafanaJSON,
-									grafanaUrl: `${resp.url}?orgId=1&viewPanel=${panelElem.id}`,
+									grafanaUrl: `${GRAFANA_URL}${resp.url}?orgId=1&viewPanel=${panelElem.id}`,
 									width: panelElem.width
 								}
 							}
@@ -99,6 +102,12 @@ export const actions: Actions = {
 					}
 				}
 			});
+
+			
+
+			updateAllThumbnails(uidAndSlug, panelFormJSON);
+
+
 		} else {
 			fail(500, { message: 'Grafana API call failed' });
 		}
