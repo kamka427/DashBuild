@@ -1,22 +1,80 @@
 /// <reference types="node" />
-import { PrismaClient } from '@prisma/client';
+import {  PrismaClient } from '@prisma/client';
+import type { Panel } from '@prisma/client';
 import { faker } from '@faker-js/faker';
+import sharp from 'sharp';
+import path from 'path';
 
-const testDashboardPreviews = [
-	'../src/lib/placeholders/dash1.png',
-	'../src/lib/placeholders/dash2.png',
-	'../src/lib/placeholders/dash3.png',
-	'../src/lib/placeholders/dash4.png',
-	'../src/lib/placeholders/dash5.png',
-	'../src/lib/placeholders/dash6.png'
-];
+export async function fetchPanels() {
+	const resp = await fetch(`http://localhost:8000`);
 
-const testPanelPreviews = [
-	'../src/lib/placeholders/panel1.png',
-	'../src/lib/placeholders/panel2.png',
-	'../src/lib/placeholders/panel3.png',
-	'../src/lib/placeholders/panel4.png'
-];
+	const data = await resp.json();
+
+	type responsePanel = {
+		file_name: string;
+		json_data: {
+			title: string;
+		};
+	};
+
+	type panelEntry = {
+		title: string;
+		JSON: responsePanel['json_data'];
+		thumbnailPath: string;
+	};
+
+	const panels: panelEntry[] = [];
+
+	data.map((panel: responsePanel) => {
+		panels.push({
+			title: panel.json_data.title,
+			JSON: panel.json_data,
+			thumbnailPath: `../src/lib/thumbnails/${panel.file_name}.png`
+		});
+	});
+
+	return panels;
+}
+
+export function generateDashboardThumbnail(panelList: Panel[], dashboardName: string) {
+	const locations: {
+		[key: string]: string;
+	} = {
+		'0': 'northwest',
+		'1': 'northeast',
+		'2': 'southwest',
+		'3': 'southeast'
+	};
+
+	const firstFourPanels = panelList.slice(0, 4);
+	const inputs = firstFourPanels.map((panel, index) => {
+		return {
+			input: `${path.resolve('app', panel.thumbnailPath)}`,
+			gravity: locations[index]
+		};
+	});
+
+	sharp({
+		create: {
+			width: 2010,
+			height: 1010,
+			channels: 4,
+			background: { r: 0, g: 0, b: 0, alpha: 0 }
+		}
+	})
+		.composite(inputs)
+		.png()
+		.toFile(`${path.resolve('app', "../src/lib/thumbnails")}/${dashboardName}.png`, (err, info) => {
+			if (err) {
+				console.log(err);
+			}
+			console.log(info);
+		});
+
+	return `../src/lib/thumbnails/${dashboardName}.png`;
+}
+
+const availablePanels = await fetchPanels();
 
 const prisma = new PrismaClient();
 async function main() {
@@ -47,32 +105,50 @@ async function main() {
 	});
 
 	for (let i = 0; i < Math.floor(Math.random() * 35) + 15; i++) {
-		await prisma.dashboard.create({
-			data: {
-				id: faker.datatype.uuid(),
-				name: faker.company.bs(),
+		const dashboardName = faker.company.bs();
+		const panelsOnDash: Panel[] = [];
+		for (let i = 0; i < Math.floor(Math.random() * 6) + 1; i++) {
+			const panel = faker.helpers.arrayElement(availablePanels);
+			panelsOnDash.push({
+				id: `${i}`,
+				name: panel.title,
 				description: faker.company.bs() + ' ' + faker.company.bs() + ' ' + faker.company.bs(),
-				published: faker.datatype.boolean(),
-				tags: [faker.company.bsBuzz(), faker.company.bsBuzz()],
-				thumbnailPath: faker.helpers.arrayElement(testDashboardPreviews),
-				userId: faker.helpers.arrayElement(fakeUsers).id,
-				grafanaJSON: {},
-				panels: {
-					create: Array.from({ length: Math.floor(Math.random() * 6) + 1 }).map(() => ({
-						panel: {
-							create: {
-								id: faker.datatype.uuid(),
-								name: faker.company.bs(),
-								description:
-									faker.company.bs() + ' ' + faker.company.bsBuzz() + ' ' + faker.company.bsBuzz(),
-								thumbnailPath: faker.helpers.arrayElement(testPanelPreviews),
-								grafanaJSON: {}
+				thumbnailPath: panel.thumbnailPath,
+				grafanaJSON: panel.JSON,
+				grafanaUrl: null,
+				width: Math.floor(Math.random() * 4) + 1
+			});
+
+			const dashboardPreview = await generateDashboardThumbnail(panelsOnDash, dashboardName);
+
+			await prisma.dashboard.create({
+				data: {
+					id: faker.datatype.uuid(),
+					name: dashboardName,
+					description: faker.company.bs() + ' ' + faker.company.bs() + ' ' + faker.company.bs(),
+					published: faker.datatype.boolean(),
+					tags: [faker.company.bsBuzz(), faker.company.bsBuzz()],
+					thumbnailPath: dashboardPreview,
+					userId: faker.helpers.arrayElement(fakeUsers).id,
+					grafanaJSON: {},
+					panels: {
+						create: panelsOnDash.map((panelElem) => ({
+							panel: {
+								create: {
+									id: faker.datatype.uuid(),
+									name: panelElem.name,
+									description: panelElem.description,
+									thumbnailPath: panelElem.thumbnailPath,
+									grafanaJSON: JSON.stringify(panelElem.grafanaJSON),
+									grafanaUrl: panelElem.grafanaUrl,
+									width: panelElem.width
+								}
 							}
-						}
-					}))
+						}))
+					}
 				}
-			}
-		});
+			});
+		}
 	}
 }
 main()
