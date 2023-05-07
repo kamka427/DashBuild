@@ -43,12 +43,13 @@
 		</div>
 		<div class="card-actions justify-end">
 			<div class="btn-group">
-				{#if currentPage === 'gallery'}
-					<a href="/p/create/{dashboard.id}" class="btn-secondary btn">Copy</a>
-				{/if}
-				{#if currentPage === 'dashboards'}
-					<a href="/p/update/{dashboard.id}" class="btn-secondary btn">Modify</a>
-				{/if}
+				<a href="/p/update/{dashboard.id}" class="btn-secondary btn">
+					{#if currentPage === 'gallery'}
+						Copy
+					{:else}
+						Modify
+					{/if}
+				</a>
 				<a href="/p/view/{dashboard.id}" class="btn-primary btn">View</a>
 			</div>
 		</div>
