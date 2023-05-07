@@ -36,7 +36,7 @@ export async function fetchPanels() {
 	return panels;
 }
 
-export function generateDashboardThumbnail(panelList: Panel[], dashboardName: string) {
+export async function generateDashboardThumbnail(panelList: Panel[], dashboardName: string) {
 	const locations: {
 		[key: string]: string;
 	} = {
@@ -54,12 +54,12 @@ export function generateDashboardThumbnail(panelList: Panel[], dashboardName: st
 		};
 	});
 
-	sharp({
+	const data = await sharp({
 		create: {
 			width: 2010,
 			height: 1010,
-			channels: 4,
-			background: { r: 0, g: 0, b: 0, alpha: 0 }
+			channels: 3,
+			background: { r: 0, g: 0, b: 0 }
 		}
 	})
 		.composite(inputs)
@@ -69,6 +69,7 @@ export function generateDashboardThumbnail(panelList: Panel[], dashboardName: st
 				console.log(err);
 			}
 			console.log(info);
+			console.log(data);
 		});
 
 	return `../src/lib/thumbnails/${dashboardName}.png`;
@@ -104,7 +105,7 @@ async function main() {
 		data: fakeUsers
 	});
 
-	for (let i = 0; i < Math.floor(Math.random() * 35) + 15; i++) {
+	for (let i = 0; i < Math.floor(Math.random() * 25) + 15; i++) {
 		const dashboardName = faker.company.bs();
 		const panelsOnDash: Panel[] = [];
 		for (let i = 0; i < Math.floor(Math.random() * 6) + 1; i++) {
@@ -150,6 +151,7 @@ async function main() {
 			});
 		}
 	}
+	await new Promise((resolve) => setTimeout(resolve, 1000));
 }
 main()
 	.then(async () => {
