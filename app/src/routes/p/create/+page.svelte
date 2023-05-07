@@ -42,7 +42,6 @@
 					...panel.JSON,
 					id: panelForm.length + 1
 				},
-				pythonCode: panel.Python,
 				grafanaUrl: null,
 				width: 1
 			}
