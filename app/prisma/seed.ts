@@ -54,7 +54,12 @@ export async function generateDashboardThumbnail(panelList: Panel[], dashboardNa
 		};
 	});
 
-	const data = await sharp({
+	dashboardName = dashboardName
+		.split(' ')
+		.filter((word) => word !== '/')
+		.join('');
+
+	sharp({
 		create: {
 			width: 2010,
 			height: 1010,
@@ -70,8 +75,6 @@ export async function generateDashboardThumbnail(panelList: Panel[], dashboardNa
 				if (err) {
 					console.log(err);
 				}
-				console.log(info);
-				console.log(data);
 			}
 		);
 
@@ -110,6 +113,7 @@ async function main() {
 
 	for (let i = 0; i < Math.floor(Math.random() * 25) + 15; i++) {
 		const dashboardName = faker.company.bs();
+
 		const panelsOnDash: Panel[] = [];
 		const columns = Math.floor(Math.random() * 4) + 1;
 		for (let i = 0; i < Math.floor(Math.random() * 6) + 1; i++) {
@@ -123,40 +127,39 @@ async function main() {
 				grafanaUrl: null,
 				width: Math.floor(Math.random() * columns) + 1
 			});
-
-			const dashboardPreview = await generateDashboardThumbnail(panelsOnDash, dashboardName);
-
-			await prisma.dashboard.create({
-				data: {
-					id: faker.datatype.uuid(),
-					name: dashboardName,
-					description: faker.company.bs() + ' ' + faker.company.bs() + ' ' + faker.company.bs(),
-					published: faker.datatype.boolean(),
-					tags: [faker.company.bsBuzz(), faker.company.bsBuzz()],
-					thumbnailPath: dashboardPreview,
-					userId: faker.helpers.arrayElement(fakeUsers).id,
-					grafanaJSON: {},
-					columns: columns,
-					panels: {
-						create: panelsOnDash.map((panelElem) => ({
-							panel: {
-								create: {
-									id: faker.datatype.uuid(),
-									name: panelElem.name,
-									description: panelElem.description,
-									thumbnailPath: panelElem.thumbnailPath,
-									grafanaJSON: JSON.stringify(panelElem.grafanaJSON),
-									grafanaUrl: panelElem.grafanaUrl,
-									width: panelElem.width
-								}
-							}
-						}))
-					}
-				}
-			});
 		}
+
+		const dashboardPreview = await generateDashboardThumbnail(panelsOnDash, dashboardName);
+
+		await prisma.dashboard.create({
+			data: {
+				id: faker.datatype.uuid(),
+				name: dashboardName,
+				description: faker.company.bs() + ' ' + faker.company.bs() + ' ' + faker.company.bs(),
+				published: faker.datatype.boolean(),
+				tags: [faker.company.bsBuzz(), faker.company.bsBuzz()],
+				thumbnailPath: dashboardPreview,
+				userId: faker.helpers.arrayElement(fakeUsers).id,
+				grafanaJSON: {},
+				columns: columns,
+				panels: {
+					create: panelsOnDash.map((panelElem) => ({
+						panel: {
+							create: {
+								id: faker.datatype.uuid(),
+								name: panelElem.name,
+								description: panelElem.description,
+								thumbnailPath: panelElem.thumbnailPath,
+								grafanaJSON: JSON.stringify(panelElem.grafanaJSON),
+								grafanaUrl: panelElem.grafanaUrl,
+								width: panelElem.width
+							}
+						}
+					}))
+				}
+			}
+		});
 	}
-	await new Promise((resolve) => setTimeout(resolve, 1000));
 }
 main()
 	.then(async () => {
