@@ -6,7 +6,6 @@ import type { AuthConfig, Profile } from '@auth/core/types';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { redirect, type Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
-
 import { prisma } from '$lib/prisma';
 
 async function authorization({ event, resolve }): Promise<Response> {

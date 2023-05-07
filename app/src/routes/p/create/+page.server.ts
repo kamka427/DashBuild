@@ -1,6 +1,6 @@
 import type { PageServerLoad, Actions } from './$types';
 import type { Panel } from '@prisma/client';
-import { GRAFANA_URL, GRAFANA_API_TOKEN } from '$env/static/private';
+import { GRAFANA_URL, GRAFANA_API_TOKEN, PANEL_PARSER_URL } from '$env/static/private';
 import path from 'path';
 import { prisma } from '$lib/prisma';
 import sharp from 'sharp';
@@ -9,7 +9,7 @@ import { fail } from '@sveltejs/kit';
 import fs from 'fs';
 
 async function fetchPanels() {
-	const resp = await fetch('http://127.0.0.1:8000');
+	const resp = await fetch(`${PANEL_PARSER_URL}`);
 
 	const data = await resp.json();
 
@@ -40,8 +40,6 @@ export const load: PageServerLoad = async () => {
 				name: 'asc'
 			}
 		}),
-		GRAFANA_URL: GRAFANA_URL,
-		GRAFANA_API_TOKEN: GRAFANA_API_TOKEN,
 		predefinedPanels: fetchPanels()
 	};
 };
