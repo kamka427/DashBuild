@@ -1,7 +1,6 @@
 import { SvelteKitAuth } from '@auth/sveltekit';
 import Email from '@auth/core/providers/email';
 import Azure from '@auth/core/providers/azure-ad';
-import CredentialsProvider from '@auth/core/providers/credentials';
 import { AZURE_ID, AZURE_SECRET, AZURE_TENANT_ID, AUTH_SECRET } from '$env/static/private';
 import type { AuthConfig, Profile } from '@auth/core/types';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
@@ -48,7 +47,7 @@ export const handle = sequence(
 			}) as any
 		],
 		secret: AUTH_SECRET,
-		trustHostHeader: true,
+		trustHost: true,
 		session: {
 			strategy: 'jwt',
 			maxAge: 60 * 60 * 24 * 30, // 30 days

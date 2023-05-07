@@ -46,9 +46,9 @@
 							</div>
 						</div>
 					{/if}
-					<a class="btn" href="/auth/signout">Log Out</a>
+					<a class="btn" href="/auth/signout" rel="external">Log Out</a>
 				{:else}
-					<a class="btn-primary btn w-24" href="/auth/signin"> Sign In </a>
+					<a class="btn-primary btn w-24" href="/auth/signin" rel="external"> Sign In </a>
 				{/if}
 			</div>
 		</div>
