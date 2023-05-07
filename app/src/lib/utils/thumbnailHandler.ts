@@ -52,12 +52,12 @@ export async function generateDashboardThumbnail(panelList: Panel[], uid: string
 export async function copyDefaultThumbnail(
 	uuid: string,
 	panelId: string,
-	defaultThumbnail: string
+	defaultThumbnailPath: string
 ) {
 	const imagePath = `${THUMBNAIL_PATH}/${uuid}_${panelId}.png`;
 
 	fs.copyFile(
-		`${path.resolve('app', THUMBNAIL_PATH)}/${defaultThumbnail}.png`,
+		`${path.resolve('app', defaultThumbnailPath)}`,
 		`${path.resolve('app', imagePath)}`,
 		(err) => {
 			if (err) {
@@ -71,7 +71,7 @@ export async function copyDefaultThumbnail(
 
 export async function updatePanelThumbnailsWithApi(uidAndSlug: string, panelId: string) {
 	const response = await fetch(
-		`${GRAFANA_URL}/render/d-solo/${uidAndSlug}?orgId=1&&panelId=${panelId}?width=1000&height=500`,
+		`${GRAFANA_URL}/render/d-solo/${uidAndSlug}?orgId=1&panelId=${panelId}&width=1000&height=500`,
 		{
 			headers: {
 				Authorization: GRAFANA_API_TOKEN

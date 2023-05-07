@@ -1,7 +1,7 @@
 import type { PageServerLoad, Actions } from './$types';
 import type { Panel } from '@prisma/client';
 import { prisma } from '$lib/utils/prisma';
-import { fail } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import {
 	fetchPanels,
 	createGrafanaPayload,
@@ -40,6 +40,7 @@ export const actions: Actions = {
 				panelForm: string;
 			};
 
+
 		let panelFormJSON = JSON.parse(panelForm);
 		panelFormJSON = panelFormJSON.map((panel: Panel & { grafanaJSON: any }) => {
 			return {
@@ -67,7 +68,7 @@ export const actions: Actions = {
 			
 			const thumbnailPath = await generateDashboardThumbnail(panelFormJSON, resp.uid);
 			panelFormJSON.map(async (panel: Panel) => {
-				await copyDefaultThumbnail(resp.uid, panel.id, 'statPanel');
+				await copyDefaultThumbnail(resp.uid, panel.id, panel.thumbnailPath);
 				panel.thumbnailPath = `${THUMBNAIL_PATH}/${resp.uid}_${panel.id}.png`;
 				return panel;
 			});
@@ -104,9 +105,9 @@ export const actions: Actions = {
 			});
 
 			
-
 			updateAllThumbnails(uidAndSlug, panelFormJSON);
 
+			throw redirect(301, `/p/view/${resp.uid}`)
 
 		} else {
 			fail(500, { message: 'Grafana API call failed' });
