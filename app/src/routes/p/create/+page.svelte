@@ -10,8 +10,8 @@
 
 	export let dashboardName = '';
 	export let colCount = 2;
-	export let tags = '';
-	export let teamName = '';
+	export let tags: string[] = [];
+	export let teamName: string | null = null;
 	export let published = false;
 
 	export let panelForm: Panel[] = [];
@@ -70,6 +70,7 @@
 		panelForm[draggedPanelIndex] = panelForm[currentPanelIndex];
 		panelForm[currentPanelIndex] = temp;
 	}
+
 </script>
 
 <svelte:head>

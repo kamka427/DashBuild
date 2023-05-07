@@ -1,8 +1,8 @@
 <script lang="ts">
 	export let dashboardName: string;
 	export let colCount: number;
-	export let tags: string;
-	export let teamName: string;
+	export let tags: string[];
+	export let teamName: string | null;
 	export let published: boolean;
 </script>
 
@@ -51,7 +51,7 @@
 			type="checkbox"
 			placeholder="Team name (optional)"
 			class=" toggle toggle-lg h-full"
-			bind:value={published}
+			bind:checked={published}
 		/>
 	</label>
 </div>
