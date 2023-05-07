@@ -6,7 +6,7 @@ import type { AuthConfig, Profile } from '@auth/core/types';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { redirect, type Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
-import { prisma } from '$lib/prisma';
+import { prisma } from '$lib/utils/prisma';
 
 async function authorization({ event, resolve }): Promise<Response> {
 	if (event.url.pathname.startsWith('/p')) {
