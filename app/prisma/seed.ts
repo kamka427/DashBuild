@@ -111,7 +111,7 @@ async function main() {
 		data: fakeUsers
 	});
 
-	for (let i = 0; i < Math.floor(Math.random() * 25) + 15; i++) {
+	for (let i = 0; i < Math.floor(Math.random() * 15) + 5; i++) {
 		const dashboardName = faker.company.bs();
 
 		const panelsOnDash: Panel[] = [];
