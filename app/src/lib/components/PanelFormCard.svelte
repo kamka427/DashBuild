@@ -67,7 +67,7 @@
 	{#if isDropTarget === true && dragOn == true}
 		<svg
 			id={panel.id}
-			class="border-base-300 h-[35em] w-full border
+			class="h-[35em] w-full border border-base-300
 		"
 		>
 			<text
@@ -85,7 +85,7 @@
 		<div
 			draggable="true"
 			id={panel.id}
-			class="card-compact card bg-base-300 text-base-content h-full w-full"
+			class="card-compact card h-full w-full bg-base-300 text-base-content"
 		>
 			<figure>
 				<img

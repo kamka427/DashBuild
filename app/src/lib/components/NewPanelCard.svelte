@@ -11,23 +11,34 @@
 			state = 'unselected';
 		}
 	}
+	type responsePanel = {
+		file_name: string;
+		json_data: {
+			title: string;
+		};
+	};
 
-	export let addAction: Function;
+	type panelEntry = {
+		title: string;
+		JSON: responsePanel['json_data'];
+		thumbnailPath: string;
+	};
+	export let addAction: (panel: panelEntry) => void;
 
-	export let selectedPanel: {};
+	export let selectedPanel: object;
 
-	function setSelection(panel: {}) {
+	function setSelection(panel: panelEntry) {
 		selectedPanel = panel;
 	}
 </script>
 
-<div class="card-compact card bg-base-300 text-base-content w-full">
+<div class="card-compact card w-full bg-base-300 text-base-content">
 	{#if state === 'unselected'}
-		<figure class="bg-base-200 flex h-full w-full items-center justify-center">
+		<figure class="flex h-full w-full items-center justify-center bg-base-200">
 			<button on:click={toggleState}>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
-					class="text-base-content h-64 w-64"
+					class="h-64 w-64 text-base-content"
 					fill="none"
 					viewBox="0 0 24 24"
 					stroke="currentColor"
@@ -50,7 +61,7 @@
 	{#if state === 'selected'}
 		<div class="card-body">
 			<h2 class="card-title">Select the new panel</h2>
-			<ul class="menu bg-base-100 rounded-md">
+			<ul class="menu rounded-md bg-base-100">
 				{#each panels as panel}
 					<li>
 						<button

@@ -1,5 +1,5 @@
 import type { PageServerLoad, Actions } from './$types';
-import { fail, redirect } from '@sveltejs/kit';
+import { fail } from '@sveltejs/kit';
 import { prisma } from '$lib/utils/prisma';
 
 export const load: PageServerLoad = async ({ url }) => {
@@ -51,6 +51,5 @@ export const actions: Actions = {
 			console.log(error);
 			return fail(500, { message: 'Could not publish dashboard' });
 		}
-	},
-	
+	}
 };

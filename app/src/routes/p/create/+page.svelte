@@ -5,12 +5,8 @@
 	import NewPanelCard from '$lib/components/NewPanelCard.svelte';
 	import type { Panel } from '@prisma/client';
 	import type { PageData } from './$types';
-	import { page } from '$app/stores';
 
 	export let data: PageData;
-
-	export const GRAFANA_URL = data.GRAFANA_URL;
-	export const GRAFANA_API_TOKEN = data.GRAFANA_API_TOKEN;
 
 	export let dashboardName = '';
 	export let colCount = 2;
@@ -26,8 +22,6 @@
 		};
 		thumbnailPath: string;
 	};
-
-
 
 	function addPanel(panel: {
 		title: string;
@@ -55,7 +49,6 @@
 		];
 	}
 
-
 	function removePanel(panelId: string) {
 		panelForm = panelForm.filter((panel) => panel.id !== panelId);
 	}
@@ -78,7 +71,6 @@
 		panelForm[draggedPanelIndex] = panelForm[currentPanelIndex];
 		panelForm[currentPanelIndex] = temp;
 	}
-
 </script>
 
 <svelte:head>

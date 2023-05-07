@@ -6,10 +6,7 @@ import { promisify } from 'util';
 import type { Panel } from '@prisma/client';
 const writeFilePromise = promisify(fs.writeFile);
 
-export function generateDashboardThumbnail(
-	panelList: Panel[],
-	dashboardName: string
-) {
+export function generateDashboardThumbnail(panelList: Panel[], dashboardName: string) {
 	const locations: {
 		[key: string]: string;
 	} = {

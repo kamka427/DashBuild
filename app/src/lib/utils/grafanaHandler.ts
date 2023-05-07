@@ -1,7 +1,6 @@
 import { GRAFANA_URL, GRAFANA_API_TOKEN, PANEL_PARSER_URL } from '$env/static/private';
 import dashboardTemplate from '$lib/configs/dashboardTemplate.json';
 import type { Panel } from '@prisma/client';
-import { type } from 'os';
 
 export async function fetchPanels() {
 	const resp = await fetch(`${PANEL_PARSER_URL}`);
@@ -35,21 +34,30 @@ export async function fetchPanels() {
 }
 
 export function calculateGridPos(
-	panel: Panel & { grafanaJSON: any },
+	panel: Panel & {
+		grafanaJSON: {
+			gridPos: {
+				h: number;
+				w: number;
+				x: number;
+				y: number;
+			};
+		};
+	},
 
 	colCount: number
 ) {
-	let gridPos = {
+	const gridPos = {
 		h: 9,
 		w: 24 / colCount,
 		x: 0,
 		y: 0
 	};
 
-	let panelIndex = parseInt(panel.id);
+	const panelIndex = parseInt(panel.id);
 
-	let row = Math.floor(panelIndex / colCount);
-	let col = panelIndex % colCount;
+	const row = Math.floor(panelIndex / colCount);
+	const col = panelIndex % colCount;
 
 	gridPos.x = col * gridPos.w;
 	gridPos.y = row * gridPos.h;
@@ -64,7 +72,7 @@ export async function createGrafanaPayload(
 	dashboardName: string,
 	tags: string[]
 ) {
-	let grafanaObject = {
+	const grafanaObject = {
 		dashboard: {
 			...dashboardTemplate,
 			title: dashboardName,

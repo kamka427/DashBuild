@@ -11,7 +11,7 @@
 		: 'No description provided';
 </script>
 
-<main class="card card-compact bg-base-300 text-base-content h-full w-full">
+<main class="card card-compact h-full w-full bg-base-300 text-base-content">
 	<figure>
 		<img src={dashboard.thumbnailPath} class="w-max shadow-xl" alt="" />
 	</figure>

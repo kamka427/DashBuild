@@ -10,7 +10,6 @@
 	export let data: PageData;
 
 	let panelList = data.dashboard.panels.map((panel) => panel.panel);
-
 </script>
 
 <svelte:head>

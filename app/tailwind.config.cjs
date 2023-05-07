@@ -16,6 +16,6 @@ module.exports = {
 		'col-span-4'
 	],
 	daisyui: {
-		themes: ['light' ,'dark']
+		themes: ['light', 'dark']
 	}
 };

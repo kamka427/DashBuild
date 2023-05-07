@@ -7,7 +7,7 @@
 </script>
 
 <nav class="bg-base-300 text-base-content">
-	<div class="navbar container mx-auto">
+	<div class="container navbar mx-auto">
 		<div class="navbar-start">
 			<a class="btn-ghost btn text-xl normal-case" href="/">DashBuild</a>
 			{#if $page.data.session}
@@ -39,7 +39,7 @@
 						</div>
 					{:else}
 						<div class="placeholder avatar">
-							<div class="bg-neutral-focus text-neutral-content w-12 rounded-full">
+							<div class="w-12 rounded-full bg-neutral-focus text-neutral-content">
 								<span class="text-xl">
 									{initials}
 								</span>
