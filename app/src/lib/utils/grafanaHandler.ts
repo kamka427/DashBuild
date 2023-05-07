@@ -1,4 +1,4 @@
-import { GRAFANA_URL, GRAFANA_API_TOKEN, PANEL_PARSER_URL } from '$env/static/private';
+import { GRAFANA_URL, GRAFANA_API_TOKEN, PANEL_PARSER_URL, THUMBNAIL_PATH } from '$env/static/private';
 import dashboardTemplate from '$lib/configs/dashboardTemplate.json';
 import type { Panel } from '@prisma/client';
 
@@ -26,7 +26,7 @@ export async function fetchPanels() {
 		panels.push({
 			title: panel.json_data.title,
 			JSON: panel.json_data,
-			thumbnailPath: `../src/lib/thumbnails/${panel.file_name}.png`
+			thumbnailPath: `${THUMBNAIL_PATH}/${panel.file_name}.png`
 		});
 	});
 
