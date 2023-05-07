@@ -8,11 +8,11 @@
 
 	export let data: PageData;
 
-	export let dashboardName = '';
-	export let colCount = 2;
-	export let tags = '';
-	export let teamName = '';
-	export let published = false;
+	export let dashboardName = data.dashboard.name;
+	export let colCount = data.dashboard.columns;
+	export let tags = data.dashboard.tags;
+	export let teamName = data.dashboard.user.team;
+	export let published = data.dashboard.published;
 
 	export const panelList = data.dashboard.panels.map((panel) => panel.panel);
 

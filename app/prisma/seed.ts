@@ -1,5 +1,5 @@
 /// <reference types="node" />
-import {  PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import type { Panel } from '@prisma/client';
 import { faker } from '@faker-js/faker';
 import sharp from 'sharp';
@@ -64,13 +64,16 @@ export async function generateDashboardThumbnail(panelList: Panel[], dashboardNa
 	})
 		.composite(inputs)
 		.png()
-		.toFile(`${path.resolve('app', "../src/lib/thumbnails")}/seeder_${dashboardName}.png`, (err, info) => {
-			if (err) {
-				console.log(err);
+		.toFile(
+			`${path.resolve('app', '../src/lib/thumbnails')}/seeder_${dashboardName}.png`,
+			(err, info) => {
+				if (err) {
+					console.log(err);
+				}
+				console.log(info);
+				console.log(data);
 			}
-			console.log(info);
-			console.log(data);
-		});
+		);
 
 	return `../src/lib/thumbnails/seeder_${dashboardName}.png`;
 }
@@ -108,6 +111,7 @@ async function main() {
 	for (let i = 0; i < Math.floor(Math.random() * 25) + 15; i++) {
 		const dashboardName = faker.company.bs();
 		const panelsOnDash: Panel[] = [];
+		const columns = Math.floor(Math.random() * 4) + 1;
 		for (let i = 0; i < Math.floor(Math.random() * 6) + 1; i++) {
 			const panel = faker.helpers.arrayElement(availablePanels);
 			panelsOnDash.push({
@@ -117,7 +121,7 @@ async function main() {
 				thumbnailPath: panel.thumbnailPath,
 				grafanaJSON: panel.JSON,
 				grafanaUrl: null,
-				width: Math.floor(Math.random() * 4) + 1
+				width: Math.floor(Math.random() * columns) + 1
 			});
 
 			const dashboardPreview = await generateDashboardThumbnail(panelsOnDash, dashboardName);
@@ -132,6 +136,7 @@ async function main() {
 					thumbnailPath: dashboardPreview,
 					userId: faker.helpers.arrayElement(fakeUsers).id,
 					grafanaJSON: {},
+					columns: columns,
 					panels: {
 						create: panelsOnDash.map((panelElem) => ({
 							panel: {
