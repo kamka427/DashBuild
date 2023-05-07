@@ -52,7 +52,13 @@ services:
     restart: always
     ports:
       - 8000:80
-      
+
+  dashbuild:
+    build: ./app
+    restart: always
+    ports:
+      - 3001:3000
+
 volumes:
   db_data:
   pgadmin_data:
