@@ -3,10 +3,16 @@ import path from 'path';
 import sharp from 'sharp';
 import fs from 'fs';
 import { promisify } from 'util';
+import type { Panel } from '@prisma/client';
 const writeFilePromise = promisify(fs.writeFile);
 
-export function generateDashboardThumbnail(panelList, dashboardName) {
-	const locations = {
+export function generateDashboardThumbnail(
+	panelList: Panel[],
+	dashboardName: string
+) {
+	const locations: {
+		[key: string]: string;
+	} = {
 		'0': 'northwest',
 		'1': 'northeast',
 		'2': 'southwest',

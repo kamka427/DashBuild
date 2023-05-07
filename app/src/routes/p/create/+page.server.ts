@@ -39,7 +39,7 @@ export const actions: Actions = {
 
 		let panelFormJSON = JSON.parse(panelForm);
 		const thumbnailPath = generateDashboardThumbnail(panelFormJSON, dashboardName);
-		panelFormJSON = panelFormJSON.map((panel) => {
+		panelFormJSON = panelFormJSON.map((panel: Panel & { grafanaJSON: any }) => {
 			return {
 				...panel,
 				grafanaJSON: {
@@ -65,7 +65,7 @@ export const actions: Actions = {
 		if (resp.status === 'success') {
 			const uidAndSlug = resp.uid + '/' + resp.slug;
 
-			updatePanelThumbnailsWithApi(uidAndSlug, 1);
+			updatePanelThumbnailsWithApi(uidAndSlug, '1');
 
 			console.log(thumbnailPath);
 
@@ -91,7 +91,6 @@ export const actions: Actions = {
 									description: panelElem.description,
 									thumbnailPath: panelElem.thumbnailPath,
 									grafanaJSON: panelElem.grafanaJSON,
-									pythonCode: panelElem.pythonCode,
 									grafanaUrl: `${resp.url}?orgId=1&viewPanel=${panelElem.id}`,
 									width: panelElem.width
 								}

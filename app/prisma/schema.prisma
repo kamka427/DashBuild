@@ -72,7 +72,7 @@ model Dashboard {
   published     Boolean
   version       Int                  @default(1)
   thumbnailPath String
-  grafanaJSON   Json?
+  grafanaJSON   Json
   grafanaUrl    String?
   columns       Int                  @default(2)
   tags          String[]
@@ -85,8 +85,8 @@ model Panel {
   id            String               @id @default(cuid())
   name          String
   description   String?
-  thumbnailPath String?
-  grafanaJSON   Json?
+  thumbnailPath String
+  grafanaJSON   Json
   grafanaUrl    String?
   width         Int                  @default(1)
   dashboards    PanelsOnDashboards[]

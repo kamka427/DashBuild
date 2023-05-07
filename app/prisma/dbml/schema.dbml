@@ -1,0 +1,104 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table Account {
+  id String [pk]
+  userId String [not null]
+  type String [not null]
+  provider String [not null]
+  providerAccountId String [not null]
+  refresh_token String
+  access_token String
+  expires_in Int
+  ext_expires_in Int
+  refresh_token_expires_in Int
+  token_type String
+  scope String
+  id_token String
+  session_state String
+  user User [not null]
+
+  indexes {
+    (provider, providerAccountId) [unique]
+  }
+}
+
+Table Session {
+  id String [pk]
+  sessionToken String [unique, not null]
+  userId String [not null]
+  expires DateTime [not null]
+  user User [not null]
+}
+
+Table User {
+  id String [pk]
+  name String
+  email String [unique]
+  emailVerified DateTime
+  image String
+  accounts Account [not null]
+  sessions Session [not null]
+  team String
+  dashboards Dashboard [not null]
+  role String [not null, default: 'user']
+}
+
+Table VerificationToken {
+  identifier String [not null]
+  token String [unique, not null]
+  expires DateTime [not null]
+
+  indexes {
+    (identifier, token) [unique]
+  }
+}
+
+Table Dashboard {
+  id String [pk]
+  name String [not null]
+  description String
+  published Boolean [not null]
+  version Int [not null, default: 1]
+  thumbnailPath String [not null]
+  grafanaJSON Json [not null]
+  grafanaUrl String
+  columns Int [not null, default: 2]
+  tags String[] [not null]
+  user User [not null]
+  userId String [not null]
+  panels PanelsOnDashboards [not null]
+}
+
+Table Panel {
+  id String [pk]
+  name String [not null]
+  description String
+  thumbnailPath String [not null]
+  grafanaJSON Json [not null]
+  grafanaUrl String
+  width Int [not null, default: 1]
+  dashboards PanelsOnDashboards [not null]
+}
+
+Table PanelsOnDashboards {
+  panel Panel [not null]
+  panelId String [not null]
+  dashboard Dashboard [not null]
+  dashboardId String [not null]
+
+  indexes {
+    (panelId, dashboardId) [pk]
+  }
+}
+
+Ref: Account.userId > User.id [delete: Cascade]
+
+Ref: Session.userId > User.id [delete: Cascade]
+
+Ref: Dashboard.userId > User.id
+
+Ref: PanelsOnDashboards.panelId > Panel.id [delete: Cascade]
+
+Ref: PanelsOnDashboards.dashboardId > Dashboard.id [delete: Cascade]
