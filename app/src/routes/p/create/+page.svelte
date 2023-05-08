@@ -5,7 +5,7 @@
 	import NewPanelCard from '$lib/components/NewPanelCard.svelte';
 	import type { Panel } from '@prisma/client';
 	import type { ActionData, PageData } from './$types';
-	import { applyAction, enhance } from '$app/forms';
+	import { enhance } from '$app/forms';
 
 	export let data: PageData;
 	export let form: ActionData;
@@ -44,7 +44,9 @@
 				},
 				grafanaUrl: null,
 				position: panelForm.length,
-				width: 1
+				width: 1,
+				createdAt: null,
+				updatedAt: null
 			}
 		];
 	}
@@ -78,9 +80,6 @@
 	function swapIndexes(panel: Panel, index: number) {
 		panel.position = index;
 	}
-
-	$: console.log(published);
-	$: console.log(form);
 
 	export let isLoading = false;
 

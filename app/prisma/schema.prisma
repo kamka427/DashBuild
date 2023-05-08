@@ -45,16 +45,17 @@ model Session {
 }
 
 model User {
-  id            String      @id @default(cuid())
-  name          String?
-  email         String      @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-  team          String      @default("Individual")
-  dashboards    Dashboard[]
-  role          String      @default("user")
+  id                String             @id @default(cuid())
+  name              String?
+  email             String             @unique
+  emailVerified     DateTime?
+  image             String?
+  accounts          Account[]
+  sessions          Session[]
+  team              String             @default("Individual")
+  dashboards        Dashboard[]
+  dashboardsHistory DashboardHistory[]
+  role              String             @default("user")
 }
 
 model VerificationToken {
@@ -79,6 +80,29 @@ model Dashboard {
   user          User                 @relation(fields: [userId], references: [id])
   userId        String
   panels        PanelsOnDashboards[]
+  createdAt     DateTime?            @default(now())
+  updatedAt     DateTime?            @updatedAt
+  revisions     DashboardHistory[]   @relation("Revisions")
+}
+
+model DashboardHistory {
+  id            String               @id @default(cuid())
+  linkedId      String               @unique
+  name          String
+  description   String?
+  published     Boolean
+  version       Int                  @default(1)
+  thumbnailPath String
+  grafanaJSON   Json
+  grafanaUrl    String?
+  columns       Int                  @default(2)
+  tags          String[]
+  user          User                 @relation(fields: [userId], references: [id])
+  userId        String
+  panels        PanelsOnDashboards[]
+  createdAt     DateTime?            @default(now())
+  updatedAt     DateTime?            @updatedAt
+  dashboard     Dashboard            @relation("Revisions", fields: [linkedId], references: [id], onDelete: Cascade)
 }
 
 model Panel {
@@ -91,13 +115,17 @@ model Panel {
   width         Int                  @default(1)
   position      Int                  @default(1)
   dashboards    PanelsOnDashboards[]
+  createdAt     DateTime?            @default(now())
+  updatedAt     DateTime?            @updatedAt
 }
 
 model PanelsOnDashboards {
-  panel       Panel     @relation(fields: [panelId], references: [id], onDelete: Cascade)
-  panelId     String
-  dashboard   Dashboard @relation(fields: [dashboardId], references: [id], onDelete: Cascade)
-  dashboardId String
+  panel              Panel             @relation(fields: [panelId], references: [id], onDelete: Cascade)
+  panelId            String
+  dashboard          Dashboard         @relation(fields: [dashboardId], references: [id], onDelete: Cascade)
+  dashboardId        String
+  DashboardHistory   DashboardHistory? @relation(fields: [dashboardHistoryId], references: [id])
+  dashboardHistoryId String?
 
   @@id([panelId, dashboardId])
 }

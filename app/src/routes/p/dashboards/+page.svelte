@@ -4,7 +4,6 @@
 	import { createSearchStore, searchHandler } from '$lib/stores/search';
 	import { onDestroy } from 'svelte';
 	import BreadCrumbs from '$lib/components/BreadCrumbs.svelte';
-	import type { Dashboard } from '@prisma/client';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
