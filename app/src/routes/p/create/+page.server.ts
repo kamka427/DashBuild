@@ -4,9 +4,11 @@ import { prisma } from '$lib/utils/prisma';
 import { fail, redirect } from '@sveltejs/kit';
 import {
 	fetchPanels,
-	createGrafanaPayload,
+	createGrafanaDashboardPayload,
 	calculateGridPos,
-	callGrafanaApi
+	callGrafanaDashboardApi,
+	callGrafanaFolderApi,
+	createGrafanaFolderPayload
 } from '$lib/utils/grafanaHandler';
 import {
 	copyDefaultThumbnail,
@@ -40,7 +42,6 @@ export const actions: Actions = {
 				panelForm: string;
 			};
 
-
 		let panelFormJSON = JSON.parse(panelForm);
 		panelFormJSON = panelFormJSON.map((panel: Panel & { grafanaJSON: any }) => {
 			return {
@@ -59,13 +60,21 @@ export const actions: Actions = {
 				email: session?.user?.email as string
 			}
 		});
-		
+
 		const tagsList = tags.split(',').map((tag) => tag.trim());
-		const grafanaObject = await createGrafanaPayload(panelFormJSON, dashboardName, tagsList);
-		const resp = await callGrafanaApi(JSON.stringify(grafanaObject));
-		if (resp.status === 'success') {
+		const folderObject = await createGrafanaFolderPayload(user.id);
+		const folderResp = await callGrafanaFolderApi(JSON.stringify(folderObject));
+
+		const grafanaObject = await createGrafanaDashboardPayload(
+			panelFormJSON,
+			dashboardName,
+			tagsList,
+			user.id
+		);
+		const resp = await callGrafanaDashboardApi(JSON.stringify(grafanaObject));
+		if (resp.status === 'success' && folderResp.status === 'success') {
 			const uidAndSlug = resp.uid + '/' + resp.slug;
-			
+
 			const thumbnailPath = await generateDashboardThumbnail(panelFormJSON, resp.uid);
 			panelFormJSON.map(async (panel: Panel) => {
 				await copyDefaultThumbnail(resp.uid, panel.id, panel.thumbnailPath);
@@ -104,11 +113,9 @@ export const actions: Actions = {
 				}
 			});
 
-			
 			updateAllThumbnails(uidAndSlug, panelFormJSON);
 
-			throw redirect(301, `/p/view/${resp.uid}`)
-
+			throw redirect(301, `/p/view/${resp.uid}`);
 		} else {
 			fail(500, { message: 'Grafana API call failed' });
 		}

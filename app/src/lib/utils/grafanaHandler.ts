@@ -1,4 +1,9 @@
-import { GRAFANA_URL, GRAFANA_API_TOKEN, PANEL_PARSER_URL, THUMBNAIL_PATH } from '$env/static/private';
+import {
+	GRAFANA_URL,
+	GRAFANA_API_TOKEN,
+	PANEL_PARSER_URL,
+	THUMBNAIL_PATH
+} from '$env/static/private';
 import dashboardTemplate from '$lib/configs/dashboardTemplate.json';
 import type { Panel } from '@prisma/client';
 
@@ -67,10 +72,11 @@ export function calculateGridPos(
 	return gridPos;
 }
 
-export async function createGrafanaPayload(
+export async function createGrafanaDashboardPayload(
 	panelForm: Panel[],
 	dashboardName: string,
-	tags: string[]
+	tags: string[],
+	userFolder: string
 ) {
 	const grafanaObject = {
 		dashboard: {
@@ -78,14 +84,38 @@ export async function createGrafanaPayload(
 			title: dashboardName,
 			panels: panelForm.map((panel) => panel.grafanaJSON),
 			tags: tags
-		}
+		},
+		folderUid: userFolder
+	};
+	return grafanaObject;
+}
+
+export async function createGrafanaFolderPayload(folderName: string) {
+	const grafanaObject = {
+		uid: folderName,
+		title: folderName
 	};
 
 	return grafanaObject;
 }
 
-export async function callGrafanaApi(grafanaJSON: string) {
+export async function callGrafanaDashboardApi(grafanaJSON: string) {
 	const response = await fetch(`${GRAFANA_URL}/api/dashboards/db`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: GRAFANA_API_TOKEN
+		},
+		body: grafanaJSON
+	});
+
+	const resp = await response.json();
+	console.log(resp);
+	return resp;
+}
+
+export async function callGrafanaFolderApi(grafanaJSON: string) {
+	const response = await fetch(`${GRAFANA_URL}/api/folders`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',

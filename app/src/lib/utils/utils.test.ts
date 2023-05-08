@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { calculateGridPos, createGrafanaPayload } from '$lib/utils/grafanaHandler';
+import { calculateGridPos, createGrafanaDashboardPayload } from '$lib/utils/grafanaHandler';
 
 describe('calculateGridPos', () => {
 	it('calculates gridPos', () => {
