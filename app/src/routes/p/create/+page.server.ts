@@ -58,21 +58,40 @@ export const actions: Actions = {
 		const user = await prisma.user.findUniqueOrThrow({
 			where: {
 				email: session?.user?.email as string
+			},
+			include: {
+				dashboards: true
 			}
 		});
 
 		const tagsList = tags.split(',').map((tag) => tag.trim());
-		const folderObject = await createGrafanaFolderPayload(user.id);
-		const folderResp = await callGrafanaFolderApi(JSON.stringify(folderObject));
+
+		const dashboardExists = await prisma.dashboard.findFirst({
+			where: {
+				user: {
+					email: user.email
+				},
+				name: dashboardName
+			},
+			include: {
+				panels: true
+			}
+		});
+
+		if (user.dashboards.length === 0) {
+			const folderObject = await createGrafanaFolderPayload(user.id);
+			await callGrafanaFolderApi(JSON.stringify(folderObject));
+		}
 
 		const grafanaObject = await createGrafanaDashboardPayload(
 			panelFormJSON,
 			dashboardName,
 			tagsList,
-			user.id
+			user.id,
+			dashboardExists ? dashboardExists.id : null
 		);
 		const resp = await callGrafanaDashboardApi(JSON.stringify(grafanaObject));
-		if (resp.status === 'success' && folderResp.status === 'success') {
+		if (resp.status === 'success') {
 			const uidAndSlug = resp.uid + '/' + resp.slug;
 
 			const thumbnailPath = await generateDashboardThumbnail(panelFormJSON, resp.uid);
@@ -82,8 +101,11 @@ export const actions: Actions = {
 				return panel;
 			});
 
-			await prisma.dashboard.create({
-				data: {
+			await prisma.dashboard.upsert({
+				where: {
+					id: resp.uid
+				},
+				create: {
 					id: resp.uid,
 					name: dashboardName,
 					description: dashboardDescription,
@@ -100,6 +122,35 @@ export const actions: Actions = {
 							panel: {
 								create: {
 									id: `${resp.uid}-${panelElem.id}`,
+									name: panelElem.name,
+									description: panelElem.description,
+									thumbnailPath: `${THUMBNAIL_PATH}/${resp.uid}_${panelElem.id}.png`,
+									grafanaJSON: panelElem.grafanaJSON,
+									grafanaUrl: `${GRAFANA_URL}${resp.url}?orgId=1&viewPanel=${panelElem.id}`,
+									width: panelElem.width
+								}
+							}
+						}))
+					}
+				},
+				update: {
+					id: resp.uid,
+					name: dashboardName,
+					description: dashboardDescription,
+					published: Boolean(published),
+					tags: tags,
+					thumbnailPath: thumbnailPath,
+					grafanaJSON: grafanaObject,
+					columns: Number(colCount),
+					grafanaUrl: `${GRAFANA_URL}${resp.url}`,
+					version: resp.version,
+					userId: user.id,
+					panels: {
+						deleteMany: {},
+						create: panelFormJSON.map((panelElem: Panel) => ({
+							panel: {
+								create: {
+									id: `${resp.uid}-${panelElem.id}-${resp.version}`,
 									name: panelElem.name,
 									description: panelElem.description,
 									thumbnailPath: `${THUMBNAIL_PATH}/${resp.uid}_${panelElem.id}.png`,

@@ -76,7 +76,8 @@ export async function createGrafanaDashboardPayload(
 	panelForm: Panel[],
 	dashboardName: string,
 	tags: string[],
-	userFolder: string
+	userFolder: string,
+	dashboardId: string | null = null
 ) {
 	const grafanaObject = {
 		dashboard: {
@@ -87,6 +88,11 @@ export async function createGrafanaDashboardPayload(
 		},
 		folderUid: userFolder
 	};
+
+	if (dashboardId !== null) 
+		grafanaObject.dashboard.id = 195;
+		grafanaObject.overwrite = true;
+
 	return grafanaObject;
 }
 
