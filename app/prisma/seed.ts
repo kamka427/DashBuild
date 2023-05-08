@@ -153,7 +153,7 @@ async function main() {
 								name: panelElem.name,
 								description: panelElem.description,
 								thumbnailPath: panelElem.thumbnailPath,
-								grafanaJSON: JSON.stringify(panelElem.grafanaJSON),
+								grafanaJSON: JSON.parse(JSON.stringify(panelElem.grafanaJSON)),
 								grafanaUrl: panelElem.grafanaUrl,
 								width: panelElem.width
 							}
