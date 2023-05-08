@@ -85,13 +85,14 @@
 		<div
 			draggable="true"
 			id={panel.id}
-			class="card-compact card h-full w-full bg-base-300 text-base-content"
+			class="card-compact card  bg-base-300 text-base-content"
 		>
 			<figure>
 				<img
 					src="../{panel?.thumbnailPath}"
 					class="rounded-md shadow-xl"
 					alt="Dashboard thumbnail"
+					id = {panel.id}
 				/>
 			</figure>
 			{#if state === 'preview' || state === 'edit'}
