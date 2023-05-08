@@ -28,13 +28,12 @@
 		JSON: {
 			description: string;
 		};
-		Python: string;
 		thumbnailPath: string;
 	}) {
 		panelForm = [
 			...panelForm,
 			{
-				id: (panelForm.length).toString(),
+				id: (panelForm.length + 1).toString(),
 				name: `${panel.title}`,
 				description: panel.JSON.description || 'No description provided',
 				thumbnailPath: panel.thumbnailPath,
@@ -43,6 +42,7 @@
 					id: panelForm.length + 1
 				},
 				grafanaUrl: null,
+				position: panelForm.length,
 				width: 1
 			}
 		];
@@ -70,6 +70,8 @@
 		panelForm[draggedPanelIndex] = panelForm[currentPanelIndex];
 		panelForm[currentPanelIndex] = temp;
 	}
+
+	$: console.log(panelForm);
 
 </script>
 

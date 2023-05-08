@@ -59,7 +59,7 @@ export function calculateGridPos(
 		y: 0
 	};
 
-	const panelIndex = parseInt(panel.id);
+	const panelIndex = panel.position;
 
 	const row = Math.floor(panelIndex / colCount);
 	const col = panelIndex % colCount;

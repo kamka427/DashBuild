@@ -127,7 +127,8 @@ export const actions: Actions = {
 									thumbnailPath: `${THUMBNAIL_PATH}/${resp.uid}_${panelElem.id}.png`,
 									grafanaJSON: panelElem.grafanaJSON,
 									grafanaUrl: `${GRAFANA_URL}${resp.url}?orgId=1&viewPanel=${panelElem.id}`,
-									width: panelElem.width
+									width: panelElem.width,
+									position: panelElem.position
 								}
 							}
 						}))

@@ -63,8 +63,8 @@ export async function generateDashboardThumbnail(panelList: Panel[], dashboardNa
 		create: {
 			width: 2010,
 			height: 1010,
-			channels: 3,
-			background: { r: 0, g: 0, b: 0 }
+			channels: 4,
+			background: { r: 0, g: 0, b: 0, alpha: 0 }
 		}
 	})
 		.composite(inputs)
@@ -125,7 +125,8 @@ async function main() {
 				thumbnailPath: panel.thumbnailPath,
 				grafanaJSON: panel.JSON,
 				grafanaUrl: null,
-				width: Math.floor(Math.random() * columns) + 1
+				width: Math.floor(Math.random() * columns) + 1,
+				position: i
 			});
 		}
 

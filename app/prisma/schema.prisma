@@ -89,6 +89,7 @@ model Panel {
   grafanaJSON   Json
   grafanaUrl    String?
   width         Int                  @default(1)
+  position      Int                  @default(1)
   dashboards    PanelsOnDashboards[]
 }
 
