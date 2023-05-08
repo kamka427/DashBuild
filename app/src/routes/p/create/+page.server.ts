@@ -75,7 +75,7 @@ export const actions: Actions = {
 
 		const user = await prisma.user.findUniqueOrThrow({
 			where: {
-				email: session?.user?.email as string
+				id: session?.user.id as string
 			},
 			include: {
 				dashboards: true
@@ -86,9 +86,7 @@ export const actions: Actions = {
 
 		const dashboardExists = await prisma.dashboard.findFirst({
 			where: {
-				user: {
-					email: user.email
-				},
+				userId: user.id,
 				name: dashboardName
 			},
 			include: {
@@ -186,18 +184,18 @@ export const actions: Actions = {
 			await updateAllThumbnails(uidAndSlug, panelFormJSON);
 
 			throw redirect(301, `/p/view/${resp.uid}`);
+
+			return {
+				status: 200,
+				body: {
+					message: 'Dashboard saved'
+				}
+			};
 		} else {
 			return fail(422, {
 				description: resp.message,
 				error: resp.status
 			});
 		}
-
-		return {
-			status: 200,
-			body: {
-				message: 'Dashboard saved'
-			}
-		};
 	}
 };

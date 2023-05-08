@@ -51,6 +51,18 @@ export const handle = sequence(
 			strategy: 'jwt',
 			maxAge: 60 * 60 * 24 * 30, // 30 days
 			updateAge: 60 * 60 * 24 // 1 day
+		},
+		callbacks: {
+			async jwt({ token, user }) {
+				if (user) {
+					token.id = user.id;
+				}
+				return token;
+			},
+			async session({ session, token }) {
+				session.user.id = token.id;
+				return session;
+			}
 		}
 	}),
 	authorization

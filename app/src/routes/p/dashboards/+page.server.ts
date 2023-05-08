@@ -2,9 +2,14 @@ import type { PageServerLoad, Actions } from './$types';
 import { fail } from '@sveltejs/kit';
 import { prisma } from '$lib/utils/prisma';
 
-export const load: PageServerLoad = async () => {
+export const load: PageServerLoad = async ({ locals }) => {
+	const session = await locals.getSession();
+
 	return {
 		dashboards: prisma.dashboard.findMany({
+			where: {
+				userId: session?.user.id
+			},
 			include: {
 				user: true
 			},

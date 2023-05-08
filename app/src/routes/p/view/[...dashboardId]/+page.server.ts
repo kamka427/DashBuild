@@ -1,23 +1,28 @@
 import type { PageServerLoad, Actions } from './$types';
-import { fail } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import { prisma } from '$lib/utils/prisma';
 
-export const load: PageServerLoad = async ({ url }) => {
-	return {
-		dashboard: prisma.dashboard.findUniqueOrThrow({
-			where: {
-				id: url.pathname.split('/')[3]
-			},
-			include: {
-				user: true,
-				panels: {
-					include: {
-						panel: true
-					}
+export const load: PageServerLoad = async ({ locals, url }) => {
+	const session = await locals.getSession();
+
+	const dashboard = prisma.dashboard.findUniqueOrThrow({
+		where: {
+			id: url.pathname.split('/')[3]
+		},
+		include: {
+			user: true,
+			panels: {
+				include: {
+					panel: true
 				}
 			}
-		})
-	};
+		}
+	});
+
+	if (!(await dashboard).published && dashboard.userId !== session?.user.id) {
+		throw redirect(300, '/p/gallery');
+	}
+	return { dashboard };
 };
 
 export const actions: Actions = {
