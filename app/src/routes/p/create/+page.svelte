@@ -34,7 +34,7 @@
 		panelForm = [
 			...panelForm,
 			{
-				id: (panelForm.length + 1).toString(),
+				id: (panelForm.length).toString(),
 				name: `${panel.title}`,
 				description: panel.JSON.description || 'No description provided',
 				thumbnailPath: panel.thumbnailPath,
