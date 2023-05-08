@@ -36,11 +36,6 @@ export const handle = sequence(
 					}
 				},
 				from: process.env.EMAIL_FROM,
-				type: 'email',
-				sendVerificationRequest: function (params: SendVerificationRequestParams): Awaitable<void> {
-					throw new Error('Function not implemented.');
-				},
-				id: 'email',
 				name: 'Sign in with Email'
 			}) as any,
 			Azure({
