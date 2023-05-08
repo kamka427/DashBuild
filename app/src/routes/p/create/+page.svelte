@@ -4,9 +4,11 @@
 	import BreadCrumbs from '$lib/components/BreadCrumbs.svelte';
 	import NewPanelCard from '$lib/components/NewPanelCard.svelte';
 	import type { Panel } from '@prisma/client';
-	import type { PageData } from './$types';
+	import type { ActionData, PageData } from './$types';
+	import { applyAction, enhance } from '$app/forms';
 
 	export let data: PageData;
+	export let form: ActionData;
 
 	export let dashboardName = '';
 	export let colCount = 2;
@@ -77,7 +79,8 @@
 		panel.position = index;
 	}
 
-	$: console.log(panelForm);
+	$: console.log(published);
+	$: console.log(form);
 
 	export let isLoading = false;
 </script>
@@ -85,6 +88,9 @@
 <svelte:head>
 	<title>Create Dashboard</title>
 </svelte:head>
+{#if form?.error}
+	<p class="error">{form.error}</p>
+{/if}
 <main
 	class="container mx-auto space-y-6
 	{isLoading ? 'animate-pulse' : ''}
@@ -116,7 +122,20 @@
 		/>
 	</div>
 
-	<form action="?/saveDashboard" method="POST" class="">
+	<form
+		action="?/saveDashboard"
+		method="POST"
+		use:enhance={() => {
+			return async ({ result, update }) => {
+				if (result.type === 'success') {
+					isLoading = false;
+				} else if (result.type === 'error') {
+					await applyAction(result);
+				}
+				update();
+			};
+		}}
+	>
 		<input type="hidden" value={dashboardName} name="dashboardName" />
 		<input type="hidden" value="test desc" name="dashboardDescription" />
 		<input type="hidden" value={colCount} name="colCount" />
@@ -131,13 +150,7 @@
 					panelForm = [];
 				}}>Reset</button
 			>
-			<button
-				type="submit"
-				class="btn-primary btn"
-				on:click={() => {
-					isLoading = true;
-				}}>Save Dashboard</button
-			>
+			<button type="submit" class="btn-primary btn">Save Dashboard</button>
 		</div>
 	</form>
 </main>

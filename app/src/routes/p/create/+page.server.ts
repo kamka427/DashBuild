@@ -37,9 +37,28 @@ export const actions: Actions = {
 				dashboardDescription: string;
 				colCount: number;
 				tags: string;
-				published: boolean;
+				published: string;
 				panelForm: string;
 			};
+
+		if (dashboardName.length < 3 || dashboardName.length > 50) {
+			return fail(422, {
+				description: dashboardName,
+				error: "The dashboard's name should be between 3 and 60 characters"
+			});
+		}
+
+		if (colCount < 1 || colCount > 4) {
+			return fail(422, {
+				description: colCount,
+				error: "The dashboard's column count should be between 1 and 4"
+			});
+		}
+
+		if (published !== 'true' && published !== 'false') {
+			console.log(published);
+			return fail(422, { description: published, error: 'Published should be a boolean' });
+		}
 
 		let panelFormJSON = JSON.parse(panelForm);
 		panelFormJSON = panelFormJSON.map((panel: Panel & { grafanaJSON: any }) => {
@@ -168,7 +187,10 @@ export const actions: Actions = {
 
 			throw redirect(301, `/p/view/${resp.uid}`);
 		} else {
-			fail(500, { message: 'Grafana API call failed' });
+			return fail(422, {
+				description: resp.message,
+				error: resp.status
+			});
 		}
 
 		return {
