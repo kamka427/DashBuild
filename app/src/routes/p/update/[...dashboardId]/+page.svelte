@@ -11,10 +11,11 @@
 	export let dashboardName = data.dashboard.name;
 	export let colCount = data.dashboard.columns;
 	export let tags = data.dashboard.tags;
-	export let teamName = data.dashboard.user.team;
 	export let published = data.dashboard.published;
 
-	export const panelList = data.dashboard.panels.map((panel) => panel.panel);
+	export const panelList = data.dashboard.panels
+		.map((panel) => panel.panel)
+		.sort((a, b) => a.position - b.position);
 
 	export let panelForm: Panel[] = panelList;
 	export let selectedPanel = {} as {
@@ -45,7 +46,8 @@
 					id: panelForm.length + 1
 				},
 				grafanaUrl: null,
-				width: 1
+				width: 1,
+				position: panelForm.length
 			}
 		];
 	}
@@ -80,7 +82,7 @@
 <main class="container mx-auto space-y-6">
 	<div class="flex flex-col items-center justify-between gap-2 lg:flex-row">
 		<BreadCrumbs />
-		<DashboardProperties bind:dashboardName bind:colCount bind:tags bind:teamName bind:published />
+		<DashboardProperties bind:dashboardName bind:colCount bind:tags bind:published />
 	</div>
 	<div class="grid grid-cols-{colCount} gap-4">
 		{#each panelForm as panel}
@@ -109,7 +111,6 @@
 		<input type="hidden" value="test desc" name="dashboardDescription" />
 		<input type="hidden" value={colCount} name="colCount" />
 		<input type="hidden" value={tags} name="tags" />
-		<input type="hidden" value={teamName} name="teamName" />
 		<input type="hidden" value={published} name="published" />
 		<input type="hidden" value={JSON.stringify(panelForm)} name="panelForm" />
 		<div class="btn-group">

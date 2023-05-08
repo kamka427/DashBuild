@@ -2,7 +2,6 @@
 	export let dashboardName: string;
 	export let colCount: number;
 	export let tags: string[];
-	export let teamName: string | null;
 	export let published: boolean;
 </script>
 
@@ -34,15 +33,6 @@
 			placeholder="Tags separated by comma"
 			class="input-bordered input"
 			bind:value={tags}
-		/>
-	</label>
-	<label class="input-group flex-1">
-		<span>Team</span>
-		<input
-			type="text"
-			placeholder="Team name (optional)"
-			class="input-bordered input"
-			bind:value={teamName}
 		/>
 	</label>
 	<label class="input-group">
