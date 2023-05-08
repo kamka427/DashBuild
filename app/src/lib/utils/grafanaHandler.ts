@@ -59,7 +59,7 @@ export function calculateGridPos(
 		y: 0
 	};
 
-	const panelIndex = panel.position;
+	const panelIndex = panel.position - 1;
 
 	const row = Math.floor(panelIndex / colCount);
 	const col = panelIndex % colCount;
@@ -89,9 +89,8 @@ export async function createGrafanaDashboardPayload(
 		folderUid: userFolder
 	};
 
-	if (dashboardId !== null) 
-		grafanaObject.dashboard.id = 195;
-		grafanaObject.overwrite = true;
+	if (dashboardId !== null) grafanaObject.dashboard.id = 195;
+	grafanaObject.overwrite = true;
 
 	return grafanaObject;
 }

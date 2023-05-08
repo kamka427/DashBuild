@@ -63,6 +63,9 @@
 							</form>
 							<a href="/p/update/{data.dashboard.id}" class="btn-primary btn">Edit</a>
 							<!-- <a href="/p/create/{data.dashboard.id}" class="btn-secondary btn">Copy</a> -->
+							<form action="?/refreshThumbnails" method="POST" class="btn-info btn">
+								<button type="submit"> Refresh </button>
+							</form>
 						</div>
 					</div>
 				</div>

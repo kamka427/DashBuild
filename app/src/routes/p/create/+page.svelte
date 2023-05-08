@@ -43,7 +43,7 @@
 					id: panelForm.length + 1
 				},
 				grafanaUrl: null,
-				position: panelForm.length,
+				position: panelForm.length +1,
 				width: 1,
 				createdAt: null,
 				updatedAt: null

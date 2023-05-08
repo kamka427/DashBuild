@@ -70,6 +70,9 @@ export async function copyDefaultThumbnail(
 }
 
 export async function updatePanelThumbnailsWithApi(uidAndSlug: string, panelId: string) {
+	console.log(
+		`${GRAFANA_URL}/render/d-solo/${uidAndSlug}?orgId=1&panelId=${panelId}&width=1000&height=500`
+	);
 	const response = await fetch(
 		`${GRAFANA_URL}/render/d-solo/${uidAndSlug}?orgId=1&panelId=${panelId}&width=1000&height=500`,
 		{
@@ -85,15 +88,19 @@ export async function updatePanelThumbnailsWithApi(uidAndSlug: string, panelId: 
 
 	const uid = uidAndSlug.split('/')[0];
 	await writeFilePromise(`${path.resolve('app', THUMBNAIL_PATH)}/${uid}_${panelId}.png`, buff);
+	console.log(response);
+
 	return response;
 }
 
 export async function updateAllThumbnails(uidAndSlug: string, panelList: Panel[]) {
+	console.log('Updating all thumbnails');
 	const promises = panelList.map(async (panel) => {
-		await updatePanelThumbnailsWithApi(uidAndSlug, panel.id.toString());
+		await updatePanelThumbnailsWithApi(uidAndSlug, panel.position.toString());
 		return Promise.resolve();
 	});
 
 	await Promise.all(promises);
 	await generateDashboardThumbnail(panelList, uidAndSlug.split('/')[0]);
+	console.log('All thumbnails updated');
 }
