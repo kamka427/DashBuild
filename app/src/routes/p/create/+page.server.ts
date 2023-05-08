@@ -37,7 +37,6 @@ export const actions: Actions = {
 				dashboardDescription: string;
 				colCount: number;
 				tags: string;
-				teamName: string;
 				published: boolean;
 				panelForm: string;
 			};
@@ -165,7 +164,7 @@ export const actions: Actions = {
 				}
 			});
 
-			updateAllThumbnails(uidAndSlug, panelFormJSON);
+			await updateAllThumbnails(uidAndSlug, panelFormJSON);
 
 			throw redirect(301, `/p/view/${resp.uid}`);
 		} else {

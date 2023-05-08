@@ -11,7 +11,6 @@
 	export let dashboardName = '';
 	export let colCount = 2;
 	export let tags: string[] = [];
-	export let teamName: string | null = null;
 	export let published = false;
 
 	export let panelForm: Panel[] = [];
@@ -73,15 +72,20 @@
 
 	$: console.log(panelForm);
 
+	export let isLoading = false;
 </script>
 
 <svelte:head>
 	<title>Create Dashboard</title>
 </svelte:head>
-<main class="container mx-auto space-y-6">
+<main
+	class="container mx-auto space-y-6
+	{isLoading ? 'animate-pulse' : ''}
+"
+>
 	<div class="flex flex-col items-center justify-between gap-2 lg:flex-row">
 		<BreadCrumbs />
-		<DashboardProperties bind:dashboardName bind:colCount bind:tags bind:teamName bind:published />
+		<DashboardProperties bind:dashboardName bind:colCount bind:tags bind:published />
 	</div>
 	<div class="grid grid-cols-{colCount} gap-4">
 		{#each panelForm as panel}
@@ -110,7 +114,6 @@
 		<input type="hidden" value="test desc" name="dashboardDescription" />
 		<input type="hidden" value={colCount} name="colCount" />
 		<input type="hidden" value={tags} name="tags" />
-		<input type="hidden" value={teamName} name="teamName" />
 		<input type="hidden" value={published} name="published" />
 		<input type="hidden" value={JSON.stringify(panelForm)} name="panelForm" />
 		<div class="btn-group">
@@ -121,7 +124,13 @@
 					panelForm = [];
 				}}>Reset</button
 			>
-			<button type="submit" class="btn-primary btn">Save Dashboard</button>
+			<button
+				type="submit"
+				class="btn-primary btn"
+				on:click={() => {
+					isLoading = true;
+				}}>Save Dashboard</button
+			>
 		</div>
 	</form>
 </main>
