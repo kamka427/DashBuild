@@ -83,6 +83,10 @@
 	$: console.log(form);
 
 	export let isLoading = false;
+
+	$: if (form?.error) {
+		isLoading = false;
+	}
 </script>
 
 <svelte:head>
@@ -122,20 +126,7 @@
 		/>
 	</div>
 
-	<form
-		action="?/saveDashboard"
-		method="POST"
-		use:enhance={() => {
-			return async ({ result, update }) => {
-				if (result.type === 'success') {
-					isLoading = false;
-				} else if (result.type === 'error') {
-					await applyAction(result);
-				}
-				update();
-			};
-		}}
-	>
+	<form action="?/saveDashboard" method="POST" use:enhance>
 		<input type="hidden" value={dashboardName} name="dashboardName" />
 		<input type="hidden" value="test desc" name="dashboardDescription" />
 		<input type="hidden" value={colCount} name="colCount" />
@@ -150,7 +141,15 @@
 					panelForm = [];
 				}}>Reset</button
 			>
-			<button type="submit" class="btn-primary btn">Save Dashboard</button>
+			<button
+				type="submit"
+				class="btn-primary btn"
+				on:click={() => {
+					isLoading = true;
+				}}
+			>
+				Save Dashboard</button
+			>
 		</div>
 	</form>
 </main>
