@@ -1,6 +1,6 @@
 version: '3.9'
 services:
-  db:
+  postgres:
     image: postgres:alpine3.17
     restart: always
     environment:
@@ -28,16 +28,16 @@ services:
       GF_RENDERING_CALLBACK_URL: http://grafana:3000/
       GF_LOG_FILTERS: rendering:debug
 
-  renderer:
+  grafana_image_renderer:
     platform: linux/amd64
     image: grafana/grafana-image-renderer:latest
     ports:
-      - 8081
+      - 8081:8081
     depends_on:
       - grafana
 
-  panel_service:
-    build: ./panel_service
+  panel_interpreter:
+    build: ./panel_interpreter
     restart: always
     ports:
       - 8000:8000
@@ -48,9 +48,9 @@ services:
     ports:
       - 80:80
     depends_on:
-      - db
+      - postgres
       - grafana
-      - panel_service
+      - grafana_image_renderer
 
 volumes:
   db_data:
