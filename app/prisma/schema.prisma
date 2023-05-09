@@ -52,7 +52,6 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
-  team          String      @default("Individual")
   dashboards    Dashboard[]
   role          String      @default("user")
 }
@@ -77,7 +76,7 @@ model Dashboard {
   grafanaUrl          String?
   columns             Int                  @default(2)
   tags                String[]
-  user                User                 @relation(fields: [userId], references: [id])
+  user                User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId              String
   panels              PanelsOnDashboards[]
   createdAt           DateTime?            @default(now())
@@ -88,7 +87,7 @@ model DashboardIteration {
   id          String    @id @default(cuid())
   version     Int       @default(1)
   grafanaJSON Json
-  dashboard   Dashboard @relation(fields: [dashboardId], references: [id])
+  dashboard   Dashboard @relation(fields: [dashboardId], references: [id], onDelete: Cascade)
   dashboardId String
   createdAt   DateTime? @default(now())
   updatedAt   DateTime? @updatedAt
