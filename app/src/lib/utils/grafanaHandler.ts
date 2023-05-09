@@ -71,15 +71,15 @@ export async function createGrafanaDashboardPayload(
 	dashboardName: string,
 	tags: string[],
 	userFolder: string,
-	exitingDashboard: Dashboard | null = null
+	existingDashboard: Dashboard | null = null
 ) {
 	const grafanaObject = {
 		dashboard: {
 			title: dashboardName,
 			panels: panelForm.map((panel) => panel.grafanaJSON),
 			tags: tags,
-			uid: exitingDashboard !== null ? exitingDashboard.id : null,
-			version: exitingDashboard !== null ? exitingDashboard.version : null
+			uid: existingDashboard !== null ? existingDashboard.id : null,
+			version: existingDashboard !== null ? existingDashboard.version : null
 		},
 		folderUid: userFolder
 	};
