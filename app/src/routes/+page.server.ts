@@ -6,7 +6,8 @@ export const load: PageServerLoad = async () => {
 		dashboards: await prisma.dashboard.findMany({
 			where: {
 				published: true
-			}
+			},
+			take: 4,
 		})
 	};
 };
