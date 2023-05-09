@@ -22,52 +22,35 @@ services:
         source: grafana_data
         target: /var/lib/grafana
     ports:
-      - 3030:3000
+      - 3000:3000
     environment:
       GF_RENDERING_SERVER_URL: http://renderer:8081/render
-      GF_RENDERING_CALLBACK_URL: http://grafana:3030/
+      GF_RENDERING_CALLBACK_URL: http://grafana:3000/
       GF_LOG_FILTERS: rendering:debug
-      # VIRTUAL_HOST: grafana.local
-      # VIRTUAL_PORT: 3030
 
   renderer:
     platform: linux/amd64
     image: grafana/grafana-image-renderer:latest
     ports:
       - 8081
+    depends_on:
+      - grafana
 
   panel_service:
-    build: 
-      context: ./panel_service
-      # network: host
+    build: ./panel_service
     restart: always
     ports:
-      - 8000:80
-    # environment:
-    #   - VIRTUAL_HOST=panel_service.local
-    #   - VIRTUAL_PORT=8000
+      - 8000:8000
 
-  dashbuild:
-    build:
-      context: ./app
-      # network: host
+  app:
+    build: ./app
     restart: always
     ports:
-      - 3000:3000
-    # environment:
-    #   - VIRTUAL_HOST=dashbuild.local
-    #   - VIRTUAL_PORT=3000
+      - 80:3000
     depends_on:
       - db
       - grafana
       - panel_service
-
-  # nginx-proxy:
-  #   image: nginxproxy/nginx-proxy
-  #   ports:
-  #     - "80:80"
-  #   volumes:
-  #     - /var/run/docker.sock:/tmp/docker.sock:ro
 
 volumes:
   db_data:
