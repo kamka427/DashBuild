@@ -82,18 +82,14 @@ export async function createDashboardQuery(
 			userId: user.id,
 			panels: {
 				create: panelFormJSON.map((panelElem: Panel) => ({
-					panel: {
-						create: {
-							id: `${resp.uid}-${panelElem.id}`,
-							name: panelElem.name,
-							description: panelElem.description,
-							thumbnailPath: `/thumbnails/${resp.uid}_${panelElem.id}.png`,
-							grafanaJSON: panelElem.grafanaJSON,
-							grafanaUrl: `${GRAFANA_URL}${resp.url}?orgId=1&viewPanel=${panelElem.id}`,
-							width: panelElem.width,
-							position: panelElem.position
-						}
-					}
+					id: `${resp.uid}-${panelElem.position}`,
+					name: panelElem.name,
+					description: panelElem.description,
+					thumbnailPath: `/thumbnails/${resp.uid}_${panelElem.position}.png`,
+					grafanaJSON: panelElem.grafanaJSON,
+					grafanaUrl: `${GRAFANA_URL}${resp.url}?orgId=1&viewPanel=${panelElem.id}`,
+					width: panelElem.width,
+					position: panelElem.position
 				}))
 			}
 		}
@@ -136,30 +132,31 @@ export async function updateDashboardQuery(
 			},
 			userId: user.id,
 			panels: {
-				deleteMany: {},
-				create: panelFormJSON.map((panelElem: Panel) => ({
-					panel: {
-						create: {
-							id: `${resp.uid}-${panelElem.id}-${resp.version}`,
-							name: panelElem.name,
-							description: panelElem.description,
-							thumbnailPath: `/thumbnails/${resp.uid}_${panelElem.id}.png`,
-							grafanaJSON: panelElem.grafanaJSON,
-							grafanaUrl: `${GRAFANA_URL}${resp.url}?orgId=1&viewPanel=${panelElem.id}`,
-							width: panelElem.width
-						}
+				deleteMany: {
+					id: {
+						in: panelFormJSON.map((panelElem: Panel) => `${resp.uid}-${panelElem.position}`)
 					}
+				},
+				create: panelFormJSON.map((panelElem: Panel) => ({
+					id: `${resp.uid}-${panelElem.position}`,
+					name: panelElem.name,
+					description: panelElem.description,
+					thumbnailPath: `/thumbnails/${resp.uid}_${panelElem.position}.png`,
+					grafanaJSON: panelElem.grafanaJSON,
+					grafanaUrl: `${GRAFANA_URL}${resp.url}?orgId=1&viewPanel=${panelElem.id}`,
+					width: panelElem.width,
+					position: panelElem.position
 				}))
 			}
 		}
 	});
 }
 
-export async function iterateThumbnailPaths(panelFormJSON: any, resp: any) {
+export async function initThumbnailsAndPaths(panelFormJSON: any, resp: any) {
 	const thumbnailPath = await generateDashboardThumbnail(panelFormJSON, resp.uid);
 	panelFormJSON.map(async (panel: Panel) => {
-		await copyDefaultThumbnail(resp.uid, panel.id, panel.thumbnailPath);
-		panel.thumbnailPath = `thumbnail/${resp.uid}_${panel.id}.png`;
+		await copyDefaultThumbnail(resp.uid, panel.position, panel.thumbnailPath);
+		panel.thumbnailPath = `thumbnail/${resp.uid}_${panel.position}.png`;
 		return panel;
 	});
 	return thumbnailPath;

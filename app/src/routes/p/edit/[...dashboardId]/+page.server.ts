@@ -10,7 +10,7 @@ import {
 	generatePanelFormJSON,
 	generateTags,
 	getUidAndSlug,
-	iterateThumbnailPaths,
+	initThumbnailsAndPaths,
 	queryExistingDashboard,
 	updateDashboardQuery,
 	validateForm
@@ -26,11 +26,7 @@ export const load: PageServerLoad = async ({ url }) => {
 			},
 			include: {
 				user: true,
-				panels: {
-					include: {
-						panel: true
-					}
-				}
+				panels: true
 			}
 		}),
 		predefinedPanels: fetchPanels()
@@ -41,21 +37,15 @@ export const actions: Actions = {
 	saveDashboard: async ({ request, locals, url }) => {
 		const session = await locals.getSession();
 
-		const {
-			dashboardName,
-			dashboardDescription,
-			colCount,
-			tags,
-			published,
-			panelForm,
-		} = Object.fromEntries(await request.formData()) as unknown as {
-			dashboardName: string;
-			dashboardDescription: string;
-			colCount: number;
-			tags: string;
-			published: string;
-			panelForm: string;
-		};
+		const { dashboardName, dashboardDescription, colCount, tags, published, panelForm } =
+			Object.fromEntries(await request.formData()) as unknown as {
+				dashboardName: string;
+				dashboardDescription: string;
+				colCount: number;
+				tags: string;
+				published: string;
+				panelForm: string;
+			};
 
 		validateForm(dashboardName, colCount, published);
 
@@ -71,7 +61,6 @@ export const actions: Actions = {
 			return error(403, 'You are not allowed to edit this dashboard');
 		}
 
-
 		await createGrafanaFolder(user);
 
 		const grafanaObject = await createGrafanaDashboardPayload(
@@ -86,7 +75,7 @@ export const actions: Actions = {
 		if (resp.status === 'success') {
 			const uidAndSlug = getUidAndSlug(resp);
 
-			const thumbnailPath = await iterateThumbnailPaths(panelFormJSON, resp);
+			const thumbnailPath = await initThumbnailsAndPaths(panelFormJSON, resp);
 
 			await updateDashboardQuery(
 				resp,

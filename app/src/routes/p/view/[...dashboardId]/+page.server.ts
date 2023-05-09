@@ -12,11 +12,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 		},
 		include: {
 			user: true,
-			panels: {
-				include: {
-					panel: true
-				}
-			},
+			panels: true,
 			dashboardIterations: {
 				include: {
 					dashboard: true

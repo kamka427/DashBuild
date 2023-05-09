@@ -15,7 +15,6 @@
 	export let published = data.dashboard.published;
 
 	export const panelList = data.dashboard.panels
-		.map((panel) => panel.panel)
 		.sort((a, b) => a.position - b.position);
 
 	export let panelForm: Panel[] = panelList;
@@ -48,7 +47,10 @@
 				},
 				grafanaUrl: null,
 				width: 1,
-				position: panelForm.length
+				position: panelForm.length +1,
+				createdAt: new Date(),
+				updatedAt: new Date(),
+				dashboardId: data.dashboard.id
 			}
 		];
 	}

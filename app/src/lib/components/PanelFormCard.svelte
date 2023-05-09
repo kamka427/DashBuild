@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { enabledPanelFields } from '$lib/configs/enabledPanelFields.json';
 	import type { Panel } from '@prisma/client';
 
 	export let panel: Panel;
@@ -12,7 +11,6 @@
 
 	const type = getPanelType(panel as Panel) as string;
 
-	const props = enabledPanelFields[type] ? Object.keys(enabledPanelFields[type]) : [];
 
 	export let removeAction: any;
 
@@ -24,9 +22,7 @@
 	export let isDragged = false;
 	export let dragOn: boolean;
 
-	function updateJSON(key, value) {
-		panel.grafanaJSON[key] = value;
-	}
+	
 </script>
 
 <div
@@ -85,7 +81,7 @@
 		<div draggable="true" id={panel.id} class="card-compact card bg-base-300 text-base-content">
 			<figure>
 				<img
-					src="../{panel?.thumbnailPath}"
+					src="{panel?.thumbnailPath}"
 					class="rounded-md shadow-xl"
 					alt="Dashboard thumbnail"
 					id={panel.id}
@@ -116,14 +112,14 @@
 								<label class="input-group">
 									<span class="bg-accent text-accent-content">{prop}</span>
 									<select class="select-bordered select">
-										{#each enabledPanelFields[type][prop] as option}
+										<!-- {#each enabledPanelFields[type][prop] as option}
 											<option
 												value={option}
 												on:input={() => {
 													updateJSON(prop, option);
 												}}>{option}</option
 											>
-										{/each}
+										{/each} -->
 									</select>
 								</label>
 							{/each}

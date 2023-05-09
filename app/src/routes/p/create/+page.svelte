@@ -46,7 +46,8 @@
 				position: panelForm.length + 1,
 				width: 1,
 				createdAt: null,
-				updatedAt: null
+				updatedAt: null,
+				dashboardId: ''
 			}
 		];
 	}

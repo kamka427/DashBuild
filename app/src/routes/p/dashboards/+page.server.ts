@@ -19,6 +19,9 @@ export const load: PageServerLoad = async ({ locals }) => {
 			}
 		}),
 		tags: await prisma.dashboard.findMany({
+			where: {
+				userId: session?.user.id
+			},
 			select: {
 				tags: true
 			}

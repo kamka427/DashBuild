@@ -13,7 +13,7 @@ import {
 	generatePanelFormJSON,
 	generateTags,
 	getUidAndSlug,
-	iterateThumbnailPaths,
+	initThumbnailsAndPaths,
 	queryExistingDashboard,
 	validateForm
 } from '$lib/utils/dashboardHandler';
@@ -60,7 +60,7 @@ export const actions: Actions = {
 		if (resp.status === 'success') {
 			const uidAndSlug = getUidAndSlug(resp);
 
-			const thumbnailPath = await iterateThumbnailPaths(panelFormJSON, resp);
+			const thumbnailPath = await initThumbnailsAndPaths(panelFormJSON, resp);
 
 			await createDashboardQuery(
 				resp,

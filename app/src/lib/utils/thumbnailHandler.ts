@@ -7,6 +7,7 @@ import type { Panel } from '@prisma/client';
 const writeFilePromise = promisify(fs.writeFile);
 
 export async function generateDashboardThumbnail(panelList: Panel[], uid: string) {
+
 	const locations: {
 		[key: string]: string;
 	} = {
@@ -45,12 +46,12 @@ export async function generateDashboardThumbnail(panelList: Panel[], uid: string
 
 export async function copyDefaultThumbnail(
 	uid: string,
-	panelId: string,
+	position: number,
 	defaultThumbnailPath: string
 ) {
 	fs.copyFile(
 		`${path.resolve(`static/${defaultThumbnailPath}`)}`,
-		`${path.resolve(`static/thumbnails/${uid}_${panelId}.png`)}`,
+		`${path.resolve(`static/thumbnails/${uid}_${position}.png`)}`,
 		(err) => {
 			if (err) {
 				console.log(err);
@@ -58,7 +59,7 @@ export async function copyDefaultThumbnail(
 		}
 	);
 
-	return `/thumbnails/${uid}_${panelId}.png`;
+	return `/thumbnails/${uid}_${position}.png`;
 }
 
 export async function updatePanelThumbnailsWithApi(uidAndSlug: string, panelId: string) {
@@ -78,6 +79,7 @@ export async function updatePanelThumbnailsWithApi(uidAndSlug: string, panelId: 
 
 	const buff = await sharp(buffer).jpeg().toBuffer();
 
+	console.log
 	const uid = uidAndSlug.split('/')[0];
 	await writeFilePromise(`static/thumbnails/${uid}_${panelId}.png`, buff);
 	console.log(response);

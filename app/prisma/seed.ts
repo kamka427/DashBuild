@@ -10,7 +10,6 @@ const availablePanels = await fetchPanels();
 
 const prisma = new PrismaClient();
 async function main() {
-	await prisma.panelsOnDashboards.deleteMany();
 	await prisma.dashboard.deleteMany();
 	await prisma.panel.deleteMany();
 	await prisma.user.deleteMany();
@@ -37,13 +36,12 @@ async function main() {
 
 	for (let i = 0; i < Math.floor(Math.random() * 15) + 5; i++) {
 		const dashboardName = faker.company.bs();
-
 		const panelsOnDash: Panel[] = [];
 		const columns = Math.floor(Math.random() * 4) + 1;
 		for (let i = 0; i < Math.floor(Math.random() * 6) + 1; i++) {
 			const panel = faker.helpers.arrayElement(availablePanels);
 			panelsOnDash.push({
-				id: `${i}`,
+				id: faker.datatype.uuid(),
 				name: panel.title,
 				description: faker.company.bs() + ' ' + faker.company.bs() + ' ' + faker.company.bs(),
 				thumbnailPath: panel.thumbnailPath,
@@ -52,18 +50,21 @@ async function main() {
 				width: Math.floor(Math.random() * columns) + 1,
 				position: i,
 				createdAt: null,
-				updatedAt: null
+				updatedAt: null,
+				dashboardId: ''
 			});
 		}
 
 		const dashboardTags = [faker.company.bsBuzz(), faker.company.bsBuzz()];
 
 		const dashboardPreview = await generateDashboardThumbnail(panelsOnDash, dashboardName);
-		const grafanaObject = {dashboard: {
-			title: dashboardName,
-			panels: panelsOnDash.map((panel) => panel.grafanaJSON),
-			tags: dashboardTags,
-		}};
+		const grafanaObject = {
+			dashboard: {
+				title: dashboardName,
+				panels: panelsOnDash.map((panel) => panel.grafanaJSON),
+				tags: dashboardTags
+			}
+		};
 
 		await prisma.dashboard.create({
 			data: {
@@ -77,18 +78,17 @@ async function main() {
 				grafanaJSON: grafanaObject,
 				columns: columns,
 				panels: {
-					create: panelsOnDash.map((panelElem) => ({
-						panel: {
-							create: {
-								id: faker.datatype.uuid(),
-								name: panelElem.name,
-								description: panelElem.description,
-								thumbnailPath: panelElem.thumbnailPath,
-								grafanaJSON: JSON.parse(JSON.stringify(panelElem.grafanaJSON)),
-								grafanaUrl: panelElem.grafanaUrl,
-								width: panelElem.width
-							}
-						}
+					create: panelsOnDash.map((panel) => ({
+						id: panel.id,
+						name: panel.name,
+						description: panel.description,
+						thumbnailPath: panel.thumbnailPath,
+						grafanaJSON: JSON.parse(JSON.stringify(panel.grafanaJSON)),
+						grafanaUrl: panel.grafanaUrl,
+						width: panel.width,
+						position: panel.position,
+						createdAt: panel.createdAt,
+						updatedAt: panel.updatedAt
 					}))
 				}
 			}

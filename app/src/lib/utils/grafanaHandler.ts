@@ -79,7 +79,7 @@ export async function createGrafanaDashboardPayload(
 			panels: panelForm.map((panel) => panel.grafanaJSON),
 			tags: tags,
 			uid: existingDashboard !== null ? existingDashboard.id : null,
-			version: existingDashboard !== null ? existingDashboard.version : null
+			version: existingDashboard !== null ? existingDashboard.version : 1
 		},
 		folderUid: userFolder
 	};

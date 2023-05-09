@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 </script>
 
-<div class="container alert alert-error mx-auto shadow-lg">
+<div class="alert alert-error container mx-auto shadow-lg">
 	<div>
 		<svg
 			xmlns="http://www.w3.org/2000/svg"

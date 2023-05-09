@@ -78,7 +78,7 @@ model Dashboard {
   tags                String[]
   user                User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId              String
-  panels              PanelsOnDashboards[]
+  panels              Panel[]
   createdAt           DateTime?            @default(now())
   updatedAt           DateTime?            @updatedAt
 }
@@ -94,24 +94,16 @@ model DashboardIteration {
 }
 
 model Panel {
-  id            String               @id @default(cuid())
+  id            String    @id @default(cuid())
   name          String
   description   String?
   thumbnailPath String
   grafanaJSON   Json
   grafanaUrl    String?
-  width         Int                  @default(1)
-  position      Int                  @default(1)
-  dashboards    PanelsOnDashboards[]
-  createdAt     DateTime?            @default(now())
-  updatedAt     DateTime?            @updatedAt
-}
-
-model PanelsOnDashboards {
-  panel       Panel     @relation(fields: [panelId], references: [id], onDelete: Cascade)
-  panelId     String
-  dashboard   Dashboard @relation(fields: [dashboardId], references: [id], onDelete: Cascade)
-  dashboardId String
-
-  @@id([panelId, dashboardId])
+  width         Int       @default(1)
+  position      Int       @default(1)
+  dashboard     Dashboard @relation(fields: [dashboardId], references: [id], onDelete: Cascade)
+  dashboardId   String
+  createdAt     DateTime? @default(now())
+  updatedAt     DateTime? @updatedAt
 }
