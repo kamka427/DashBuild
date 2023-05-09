@@ -1,0 +1,6 @@
+{
+  "drawStyle": {
+    "key": "fieldConfig.defaults.custom.drawStyle",
+    "values": ["lines", "bars", "points"]
+  }
+}
