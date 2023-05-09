@@ -39,7 +39,6 @@
 		<span>Published</span>
 		<input
 			type="checkbox"
-			placeholder="Team name (optional)"
 			class=" toggle toggle-lg h-full"
 			bind:checked={published}
 		/>

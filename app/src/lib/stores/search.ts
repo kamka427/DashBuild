@@ -5,7 +5,6 @@ export const createSearchStore = (data: any) => {
 		data: data,
 		filtered: data,
 		search: '',
-		teamFilter: 'none',
 		tagFilter: 'none'
 	});
 
@@ -20,25 +19,21 @@ export const searchHandler = (store: {
 	search: string;
 	filtered: any;
 	data: any[];
-	teamFilter: string;
 	tagFilter: string;
 }) => {
 	const searchTerm = store.search.toLowerCase() || '';
 	const searchTerms = searchTerm.split(' ');
 	store.filtered = store.data
-		.filter((item: { name: string; description: string; tags: any[]; user: { team: string } }) => {
+		.filter((item: { name: string; description: string; tags: any[]  }) => {
 			return searchTerms.every((term: string) => {
 				return (
 					item.name.toLowerCase().includes(term) ||
 					item.description.toLowerCase().includes(term) ||
-					item.tags.join(' ').toLowerCase().includes(term) ||
-					item.user.team.toLowerCase().includes(term)
+					item.tags.join(' ').toLowerCase().includes(term) 
 				);
 			});
 		})
-		.filter((item: { user: { team: string } }) => {
-			return store.teamFilter === 'none' || item.user.team === store.teamFilter;
-		})
+
 		.filter((item: { tags: any[] }) => {
 			return store.tagFilter === 'none' || item.tags.includes(store.tagFilter);
 		});
