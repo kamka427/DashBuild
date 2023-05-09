@@ -1,13 +1,10 @@
-import {
-	GRAFANA_URL,
-	GRAFANA_API_TOKEN,
-	PANEL_PARSER_URL,
-	THUMBNAIL_PATH
-} from '$env/static/private';
+import { GRAFANA_URL, GRAFANA_API_TOKEN, PANEL_PARSER_URL } from '$env/static/private';
 import type { Dashboard, Panel } from '@prisma/client';
 
 export async function fetchPanels() {
-	const resp = await fetch(`${PANEL_PARSER_URL}`);
+	const resp = await fetch(`${PANEL_PARSER_URL}`, {
+		mode: 'cors'
+	});
 
 	const data = await resp.json();
 
@@ -30,7 +27,7 @@ export async function fetchPanels() {
 		panels.push({
 			title: panel.json_data.title,
 			JSON: panel.json_data,
-			thumbnailPath: `${THUMBNAIL_PATH}/${panel.file_name}.png`
+			thumbnailPath: `/thumbnails/${panel.file_name}.png`
 		});
 	});
 
@@ -86,9 +83,8 @@ export async function createGrafanaDashboardPayload(
 			uid: exitingDashboard !== null ? exitingDashboard.id : null,
 			version: exitingDashboard !== null ? exitingDashboard.version : null
 		},
-		folderUid: userFolder,
+		folderUid: userFolder
 	};
-
 
 	return grafanaObject;
 }
@@ -109,7 +105,8 @@ export async function callGrafanaDashboardApi(grafanaJSON: string) {
 			'Content-Type': 'application/json',
 			Authorization: GRAFANA_API_TOKEN
 		},
-		body: grafanaJSON
+		body: grafanaJSON,
+		mode: 'cors'
 	});
 
 	const resp = await response.json();
@@ -124,7 +121,8 @@ export async function callGrafanaFolderApi(grafanaJSON: string) {
 			'Content-Type': 'application/json',
 			Authorization: GRAFANA_API_TOKEN
 		},
-		body: grafanaJSON
+		body: grafanaJSON,
+		mode: 'cors'
 	});
 
 	const resp = await response.json();

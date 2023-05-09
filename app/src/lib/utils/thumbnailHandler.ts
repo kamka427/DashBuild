@@ -1,4 +1,4 @@
-import { GRAFANA_URL, GRAFANA_API_TOKEN, THUMBNAIL_PATH } from '$env/static/private';
+import { GRAFANA_URL, GRAFANA_API_TOKEN } from '$env/static/private';
 import path from 'path';
 import sharp from 'sharp';
 import fs from 'fs';
@@ -16,12 +16,10 @@ export async function generateDashboardThumbnail(panelList: Panel[], uid: string
 		'3': 'southeast'
 	};
 
-	const thumbnailPath = `${THUMBNAIL_PATH}/${uid}_dashboard.png`;
-
 	const firstFourPanels = panelList.slice(0, 4);
 	const inputs = firstFourPanels.map((panel, index) => {
 		return {
-			input: `${path.resolve('app', panel.thumbnailPath)}`,
+			input: `static/${panel.thumbnailPath}`,
 			gravity: locations[index]
 		};
 	});
@@ -36,25 +34,23 @@ export async function generateDashboardThumbnail(panelList: Panel[], uid: string
 	})
 		.composite(inputs)
 		.png()
-		.toFile(`${path.resolve('app', thumbnailPath)}`, (err) => {
+		.toFile(`static/thumbnails/${uid}_dashboard.png`, (err) => {
 			if (err) {
 				console.log(err);
 			}
 		});
 
-	return thumbnailPath;
+	return `/thumbnails/${uid}_dashboard.png`;
 }
 
 export async function copyDefaultThumbnail(
-	uuid: string,
+	uid: string,
 	panelId: string,
 	defaultThumbnailPath: string
 ) {
-	const imagePath = `${THUMBNAIL_PATH}/${uuid}_${panelId}.png`;
-
 	fs.copyFile(
-		`${path.resolve('app', defaultThumbnailPath)}`,
-		`${path.resolve('app', imagePath)}`,
+		`${path.resolve(`static/${defaultThumbnailPath}`)}`,
+		`${path.resolve(`static/thumbnails/${uid}_${panelId}.png`)}`,
 		(err) => {
 			if (err) {
 				console.log(err);
@@ -62,7 +58,7 @@ export async function copyDefaultThumbnail(
 		}
 	);
 
-	return imagePath;
+	return `/thumbnails/${uid}_${panelId}.png`;
 }
 
 export async function updatePanelThumbnailsWithApi(uidAndSlug: string, panelId: string) {
@@ -75,7 +71,9 @@ export async function updatePanelThumbnailsWithApi(uidAndSlug: string, panelId: 
 			headers: {
 				Authorization: GRAFANA_API_TOKEN
 			}
-		}
+			,mode: 'cors'
+		},
+	
 	);
 
 	const buffer = await response.arrayBuffer();

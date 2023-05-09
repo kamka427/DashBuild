@@ -5,7 +5,7 @@ import {
 	createGrafanaFolderPayload
 } from './grafanaHandler';
 import type { Dashboard, Panel, User } from '@prisma/client';
-import { GRAFANA_URL, THUMBNAIL_PATH } from '$env/static/private';
+import { GRAFANA_URL } from '$env/static/private';
 import { prisma } from './prisma';
 import { copyDefaultThumbnail, generateDashboardThumbnail } from './thumbnailHandler';
 
