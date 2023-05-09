@@ -40,7 +40,7 @@ export const load: PageServerLoad = async ({ url }) => {
 };
 
 export const actions: Actions = {
-	saveDashboard: async ({ request, locals }) => {
+	saveDashboard: async ({ request, locals, url }) => {
 		const session = await locals.getSession();
 
 		const {
@@ -50,7 +50,6 @@ export const actions: Actions = {
 			tags,
 			published,
 			panelForm,
-			dashboardId
 		} = Object.fromEntries(await request.formData()) as unknown as {
 			dashboardName: string;
 			dashboardDescription: string;
@@ -58,7 +57,6 @@ export const actions: Actions = {
 			tags: string;
 			published: string;
 			panelForm: string;
-			dashboardId: string;
 		};
 
 		validateForm(dashboardName, colCount, published);
@@ -66,6 +64,8 @@ export const actions: Actions = {
 		const tagsList = generateTags(tags);
 
 		let panelFormJSON = generatePanelFormJSON(panelForm, colCount);
+
+		const dashboardId = url.pathname.split('/')[3];
 
 		const { dashboardExists, user } = await queryExistingDashboard(session, dashboardId);
 
