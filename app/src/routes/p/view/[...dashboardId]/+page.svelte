@@ -9,6 +9,8 @@
 	export const panels = data.dashboard.panels
 		.map((panel) => panel.panel)
 		.sort((a, b) => a.position - b.position);
+
+		console.log(data.dashboard.dashboardIterations);
 </script>
 
 <svelte:head>

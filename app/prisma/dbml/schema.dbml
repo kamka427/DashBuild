@@ -35,12 +35,12 @@ Table Session {
 Table User {
   id String [pk]
   name String
-  email String [unique]
+  email String [unique, not null]
   emailVerified DateTime
   image String
   accounts Account [not null]
   sessions Session [not null]
-  team String
+  team String [not null, default: 'Individual']
   dashboards Dashboard [not null]
   role String [not null, default: 'user']
 }
@@ -61,6 +61,7 @@ Table Dashboard {
   description String
   published Boolean [not null]
   version Int [not null, default: 1]
+  dashboardIterations DashboardIteration [not null]
   thumbnailPath String [not null]
   grafanaJSON Json [not null]
   grafanaUrl String
@@ -69,6 +70,18 @@ Table Dashboard {
   user User [not null]
   userId String [not null]
   panels PanelsOnDashboards [not null]
+  createdAt DateTime [default: `now()`]
+  updatedAt DateTime
+}
+
+Table DashboardIteration {
+  id String [pk]
+  version Int [not null, default: 1]
+  grafanaJSON Json [not null]
+  dashboard Dashboard [not null]
+  dashboardId String [not null]
+  createdAt DateTime [default: `now()`]
+  updatedAt DateTime
 }
 
 Table Panel {
@@ -79,7 +92,10 @@ Table Panel {
   grafanaJSON Json [not null]
   grafanaUrl String
   width Int [not null, default: 1]
+  position Int [not null, default: 1]
   dashboards PanelsOnDashboards [not null]
+  createdAt DateTime [default: `now()`]
+  updatedAt DateTime
 }
 
 Table PanelsOnDashboards {
@@ -98,6 +114,8 @@ Ref: Account.userId > User.id [delete: Cascade]
 Ref: Session.userId > User.id [delete: Cascade]
 
 Ref: Dashboard.userId > User.id
+
+Ref: DashboardIteration.dashboardId > Dashboard.id
 
 Ref: PanelsOnDashboards.panelId > Panel.id [delete: Cascade]
 

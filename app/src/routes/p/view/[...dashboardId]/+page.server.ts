@@ -16,7 +16,13 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 				include: {
 					panel: true
 				}
+			},
+			dashboardIterations: {
+				include: {
+					dashboard: true
+				},
 			}
+
 		}
 	});
 

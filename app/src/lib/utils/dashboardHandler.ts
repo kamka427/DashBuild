@@ -72,6 +72,13 @@ export async function createDashboardQuery(
 			columns: Number(colCount),
 			grafanaUrl: `${GRAFANA_URL}${resp.url}`,
 			version: resp.version,
+			dashboardIterations: {
+				create: {
+					id: `${resp.uid}-${resp.version}`,
+					version: resp.version,
+					grafanaJSON: grafanaObject
+				}
+			},
 			userId: user.id,
 			panels: {
 				create: panelFormJSON.map((panelElem: Panel) => ({
@@ -120,6 +127,13 @@ export async function updateDashboardQuery(
 			columns: Number(colCount),
 			grafanaUrl: `${GRAFANA_URL}${resp.url}`,
 			version: resp.version,
+			dashboardIterations: {
+				create: {
+					id: `${resp.uid}-${resp.version}`,
+					version: resp.version,
+					grafanaJSON: grafanaObject
+				}
+			},
 			userId: user.id,
 			panels: {
 				deleteMany: {},
