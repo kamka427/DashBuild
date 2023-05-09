@@ -2,9 +2,7 @@ import { GRAFANA_URL, GRAFANA_API_TOKEN, PANEL_PARSER_URL } from '$env/static/pr
 import type { Dashboard, Panel } from '@prisma/client';
 
 export async function fetchPanels() {
-	const resp = await fetch(`${PANEL_PARSER_URL}`, {
-		mode: 'cors'
-	});
+	const resp = await fetch(`${PANEL_PARSER_URL}`, {});
 
 	const data = await resp.json();
 
@@ -103,10 +101,10 @@ export async function callGrafanaDashboardApi(grafanaJSON: string) {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
-			Authorization: GRAFANA_API_TOKEN
+			Authorization: GRAFANA_API_TOKEN,
+			'Access-Control-Allow-Origin': '*'
 		},
-		body: grafanaJSON,
-		mode: 'cors'
+		body: grafanaJSON
 	});
 
 	const resp = await response.json();
@@ -119,10 +117,10 @@ export async function callGrafanaFolderApi(grafanaJSON: string) {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
-			Authorization: GRAFANA_API_TOKEN
+			Authorization: GRAFANA_API_TOKEN,
+			'Access-Control-Allow-Origin': '*'
 		},
-		body: grafanaJSON,
-		mode: 'cors'
+		body: grafanaJSON
 	});
 
 	const resp = await response.json();

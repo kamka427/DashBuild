@@ -10,13 +10,9 @@
 		: 'No description provided';
 </script>
 
-<div class="card-compact card w-full bg-base-300 text-base-content">
+<div class="card-compact card bg-base-300 text-base-content w-full">
 	<figure>
-		<img
-			src="../{panel?.thumbnailPath}"
-			class="w-max rounded-md shadow-xl"
-			alt="Dashboard thumbnail"
-		/>
+		<img src={panel?.thumbnailPath} class="w-max rounded-md shadow-xl" alt="Dashboard thumbnail" />
 	</figure>
 	<div class="card-body gap-4">
 		<h2 class="card-title">{panel?.name}</h2>

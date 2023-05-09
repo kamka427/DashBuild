@@ -71,9 +71,7 @@ export async function updatePanelThumbnailsWithApi(uidAndSlug: string, panelId: 
 			headers: {
 				Authorization: GRAFANA_API_TOKEN
 			}
-			,mode: 'cors'
-		},
-	
+		}
 	);
 
 	const buffer = await response.arrayBuffer();
