@@ -87,7 +87,7 @@ export async function createDashboardQuery(
 							id: `${resp.uid}-${panelElem.id}`,
 							name: panelElem.name,
 							description: panelElem.description,
-							thumbnailPath: `${THUMBNAIL_PATH}/${resp.uid}_${panelElem.id}.png`,
+							thumbnailPath: `/thumbnails/${resp.uid}_${panelElem.id}.png`,
 							grafanaJSON: panelElem.grafanaJSON,
 							grafanaUrl: `${GRAFANA_URL}${resp.url}?orgId=1&viewPanel=${panelElem.id}`,
 							width: panelElem.width,
@@ -143,7 +143,7 @@ export async function updateDashboardQuery(
 							id: `${resp.uid}-${panelElem.id}-${resp.version}`,
 							name: panelElem.name,
 							description: panelElem.description,
-							thumbnailPath: `${THUMBNAIL_PATH}/${resp.uid}_${panelElem.id}.png`,
+							thumbnailPath: `/thumbnails/${resp.uid}_${panelElem.id}.png`,
 							grafanaJSON: panelElem.grafanaJSON,
 							grafanaUrl: `${GRAFANA_URL}${resp.url}?orgId=1&viewPanel=${panelElem.id}`,
 							width: panelElem.width
@@ -159,7 +159,7 @@ export async function iterateThumbnailPaths(panelFormJSON: any, resp: any) {
 	const thumbnailPath = await generateDashboardThumbnail(panelFormJSON, resp.uid);
 	panelFormJSON.map(async (panel: Panel) => {
 		await copyDefaultThumbnail(resp.uid, panel.id, panel.thumbnailPath);
-		panel.thumbnailPath = `${THUMBNAIL_PATH}/${resp.uid}_${panel.id}.png`;
+		panel.thumbnailPath = `thumbnail/${resp.uid}_${panel.id}.png`;
 		return panel;
 	});
 	return thumbnailPath;

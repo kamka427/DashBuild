@@ -79,7 +79,7 @@ export async function updatePanelThumbnailsWithApi(uidAndSlug: string, panelId: 
 	const buff = await sharp(buffer).jpeg().toBuffer();
 
 	const uid = uidAndSlug.split('/')[0];
-	await writeFilePromise(`${path.resolve('app', THUMBNAIL_PATH)}/${uid}_${panelId}.png`, buff);
+	await writeFilePromise(`static/thumbnails/${uid}_${panelId}.png`, buff);
 	console.log(response);
 
 	return response;
