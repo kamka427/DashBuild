@@ -102,9 +102,22 @@ export async function callGrafanaDashboardApi(grafanaJSON: string) {
 		headers: {
 			'Content-Type': 'application/json',
 			Authorization: GRAFANA_API_TOKEN,
-			'Access-Control-Allow-Origin': '*'
 		},
 		body: grafanaJSON
+	});
+
+	const resp = await response.json();
+	console.log(resp);
+	return resp;
+}
+
+export async function deleteDashboardOnGrafana(uid: string) {
+	const response = await fetch(`${GRAFANA_URL}/api/dashboards/uid/${uid}`, {
+		method: 'DELETE',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: GRAFANA_API_TOKEN,
+		},
 	});
 
 	const resp = await response.json();
@@ -118,7 +131,6 @@ export async function callGrafanaFolderApi(grafanaJSON: string) {
 		headers: {
 			'Content-Type': 'application/json',
 			Authorization: GRAFANA_API_TOKEN,
-			'Access-Control-Allow-Origin': '*'
 		},
 		body: grafanaJSON
 	});

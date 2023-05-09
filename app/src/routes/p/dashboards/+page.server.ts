@@ -1,6 +1,7 @@
 import type { PageServerLoad, Actions } from './$types';
 import { fail } from '@sveltejs/kit';
 import { prisma } from '$lib/utils/prisma';
+import { deleteDashboardOnGrafana } from '$lib/utils/grafanaHandler';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.getSession();
@@ -39,6 +40,10 @@ export const actions: Actions = {
 					id: dashboardId
 				}
 			});
+
+			console.log(dashboardId)
+			const resp = deleteDashboardOnGrafana(dashboardId);
+			console.log(resp);
 
 			return {
 				status: 200,
