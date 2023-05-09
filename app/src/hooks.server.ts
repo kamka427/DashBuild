@@ -30,7 +30,7 @@ if (EMAIL_TEST) {
 		CredentialsProvider({
 			name: 'Email for testing',
 			credentials: {
-				email: { label: 'Email', type: 'email' }
+				email: { label: 'Email', type: 'email', placeholder: 'testemail@example.com' }
 			},
 			async authorize(credentials) {
 				const user = await prisma.user.findUnique({
