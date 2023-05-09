@@ -15,7 +15,8 @@ import {
 	SMTP_USER,
 	SMTP_PASSWORD,
 	EMAIL_FROM,
-	AUTH_SECRET
+	AUTH_SECRET,
+	EMAIL_TEST
 } from '$env/static/private';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { redirect, type Handle } from '@sveltejs/kit';
@@ -23,6 +24,29 @@ import { sequence } from '@sveltejs/kit/hooks';
 import { prisma } from '$lib/utils/prisma';
 
 const availableProviders = [];
+
+if (EMAIL_TEST) {
+	availableProviders.push(
+		CredentialsProvider({
+			name: 'Email for testing',
+			credentials: {
+				email: { label: 'Email', type: 'email' }
+			},
+			async authorize(credentials) {
+				const user = await prisma.user.findUnique({
+					where: {
+						email: credentials.email as string
+					}
+				});
+				if (user) {
+					return user;
+				} else {
+					return null;
+				}
+			}
+		}) as any
+	);
+}
 
 if (SMTP_HOST && SMTP_PORT && SMTP_USER && SMTP_PASSWORD && EMAIL_FROM) {
 	availableProviders.push(
@@ -36,7 +60,7 @@ if (SMTP_HOST && SMTP_PORT && SMTP_USER && SMTP_PASSWORD && EMAIL_FROM) {
 				}
 			},
 			from: EMAIL_FROM,
-			name: 'Sign in with Magic Link'
+			name: 'Magic Link'
 		}) as any
 	);
 }
@@ -71,27 +95,7 @@ async function authorization({ event, resolve }: { event: any; resolve: any }): 
 export const handle = sequence(
 	SvelteKitAuth({
 		adapter: PrismaAdapter(prisma) as any,
-		providers: [
-			CredentialsProvider({
-				name: 'Email for testing',
-				credentials: {
-					email: { label: 'Email', type: 'email' }
-				},
-				async authorize(credentials) {
-					const user = await prisma.user.findUnique({
-						where: {
-							email: credentials.email as string
-						}
-					});
-					if (user) {
-						return user;
-					} else {
-						return null;
-					}
-				}
-			}) as any,
-			...availableProviders
-		],
+		providers: [...availableProviders],
 		secret: AUTH_SECRET,
 		trustHost: true,
 		session: {
