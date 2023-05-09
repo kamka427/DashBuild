@@ -3,7 +3,20 @@ import { PrismaClient } from '@prisma/client';
 import type { Panel } from '@prisma/client';
 import { faker } from '@faker-js/faker';
 import sharp from 'sharp';
+import fs from 'fs';
 import path from 'path';
+const directory = 'static/thumbnails';
+
+fs.readdir(directory, (err: any, files: any) => {
+	if (err) throw err;
+
+	files = files.filter((file: any) => !file.includes('Panel'));
+	for (const file of files) {
+		fs.unlink(path.join(directory, file), (err: any) => {
+			if (err) throw err;
+		});
+	}
+});
 
 export async function fetchPanels() {
 	const resp = await fetch(`http://localhost:8000`);
@@ -29,7 +42,7 @@ export async function fetchPanels() {
 		panels.push({
 			title: panel.json_data.title,
 			JSON: panel.json_data,
-			thumbnailPath: `../src/lib/thumbnails/${panel.file_name}.png`
+			thumbnailPath: `thumbnails/${panel.file_name}.png`
 		});
 	});
 
@@ -49,7 +62,7 @@ export async function generateDashboardThumbnail(panelList: Panel[], dashboardNa
 	const firstFourPanels = panelList.slice(0, 4);
 	const inputs = firstFourPanels.map((panel, index) => {
 		return {
-			input: `${path.resolve('app', panel.thumbnailPath)}`,
+			input: `static/${panel.thumbnailPath}`,
 			gravity: locations[index]
 		};
 	});
@@ -69,16 +82,13 @@ export async function generateDashboardThumbnail(panelList: Panel[], dashboardNa
 	})
 		.composite(inputs)
 		.png()
-		.toFile(
-			`${path.resolve('app', '../src/lib/thumbnails')}/seeder_${dashboardName}.png`,
-			(err, info) => {
-				if (err) {
-					console.log(err);
-				}
+		.toFile(`static/thumbnails/seeder_${dashboardName}.png`, (err, info) => {
+			if (err) {
+				console.log(err);
 			}
-		);
+		});
 
-	return `../src/lib/thumbnails/seeder_${dashboardName}.png`;
+	return `/thumbnails/seeder_${dashboardName}.png`;
 }
 
 const availablePanels = await fetchPanels();
@@ -89,13 +99,13 @@ async function main() {
 	await prisma.dashboard.deleteMany();
 	await prisma.panel.deleteMany();
 	await prisma.user.deleteMany();
+	await prisma.dashboardIteration.deleteMany();
 
 	await prisma.user.createMany({
 		data: {
 			id: faker.datatype.uuid(),
 			name: 'Admin',
 			email: 'admin@admin.com',
-			team: 'Admins',
 			role: 'admin'
 		}
 	});
@@ -103,8 +113,7 @@ async function main() {
 	const fakeUsers = Array.from({ length: Math.floor(Math.random() * 15) + 5 }).map(() => ({
 		id: faker.datatype.uuid(),
 		name: faker.name.fullName(),
-		email: faker.internet.email(),
-		team: faker.company.name()
+		email: faker.internet.email()
 	}));
 
 	await prisma.user.createMany({
