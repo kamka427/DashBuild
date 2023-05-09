@@ -20,9 +20,8 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 			dashboardIterations: {
 				include: {
 					dashboard: true
-				},
+				}
 			}
-
 		}
 	});
 
@@ -71,6 +70,9 @@ export const actions: Actions = {
 			dashboardId: string;
 			publishState: string;
 		};
+
+		validatePublish(dashboardId, publishState);
+
 		try {
 			await prisma.dashboard.update({
 				where: {
@@ -96,3 +98,29 @@ export const actions: Actions = {
 		}
 	}
 };
+
+async function validatePublish(dashboardId: string, publishState: string) {
+	if (!dashboardId || !publishState) {
+		return fail(400, { message: 'Missing dashboardId or publishState' });
+	}
+
+	if (publishState !== 'true' && publishState !== 'false') {
+		return fail(400, { message: 'Invalid publishState' });
+	}
+
+	if (publishState === 'true') {
+		const dashboard = await prisma.dashboard.findUnique({
+			where: {
+				id: dashboardId
+			}
+		});
+
+		if (!dashboard) {
+			return fail(404, { message: 'Dashboard not found' });
+		}
+
+		if (dashboard.published) {
+			return fail(400, { message: 'Dashboard already published' });
+		}
+	}
+}

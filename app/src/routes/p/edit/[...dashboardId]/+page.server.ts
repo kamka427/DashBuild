@@ -7,14 +7,12 @@ import {
 } from '$lib/utils/grafanaHandler';
 import {
 	createGrafanaFolder,
-	createGrafanaObject,
 	generatePanelFormJSON,
 	generateTags,
 	getUidAndSlug,
 	iterateThumbnailPaths,
 	queryExistingDashboard,
 	updateDashboardQuery,
-	upsertDashboardQuery,
 	validateForm
 } from '$lib/utils/dashboardHandler';
 import { updateAllThumbnails } from '$lib/utils/thumbnailHandler';

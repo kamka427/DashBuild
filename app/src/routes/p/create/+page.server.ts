@@ -10,13 +10,11 @@ import { updateAllThumbnails } from '$lib/utils/thumbnailHandler';
 import {
 	createDashboardQuery,
 	createGrafanaFolder,
-	createGrafanaObject,
 	generatePanelFormJSON,
 	generateTags,
 	getUidAndSlug,
 	iterateThumbnailPaths,
 	queryExistingDashboard,
-	upsertDashboardQuery,
 	validateForm
 } from '$lib/utils/dashboardHandler';
 
@@ -35,8 +33,6 @@ export const actions: Actions = {
 	saveDashboard: async ({ request, locals, url }) => {
 		const session = await locals.getSession();
 
-		const method = url.searchParams.get('method');
-
 		const { dashboardName, dashboardDescription, colCount, tags, published, panelForm } =
 			Object.fromEntries(await request.formData()) as unknown as {
 				dashboardName: string;
@@ -54,7 +50,7 @@ export const actions: Actions = {
 
 		let panelFormJSON = generatePanelFormJSON(panelForm, colCount);
 
-		const { dashboardExists, user } = await queryExistingDashboard(session, null);
+		const { user } = await queryExistingDashboard(session);
 
 		await createGrafanaFolder(user);
 

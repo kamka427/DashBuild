@@ -176,7 +176,7 @@ export async function createGrafanaFolder(user: User & { dashboards: Dashboard[]
 	}
 }
 
-export async function queryExistingDashboard(session: any, dashboardId: string | null) {
+export async function queryExistingDashboard(session: any, dashboardId: string | null = null) {
 	const user = await prisma.user.findUniqueOrThrow({
 		where: {
 			id: session?.user.id as string

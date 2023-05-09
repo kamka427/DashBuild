@@ -8,13 +8,11 @@ import {
 import {
 	createDashboardQuery,
 	createGrafanaFolder,
-	createGrafanaObject,
 	generatePanelFormJSON,
 	generateTags,
 	getUidAndSlug,
 	iterateThumbnailPaths,
 	queryExistingDashboard,
-	upsertDashboardQuery,
 	validateForm
 } from '$lib/utils/dashboardHandler';
 import { updateAllThumbnails } from '$lib/utils/thumbnailHandler';
