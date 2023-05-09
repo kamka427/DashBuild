@@ -8,14 +8,17 @@
 	import { enhance } from '$app/forms';
 
 	export let data: PageData;
-	export let form: ActionData;
 
-	export let dashboardName = '';
-	export let colCount = 2;
-	export let tags: string[] = [];
-	export let published = false;
+	export let dashboardName = data.dashboard.name;
+	export let colCount = data.dashboard.columns;
+	export let tags = data.dashboard.tags;
+	export let published = data.dashboard.published;
 
-	export let panelForm: Panel[] = [];
+	export const panelList = data.dashboard.panels
+		.map((panel) => panel.panel)
+		.sort((a, b) => a.position - b.position);
+
+	export let panelForm: Panel[] = panelList;
 	export let selectedPanel = {} as {
 		title: string;
 		JSON: {
@@ -29,6 +32,7 @@
 		JSON: {
 			description: string;
 		};
+		Python: string;
 		thumbnailPath: string;
 	}) {
 		panelForm = [
@@ -43,10 +47,8 @@
 					id: panelForm.length + 1
 				},
 				grafanaUrl: null,
-				position: panelForm.length + 1,
 				width: 1,
-				createdAt: null,
-				updatedAt: null
+				position: panelForm.length
 			}
 		];
 	}
@@ -72,24 +74,18 @@
 		let temp = panelForm[draggedPanelIndex];
 		panelForm[draggedPanelIndex] = panelForm[currentPanelIndex];
 		panelForm[currentPanelIndex] = temp;
-
-		swapIndexes(panelForm[draggedPanelIndex], draggedPanelIndex);
-		swapIndexes(panelForm[currentPanelIndex], currentPanelIndex);
 	}
-
-	function swapIndexes(panel: Panel, index: number) {
-		panel.position = index;
-	}
-
 	export let isLoading = false;
 
 	$: if (form?.error) {
 		isLoading = false;
 	}
+
+	export let form: ActionData;
 </script>
 
 <svelte:head>
-	<title>Create Dashboard</title>
+	<title>Edit Dashboard</title>
 </svelte:head>
 {#if form?.error}
 	<p class="error">{form.error}</p>

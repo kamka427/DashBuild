@@ -108,3 +108,6 @@ __pycache__/
 
 # Seeded thumbnails
 seeder_*
+
+# Thumbnails
+*.png

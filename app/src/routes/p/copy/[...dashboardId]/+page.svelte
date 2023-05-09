@@ -4,7 +4,8 @@
 	import BreadCrumbs from '$lib/components/BreadCrumbs.svelte';
 	import NewPanelCard from '$lib/components/NewPanelCard.svelte';
 	import type { Panel } from '@prisma/client';
-	import type { PageData } from './$types';
+	import type { ActionData, PageData } from './$types';
+	import { enhance } from '$app/forms';
 
 	export let data: PageData;
 
@@ -74,12 +75,29 @@
 		panelForm[draggedPanelIndex] = panelForm[currentPanelIndex];
 		panelForm[currentPanelIndex] = temp;
 	}
+
+	export let isLoading = false;
+
+	$: if (form?.error) {
+		isLoading = false;
+	}
+
+	export let form: ActionData;
+
 </script>
 
+
 <svelte:head>
-	<title>Create Dashboard</title>
+	<title>Copy Dashboard</title>
 </svelte:head>
-<main class="container mx-auto space-y-6">
+{#if form?.error}
+	<p class="error">{form.error}</p>
+{/if}
+<main
+	class="container mx-auto space-y-6
+	{isLoading ? 'animate-pulse' : ''}
+"
+>
 	<div class="flex flex-col items-center justify-between gap-2 lg:flex-row">
 		<BreadCrumbs />
 		<DashboardProperties bind:dashboardName bind:colCount bind:tags bind:published />
@@ -106,13 +124,20 @@
 		/>
 	</div>
 
-	<form action="/p/create?/saveDashboard" method="POST" class="">
+	<form
+		action="?/saveDashboard
+	
+	"
+		method="POST"
+		use:enhance
+	>
 		<input type="hidden" value={dashboardName} name="dashboardName" />
 		<input type="hidden" value="test desc" name="dashboardDescription" />
 		<input type="hidden" value={colCount} name="colCount" />
 		<input type="hidden" value={tags} name="tags" />
 		<input type="hidden" value={published} name="published" />
 		<input type="hidden" value={JSON.stringify(panelForm)} name="panelForm" />
+
 		<div class="btn-group">
 			<button
 				class="btn-secondary btn"
@@ -121,7 +146,15 @@
 					panelForm = [];
 				}}>Reset</button
 			>
-			<button type="submit" class="btn-primary btn">Save Dashboard</button>
+			<button
+				type="submit"
+				class="btn-primary btn"
+				on:click={() => {
+					isLoading = true;
+				}}
+			>
+				Save Dashboard</button
+			>
 		</div>
 	</form>
 </main>

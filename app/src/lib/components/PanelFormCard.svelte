@@ -82,17 +82,13 @@
 			</text>
 		</svg>
 	{:else}
-		<div
-			draggable="true"
-			id={panel.id}
-			class="card-compact card  bg-base-300 text-base-content"
-		>
+		<div draggable="true" id={panel.id} class="card-compact card bg-base-300 text-base-content">
 			<figure>
 				<img
 					src="../{panel?.thumbnailPath}"
 					class="rounded-md shadow-xl"
 					alt="Dashboard thumbnail"
-					id = {panel.id}
+					id={panel.id}
 				/>
 			</figure>
 			{#if state === 'preview' || state === 'edit'}

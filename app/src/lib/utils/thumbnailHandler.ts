@@ -4,7 +4,6 @@ import sharp from 'sharp';
 import fs from 'fs';
 import { promisify } from 'util';
 import type { Panel } from '@prisma/client';
-import { fail } from '@sveltejs/kit';
 const writeFilePromise = promisify(fs.writeFile);
 
 export async function generateDashboardThumbnail(panelList: Panel[], uid: string) {
@@ -39,10 +38,7 @@ export async function generateDashboardThumbnail(panelList: Panel[], uid: string
 		.png()
 		.toFile(`${path.resolve('app', thumbnailPath)}`, (err) => {
 			if (err) {
-				fail(300, {
-					message: 'Error generating dashboard thumbnail',
-					error: err
-				});
+				console.log(err);
 			}
 		});
 

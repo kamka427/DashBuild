@@ -4,8 +4,7 @@ import {
 	PANEL_PARSER_URL,
 	THUMBNAIL_PATH
 } from '$env/static/private';
-import dashboardTemplate from '$lib/configs/dashboardTemplate.json';
-import type { Panel } from '@prisma/client';
+import type { Dashboard, Panel } from '@prisma/client';
 
 export async function fetchPanels() {
 	const resp = await fetch(`${PANEL_PARSER_URL}`);
@@ -77,20 +76,20 @@ export async function createGrafanaDashboardPayload(
 	dashboardName: string,
 	tags: string[],
 	userFolder: string,
-	dashboardId: string | null = null
+	exitingDashboard: Dashboard | null = null
 ) {
 	const grafanaObject = {
 		dashboard: {
-			...dashboardTemplate,
 			title: dashboardName,
 			panels: panelForm.map((panel) => panel.grafanaJSON),
-			tags: tags
+			tags: tags,
+			uid: exitingDashboard !== null ? exitingDashboard.id : null,
+			version: exitingDashboard !== null ? exitingDashboard.version : null
 		},
-		folderUid: userFolder
+		folderUid: userFolder,
+		overwrite: exitingDashboard !== null ? true : false
 	};
 
-	if (dashboardId !== null) grafanaObject.dashboard.id = 195;
-	grafanaObject.overwrite = true;
 
 	return grafanaObject;
 }

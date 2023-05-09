@@ -1,12 +1,10 @@
 import type { PageServerLoad, Actions } from './$types';
 import { prisma } from '$lib/utils/prisma';
-import { fail, redirect } from '@sveltejs/kit';
 import {
-	fetchPanels,
 	callGrafanaDashboardApi,
-	createGrafanaDashboardPayload
+	createGrafanaDashboardPayload,
+	fetchPanels
 } from '$lib/utils/grafanaHandler';
-import { updateAllThumbnails } from '$lib/utils/thumbnailHandler';
 import {
 	createDashboardQuery,
 	createGrafanaFolder,
@@ -19,12 +17,22 @@ import {
 	upsertDashboardQuery,
 	validateForm
 } from '$lib/utils/dashboardHandler';
-
-export const load: PageServerLoad = async () => {
+import { updateAllThumbnails } from '$lib/utils/thumbnailHandler';
+import { fail, redirect } from '@sveltejs/kit';
+import { error } from 'console';
+export const load: PageServerLoad = async ({ url }) => {
 	return {
-		panels: prisma.panel.findMany({
-			orderBy: {
-				name: 'asc'
+		dashboard: prisma.dashboard.findUniqueOrThrow({
+			where: {
+				id: url.pathname.split('/')[3]
+			},
+			include: {
+				user: true,
+				panels: {
+					include: {
+						panel: true
+					}
+				}
 			}
 		}),
 		predefinedPanels: fetchPanels()
@@ -32,21 +40,26 @@ export const load: PageServerLoad = async () => {
 };
 
 export const actions: Actions = {
-	saveDashboard: async ({ request, locals, url }) => {
+	saveDashboard: async ({ request, locals }) => {
 		const session = await locals.getSession();
 
-		const method = url.searchParams.get('method');
-
-		const { dashboardName, dashboardDescription, colCount, tags, published, panelForm } =
-			Object.fromEntries(await request.formData()) as unknown as {
-				dashboardName: string;
-				dashboardDescription: string;
-				colCount: number;
-				tags: string;
-				published: string;
-				panelForm: string;
-				dashboardId: string;
-			};
+		const {
+			dashboardName,
+			dashboardDescription,
+			colCount,
+			tags,
+			published,
+			panelForm,
+			dashboardId
+		} = Object.fromEntries(await request.formData()) as unknown as {
+			dashboardName: string;
+			dashboardDescription: string;
+			colCount: number;
+			tags: string;
+			published: string;
+			panelForm: string;
+			dashboardId: string;
+		};
 
 		validateForm(dashboardName, colCount, published);
 
@@ -54,7 +67,11 @@ export const actions: Actions = {
 
 		let panelFormJSON = generatePanelFormJSON(panelForm, colCount);
 
-		const { dashboardExists, user } = await queryExistingDashboard(session, null);
+		const { dashboardExists, user } = await queryExistingDashboard(session, dashboardId);
+
+		if (dashboardExists && !dashboardExists.published && dashboardExists.userId !== user.id) {
+			return error(403, 'You are not allowed to copy this dashboard');
+		}
 
 		await createGrafanaFolder(user);
 

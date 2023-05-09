@@ -43,7 +43,7 @@
 		</div>
 		<div class="card-actions justify-end">
 			<div class="btn-group">
-				<a href="/p/update/{dashboard.id}" class="btn-secondary btn">
+				<a href="/p/edit/{dashboard.id}" class="btn-secondary btn">
 					{#if currentPage === 'gallery'}
 						Copy
 					{:else}
