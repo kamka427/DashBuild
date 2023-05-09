@@ -56,7 +56,14 @@ async function main() {
 			});
 		}
 
+		const dashboardTags = [faker.company.bsBuzz(), faker.company.bsBuzz()];
+
 		const dashboardPreview = await generateDashboardThumbnail(panelsOnDash, dashboardName);
+		const grafanaObject = {dashboard: {
+			title: dashboardName,
+			panels: panelsOnDash.map((panel) => panel.grafanaJSON),
+			tags: dashboardTags,
+		}};
 
 		await prisma.dashboard.create({
 			data: {
@@ -64,10 +71,10 @@ async function main() {
 				name: dashboardName,
 				description: faker.company.bs() + ' ' + faker.company.bs() + ' ' + faker.company.bs(),
 				published: faker.datatype.boolean(),
-				tags: [faker.company.bsBuzz(), faker.company.bsBuzz()],
+				tags: dashboardTags,
 				thumbnailPath: dashboardPreview,
 				userId: faker.helpers.arrayElement(fakeUsers).id,
-				grafanaJSON: {},
+				grafanaJSON: grafanaObject,
 				columns: columns,
 				panels: {
 					create: panelsOnDash.map((panelElem) => ({
