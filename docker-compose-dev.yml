@@ -40,17 +40,7 @@ services:
     build: ./panel_service
     restart: always
     ports:
-      - 8000:8000
-
-  app:
-    build: ./app
-    restart: always
-    ports:
       - 80:80
-    depends_on:
-      - db
-      - grafana
-      - panel_service
 
 volumes:
   db_data:
