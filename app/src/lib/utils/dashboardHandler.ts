@@ -173,7 +173,7 @@ export async function queryExistingDashboard(session: any, dashboardId: string |
 	});
 
 	if (dashboardId !== null) {
-		const dashboardExists = await prisma.dashboard.findFirstOrThrow({
+		const dashboardExists = await prisma.dashboard.findFirst({
 			where: {
 				userId: user.id,
 				id: dashboardId

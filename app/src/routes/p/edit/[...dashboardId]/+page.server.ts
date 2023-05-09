@@ -73,17 +73,6 @@ export const actions: Actions = {
 			return error(403, 'You are not allowed to edit this dashboard');
 		}
 
-		// get dashboardnames from user
-		const userDashboards = await prisma.dashboard.findMany({
-			where: {
-				userId: user.id
-			},
-			select: {
-				name: true
-			}
-		});
-
-
 
 		await createGrafanaFolder(user);
 

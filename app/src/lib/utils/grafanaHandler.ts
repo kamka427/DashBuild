@@ -87,7 +87,6 @@ export async function createGrafanaDashboardPayload(
 			version: exitingDashboard !== null ? exitingDashboard.version : null
 		},
 		folderUid: userFolder,
-		overwrite: exitingDashboard !== null ? true : false
 	};
 
 

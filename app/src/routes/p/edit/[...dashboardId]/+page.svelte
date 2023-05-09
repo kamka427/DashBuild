@@ -134,6 +134,7 @@
 		<input type="hidden" value={tags} name="tags" />
 		<input type="hidden" value={published} name="published" />
 		<input type="hidden" value={JSON.stringify(panelForm)} name="panelForm" />
+		<input type="hidden" value={data.dashboard.id} name="dashboardId" />
 
 		<div class="btn-group">
 			<button
