@@ -82,6 +82,9 @@
 	}
 
 	export let form: ActionData;
+
+	$: console.log(panelForm);
+
 </script>
 
 <svelte:head>

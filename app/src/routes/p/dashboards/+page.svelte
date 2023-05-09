@@ -28,7 +28,6 @@
 		<DashboardFilters
 			bind:search={$searchStore.search}
 			bind:tag={$searchStore.tagFilter}
-			bind:team={$searchStore.teamFilter}
 			bind:columns={columnsToShow}
 			{data}
 		/>

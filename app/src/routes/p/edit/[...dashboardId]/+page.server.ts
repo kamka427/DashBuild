@@ -20,7 +20,7 @@ import { fail, redirect } from '@sveltejs/kit';
 import { error } from 'console';
 export const load: PageServerLoad = async ({ url }) => {
 	return {
-		dashboard: prisma.dashboard.findUniqueOrThrow({
+		dashboard: await prisma.dashboard.findUniqueOrThrow({
 			where: {
 				id: url.pathname.split('/')[3]
 			},

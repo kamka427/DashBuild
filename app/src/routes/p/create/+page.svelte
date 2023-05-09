@@ -86,6 +86,8 @@
 	$: if (form?.error) {
 		isLoading = false;
 	}
+
+	$: console.log(panelForm);
 </script>
 
 <svelte:head>

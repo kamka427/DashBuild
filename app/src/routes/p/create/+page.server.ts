@@ -20,11 +20,7 @@ import {
 
 export const load: PageServerLoad = async () => {
 	return {
-		panels: prisma.panel.findMany({
-			orderBy: {
-				name: 'asc'
-			}
-		}),
+
 		predefinedPanels: fetchPanels()
 	};
 };

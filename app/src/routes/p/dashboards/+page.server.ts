@@ -6,7 +6,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.getSession();
 
 	return {
-		dashboards: prisma.dashboard.findMany({
+		dashboards: await prisma.dashboard.findMany({
 			where: {
 				userId: session?.user.id
 			},
@@ -17,12 +17,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 				name: 'asc'
 			}
 		}),
-		teams: prisma.user.findMany({
-			select: {
-				team: true
-			}
-		}),
-		tags: prisma.dashboard.findMany({
+		tags: await prisma.dashboard.findMany({
 			select: {
 				tags: true
 			}
