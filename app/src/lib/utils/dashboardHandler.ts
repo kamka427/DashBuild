@@ -4,7 +4,6 @@ import type { Panel, Session, User } from '@prisma/client';
 import { GRAFANA_URL } from '$env/static/private';
 import { prisma } from './prisma';
 
-
 export function generateTags(tags: string) {
 	return tags.split(',').map((tag) => tag.trim());
 }

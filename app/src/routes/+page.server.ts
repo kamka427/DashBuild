@@ -7,7 +7,7 @@ export const load: PageServerLoad = async () => {
 			where: {
 				published: true
 			},
-			take: 4,
+			take: 4
 		})
 	};
 };

@@ -15,7 +15,6 @@ import { initThumbnailsAndPaths, updateAllThumbnails } from './thumbnailHandler'
 import { redirect, fail, error } from '@sveltejs/kit';
 import { permissionCheck, validateForm, validatePublish } from './validators';
 import { prisma } from './prisma';
-import { url } from 'inspector';
 
 export async function saveDashboardAction(
 	request: {
@@ -126,7 +125,6 @@ export async function deleteDashboardAction(
 			}
 		});
 
-		console.log(dashboardId);
 		const resp = deleteDashboardOnGrafana(dashboardId);
 		console.log(resp);
 
@@ -160,7 +158,12 @@ export async function refreshThumbnailsAction(url: { pathname: string }) {
 		await updateAllThumbnails(uidAndSlug, panelList);
 	} catch (error) {
 		console.log(error);
-		return fail(404, { message: 'Could not refresh thumbnails' });
+		return {
+			status: 500,
+			body: {
+				message: 'Could not refresh thumbnails'
+			}
+		};
 	}
 
 	return {
@@ -171,10 +174,15 @@ export async function refreshThumbnailsAction(url: { pathname: string }) {
 	};
 }
 
-export async function publishDashboardAction(request: { formData: () => Iterable<readonly [PropertyKey, any]> | PromiseLike<Iterable<readonly [PropertyKey, any]>>; }, locals: App.Locals){
-	const { dashboardId, publishState } = Object.fromEntries(
-		await request.formData()
-	) as unknown as {
+export async function publishDashboardAction(
+	request: {
+		formData: () =>
+			| Iterable<readonly [PropertyKey, any]>
+			| PromiseLike<Iterable<readonly [PropertyKey, any]>>;
+	},
+	locals: App.Locals
+) {
+	const { dashboardId, publishState } = Object.fromEntries(await request.formData()) as unknown as {
 		dashboardId: string;
 		publishState: string;
 	};
@@ -206,5 +214,3 @@ export async function publishDashboardAction(request: { formData: () => Iterable
 		return fail(400, { message: 'Could not publish dashboard' });
 	}
 }
-
-

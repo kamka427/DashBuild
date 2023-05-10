@@ -10,7 +10,6 @@ export async function validateForm(
 	tagsList: string[],
 	panelForm: Panel[]
 ) {
-	console.log(title, description, colCount, published, tagsList);
 	if (title.length < 3 || title.length > 50) {
 		return fail(403, {
 			description: title,
@@ -18,9 +17,7 @@ export async function validateForm(
 		});
 	}
 
-	console.log(description.length);
 	if (description.length > 100) {
-		console.log('1.5');
 		return fail(403, {
 			description: description,
 			error: "The dashboard's description should be less than 100 characters"
@@ -35,7 +32,6 @@ export async function validateForm(
 	}
 
 	if (published !== 'true' && published !== 'false') {
-		console.log(published);
 		return fail(403, { description: published, error: 'Published should be a boolean' });
 	}
 

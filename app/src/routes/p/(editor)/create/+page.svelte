@@ -23,7 +23,9 @@
 </svelte:head>
 <main class="container mx-auto space-y-6">
 	<BreadCrumbs />
-	<Helper infoMessage="This is the dashboard editor page. Here you can edit the dashboard you have created. You can change the name, description, number of columns, tags and panels of the dashboard. You can also publish or unpublish the dashboard." />
+	<Helper
+		infoMessage="This is the dashboard editor page. Here you can edit the dashboard you have created. You can change the name, description, number of columns, tags and panels of the dashboard. You can also publish or unpublish the dashboard."
+	/>
 	<DashboardEditor
 		{title}
 		{description}

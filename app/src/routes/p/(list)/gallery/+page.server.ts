@@ -9,8 +9,7 @@ export const load: PageServerLoad = async () => {
 			},
 			where: {
 				published: true
-			}
-			,
+			},
 			orderBy: {
 				updatedAt: 'desc'
 			}

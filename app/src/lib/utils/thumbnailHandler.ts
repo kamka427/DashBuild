@@ -34,14 +34,12 @@ export async function generateDashboardThumbnail(panelList: Panel[], uid: string
 	})
 		.composite(inputs)
 		.png()
-		.toFile(`static/thumbnails/${uid}_dashboard.png`, (err, info) => {
+		.toFile(`static/thumbnails/${uid}_dashboard.png`, (err) => {
 			if (err) {
 				console.log(err);
 			}
-			console.log(info);
 		});
 
-	console.log('Thumbnail generated');
 	return `/thumbnails/${uid}_dashboard.png`;
 }
 
@@ -63,10 +61,6 @@ export async function copyDefaultThumbnail(
 }
 
 export async function updatePanelThumbnailsWithApi(uidAndSlug: string, position: string) {
-	console.log(
-		`${GRAFANA_URL}/render/d-solo/${uidAndSlug}?orgId=1&panelId=${position}&width=1000&height=500`
-	);
-	console.log('start', position);
 	const response = await fetch(
 		`${GRAFANA_URL}/render/d-solo/${uidAndSlug}?orgId=1&panelId=${position}&width=1000&height=500`,
 		{
@@ -83,9 +77,7 @@ export async function updatePanelThumbnailsWithApi(uidAndSlug: string, position:
 }
 
 export async function updateAllThumbnails(uidAndSlug: string, panelList: Panel[]) {
-	console.log('Updating all thumbnails');
 	const promises = panelList.map(async (panel) => {
-		console.log(`Updating thumbnail for panel ${panel.position}`);
 		await updatePanelThumbnailsWithApi(uidAndSlug, panel.position.toString());
 		return Promise.resolve();
 	});

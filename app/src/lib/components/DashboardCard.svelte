@@ -7,13 +7,11 @@
 	const shortDescription = dashboard.description
 		? dashboard.description.slice(0, 70) + '...'
 		: 'No description provided';
-	console.log(dashboard.tags);
-	console.log(dashboard.tags.length);
 	const tags =
 		dashboard.tags.join(', ').length > 0 ? dashboard.tags.join(', ') : 'No tags provided';
 </script>
 
-<main class="card card-compact bg-base-300 text-base-content h-full w-full shadow-xl">
+<main class="card card-compact h-full w-full bg-base-300 text-base-content shadow-xl">
 	<figure>
 		<a href="/p/view/{dashboard.id}">
 			<img src={dashboard.thumbnailPath} class="w-max shadow-xl" alt="Dashboard thumbnail" />
@@ -51,9 +49,9 @@
 		<div class="card-actions justify-end">
 			<div class="btn-group">
 				{#if currentPage === 'gallery'}
-				<a href="/p/copy/{dashboard.id}" class="btn-secondary btn"> Copy </a>
+					<a href="/p/copy/{dashboard.id}" class="btn-secondary btn"> Copy </a>
 				{:else}
-				<a href="/p/edit/{dashboard.id}" class="btn-secondary btn"> Edit </a>
+					<a href="/p/edit/{dashboard.id}" class="btn-secondary btn"> Edit </a>
 				{/if}
 				<a href="/p/view/{dashboard.id}" class="btn-primary btn">View</a>
 			</div>

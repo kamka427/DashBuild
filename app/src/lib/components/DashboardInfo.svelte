@@ -13,7 +13,7 @@
 	}
 </script>
 
-<div class="card-compact card bg-base-300 text-base-content w-full shadow-xl sm:w-1/2">
+<div class="card card-compact w-full bg-base-300 text-base-content shadow-xl sm:w-1/2">
 	<div class="card-body gap-4">
 		<h1 class="card-title text-xl">{dashboard.name}</h1>
 

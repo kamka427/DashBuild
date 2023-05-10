@@ -24,12 +24,12 @@ export const searchHandler = (store: {
 	const searchTerm = store.search.toLowerCase() || '';
 	const searchTerms = searchTerm.split(' ');
 	store.filtered = store.data
-		.filter((item: { name: string; description: string; tags: any[]  }) => {
+		.filter((item: { name: string; description: string; tags: any[] }) => {
 			return searchTerms.every((term: string) => {
 				return (
 					item.name.toLowerCase().includes(term) ||
 					item.description.toLowerCase().includes(term) ||
-					item.tags.join(' ').toLowerCase().includes(term) 
+					item.tags.join(' ').toLowerCase().includes(term)
 				);
 			});
 		})

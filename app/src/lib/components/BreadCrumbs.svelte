@@ -4,7 +4,6 @@
 	export let base: string | null =
 		$page.url.pathname.split('/')[2].slice(0, 1).toUpperCase() +
 		$page.url.pathname.split('/')[2].slice(1);
-
 </script>
 
 <div class="breadcrumbs text-base-content">

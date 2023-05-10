@@ -19,7 +19,7 @@ async function main() {
 		data: {
 			id: faker.datatype.uuid(),
 			name: 'Admin',
-			email: 'admin@admin.com',
+			email: 'admin@admin.com'
 		}
 	});
 

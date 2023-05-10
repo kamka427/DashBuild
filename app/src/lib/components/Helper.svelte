@@ -5,7 +5,7 @@
 </script>
 
 {#if !isClosed}
-	<div class="alert alert-info container mx-auto shadow-xl">
+	<div class="container alert alert-info mx-auto shadow-xl">
 		<svg
 			width="30"
 			height="30"
@@ -19,7 +19,7 @@
 		<p>{infoMessage}</p>
 
 		<button
-			class="btn btn-ghost btn-sm rounded-btn"
+			class="btn-ghost rounded-btn btn-sm btn"
 			on:click={() => {
 				isClosed = true;
 			}}
