@@ -1,7 +1,8 @@
 import type { PageServerLoad, Actions } from './$types';
-import { fail } from '@sveltejs/kit';
+import { error, fail } from '@sveltejs/kit';
 import { prisma } from '$lib/utils/prisma';
 import { updateAllThumbnails } from '$lib/utils/thumbnailHandler';
+import { permissionCheck, validatePublish } from '$lib/utils/validators';
 
 export const load: PageServerLoad = async ({ locals, url }) => {
 	const session = await locals.getSession();
@@ -20,6 +21,10 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 			}
 		}
 	});
+
+	if (!dashboard.published && dashboard.user.id !== session.user.id) {
+		throw error(403, 'You do not have permission to view this dashboard');
+	}
 	return {
 		dashboard
 	};
@@ -27,7 +32,6 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 
 export const actions: Actions = {
 	refreshThumbnails: async ({ url }) => {
-		console.log('refreshing thumbnails');
 		const uid = url.pathname.split('/')[3];
 		const dashboard = await prisma.dashboard.findUniqueOrThrow({
 			where: {
@@ -56,13 +60,15 @@ export const actions: Actions = {
 			}
 		};
 	},
-	publishDashboard: async (event) => {
-		const { dashboardId, publishState } = (await Object.fromEntries(
-			await event.request.formData()
-		)) as unknown as {
+	publishDashboard: async ({ request, locals }) => {
+		const { dashboardId, publishState } = Object.fromEntries(
+			await request.formData()
+		) as unknown as {
 			dashboardId: string;
 			publishState: string;
 		};
+
+		await permissionCheck(locals, dashboardId, 'You are not allowed to publish this dashboard');
 
 		validatePublish(dashboardId, publishState);
 
@@ -90,29 +96,3 @@ export const actions: Actions = {
 		}
 	}
 };
-
-async function validatePublish(dashboardId: string, publishState: string) {
-	if (!dashboardId || !publishState) {
-		return fail(403, { message: 'Missing dashboardId or publishState' });
-	}
-
-	if (publishState !== 'true' && publishState !== 'false') {
-		return fail(403, { message: 'Invalid publishState' });
-	}
-
-	if (publishState === 'true') {
-		const dashboard = await prisma.dashboard.findUnique({
-			where: {
-				id: dashboardId
-			}
-		});
-
-		if (!dashboard) {
-			return fail(403, { message: 'Dashboard not found' });
-		}
-
-		if (dashboard.published) {
-			return fail(403, { message: 'Dashboard already published' });
-		}
-	}
-}

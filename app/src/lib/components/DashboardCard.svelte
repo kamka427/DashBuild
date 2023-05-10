@@ -51,9 +51,9 @@
 		<div class="card-actions justify-end">
 			<div class="btn-group">
 				{#if currentPage === 'gallery'}
-					<a href="/p/edit/{dashboard.id}" class="btn-secondary btn"> Edit </a>
+				<a href="/p/copy/{dashboard.id}" class="btn-secondary btn"> Copy </a>
 				{:else}
-					<a href="/p/copy/{dashboard.id}" class="btn-secondary btn"> Copy </a>
+				<a href="/p/edit/{dashboard.id}" class="btn-secondary btn"> Edit </a>
 				{/if}
 				<a href="/p/view/{dashboard.id}" class="btn-primary btn">View</a>
 			</div>

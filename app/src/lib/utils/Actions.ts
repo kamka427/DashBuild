@@ -4,7 +4,6 @@ import {
 	generateTags,
 	getUidAndSlug,
 	queryExistingDashboard,
-	validateForm
 } from './dashboardHandler';
 import {
 	callGrafanaDashboardApi,
@@ -13,6 +12,7 @@ import {
 } from './grafanaHandler';
 import { initThumbnailsAndPaths, updateAllThumbnails } from './thumbnailHandler';
 import { redirect, fail, error } from '@sveltejs/kit';
+import { validateForm } from './validators';
 
 export async function saveDashboardAction(
 	request: {

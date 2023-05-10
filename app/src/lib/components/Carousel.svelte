@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Dashboard } from '@prisma/client';
+	import { page } from '$app/stores';
 
 	export let dashboards: Dashboard[] = [];
 </script>
@@ -12,13 +13,21 @@
 					<h2 class="card-title">{dashboard.name}</h2>
 				</div>
 				<figure>
-					<a href="/p/view/{dashboard.id}">
+					{#if $page.data.session}
+						<a href="/p/view/{dashboard.id}">
+							<img
+								src={dashboard.thumbnailPath}
+								class="w-full"
+								alt="A published dashboard in the carousel"
+							/>
+						</a>
+					{:else}
 						<img
 							src={dashboard.thumbnailPath}
 							class="w-full"
 							alt="A published dashboard in the carousel"
 						/>
-					</a>
+					{/if}
 				</figure>
 			</div>
 			<div class="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
