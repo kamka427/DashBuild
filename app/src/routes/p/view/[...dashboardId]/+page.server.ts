@@ -1,8 +1,7 @@
 import type { PageServerLoad, Actions } from './$types';
-import { error, fail } from '@sveltejs/kit';
+import { error } from '@sveltejs/kit';
 import { prisma } from '$lib/utils/prisma';
-import { updateAllThumbnails } from '$lib/utils/thumbnailHandler';
-import { permissionCheck, validatePublish } from '$lib/utils/validators';
+import { publishDashboardAction, refreshThumbnailsAction } from '$lib/utils/actions';
 
 export const load: PageServerLoad = async ({ locals, url }) => {
 	const session = await locals.getSession();
@@ -31,68 +30,6 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 };
 
 export const actions: Actions = {
-	refreshThumbnails: async ({ url }) => {
-		const uid = url.pathname.split('/')[3];
-		const dashboard = await prisma.dashboard.findUniqueOrThrow({
-			where: {
-				id: uid
-			},
-			include: {
-				panels: true
-			}
-		});
-
-		const uidAndSlug = `${uid}/${dashboard.name}`;
-
-		const panelList = dashboard.panels.sort((a, b) => a.position - b.position);
-
-		try {
-			await updateAllThumbnails(uidAndSlug, panelList);
-		} catch (error) {
-			console.log(error);
-			return fail(404, { message: 'Could not refresh thumbnails' });
-		}
-
-		return {
-			status: 200,
-			body: {
-				message: 'Thumbnails refreshed'
-			}
-		};
-	},
-	publishDashboard: async ({ request, locals }) => {
-		const { dashboardId, publishState } = Object.fromEntries(
-			await request.formData()
-		) as unknown as {
-			dashboardId: string;
-			publishState: string;
-		};
-
-		await permissionCheck(locals, dashboardId, 'You are not allowed to publish this dashboard');
-
-		validatePublish(dashboardId, publishState);
-
-		try {
-			await prisma.dashboard.update({
-				where: {
-					id: dashboardId
-				},
-				data: {
-					published: publishState === 'true' ? true : false
-				}
-			});
-
-			return {
-				status: 200,
-				body: {
-					message: 'Dashboard published'
-				},
-				headers: {
-					location: '/p/dashboards'
-				}
-			};
-		} catch (error) {
-			return fail(400, { message: 'Could not publish dashboard' });
-		}
-	}
+	refreshThumbnails: async ({ url }) => await refreshThumbnailsAction(url),
+	publishDashboard: async ({ request, locals }) => await publishDashboardAction(request, locals)
 };

@@ -3,16 +3,19 @@ import {
 	generatePanelFormJSON,
 	generateTags,
 	getUidAndSlug,
-	queryExistingDashboard,
+	queryExistingDashboard
 } from './dashboardHandler';
 import {
 	callGrafanaDashboardApi,
 	createGrafanaDashboardPayload,
-	createGrafanaFolder
+	createGrafanaFolder,
+	deleteDashboardOnGrafana
 } from './grafanaHandler';
 import { initThumbnailsAndPaths, updateAllThumbnails } from './thumbnailHandler';
 import { redirect, fail, error } from '@sveltejs/kit';
-import { validateForm } from './validators';
+import { permissionCheck, validateForm, validatePublish } from './validators';
+import { prisma } from './prisma';
+import { url } from 'inspector';
 
 export async function saveDashboardAction(
 	request: {
@@ -101,3 +104,107 @@ export async function saveDashboardAction(
 		});
 	}
 }
+
+export async function deleteDashboardAction(
+	request: {
+		formData: () =>
+			| Iterable<readonly [PropertyKey, any]>
+			| PromiseLike<Iterable<readonly [PropertyKey, any]>>;
+	},
+	locals: { getSession: () => any }
+) {
+	const { dashboardId } = Object.fromEntries(await request.formData()) as unknown as {
+		dashboardId: string;
+	};
+
+	await permissionCheck(locals, dashboardId, "You don't have permission to delete this dashboard");
+
+	try {
+		await prisma.dashboard.delete({
+			where: {
+				id: dashboardId
+			}
+		});
+
+		console.log(dashboardId);
+		const resp = deleteDashboardOnGrafana(dashboardId);
+		console.log(resp);
+
+		return {
+			status: 200,
+			body: {
+				message: 'Dashboard deleted'
+			}
+		};
+	} catch (error) {
+		return fail(404, { message: 'Could not delete dashboard' });
+	}
+}
+
+export async function refreshThumbnailsAction(url: { pathname: string }) {
+	const uid = url.pathname.split('/')[3];
+	const dashboard = await prisma.dashboard.findUniqueOrThrow({
+		where: {
+			id: uid
+		},
+		include: {
+			panels: true
+		}
+	});
+
+	const uidAndSlug = `${uid}/${dashboard.name}`;
+
+	const panelList = dashboard.panels.sort((a, b) => a.position - b.position);
+
+	try {
+		await updateAllThumbnails(uidAndSlug, panelList);
+	} catch (error) {
+		console.log(error);
+		return fail(404, { message: 'Could not refresh thumbnails' });
+	}
+
+	return {
+		status: 200,
+		body: {
+			message: 'Thumbnails refreshed'
+		}
+	};
+}
+
+export async function publishDashboardAction(request: { formData: () => Iterable<readonly [PropertyKey, any]> | PromiseLike<Iterable<readonly [PropertyKey, any]>>; }, locals: App.Locals){
+	const { dashboardId, publishState } = Object.fromEntries(
+		await request.formData()
+	) as unknown as {
+		dashboardId: string;
+		publishState: string;
+	};
+
+	await permissionCheck(locals, dashboardId, 'You are not allowed to publish this dashboard');
+
+	validatePublish(dashboardId, publishState);
+
+	try {
+		await prisma.dashboard.update({
+			where: {
+				id: dashboardId
+			},
+			data: {
+				published: publishState === 'true' ? true : false
+			}
+		});
+
+		return {
+			status: 200,
+			body: {
+				message: 'Dashboard published'
+			},
+			headers: {
+				location: '/p/dashboards'
+			}
+		};
+	} catch (error) {
+		return fail(400, { message: 'Could not publish dashboard' });
+	}
+}
+
+
