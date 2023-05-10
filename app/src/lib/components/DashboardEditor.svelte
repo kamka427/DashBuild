@@ -95,10 +95,21 @@
 </script>
 
 <div class="flex flex-col gap-4 {isLoading ? 'pointer-events-none animate-pulse' : ''}">
-	<DashboardProperties bind:title bind:description bind:colCount bind:tags bind:published />
 	{#if form?.error}
 		<Error errorMessage={form?.error} />
 	{/if}
+	<div class="flex flex-wrap justify-between">
+		<DashboardProperties bind:title bind:description bind:colCount bind:tags bind:published />
+		<DashboardForm
+			bind:isLoading
+			{title}
+			{description}
+			{colCount}
+			{tags}
+			{published}
+			bind:panelForm
+		/>
+	</div>
 	<div class="grid grid-cols-{colCount} gap-4">
 		{#each panelForm as panel}
 			<PanelFormCard
@@ -120,5 +131,4 @@
 			addAction={() => addPanel(selectedPanel)}
 		/>
 	</div>
-	<DashboardForm bind:isLoading {title} {description} {colCount} {tags} {published} {panelForm} />
 </div>

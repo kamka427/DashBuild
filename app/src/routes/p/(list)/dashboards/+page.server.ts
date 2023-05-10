@@ -15,7 +15,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 				user: true
 			},
 			orderBy: {
-				name: 'asc'
+				createdAt: 'desc'
 			}
 		}),
 		tags: await prisma.dashboard.findMany({
@@ -44,7 +44,7 @@ export const actions: Actions = {
 				}
 			});
 
-			console.log(dashboardId)
+			console.log(dashboardId);
 			const resp = deleteDashboardOnGrafana(dashboardId);
 			console.log(resp);
 

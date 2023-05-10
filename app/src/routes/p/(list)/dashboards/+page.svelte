@@ -25,14 +25,16 @@
 	<title>Dashboards</title>
 </svelte:head>
 <main class="container mx-auto space-y-6">
-		<BreadCrumbs />
-		<Helper infoMessage="This is the Dashboards page. Here you can find all the dashboards that you have created. You can search for dashboards by name or tag. You can also filter the dashboards by the number of columns they have." />
-		<DashboardFilters
-			bind:search={$searchStore.search}
-			bind:tag={$searchStore.tagFilter}
-			bind:columns={columnsToShow}
-			{data}
-		/>
+	<BreadCrumbs />
+	<Helper
+		infoMessage="This is the Dashboards page. Here you can find all the dashboards that you have created. You can search for dashboards by name or tag. You can also filter the dashboards by the number of columns they have."
+	/>
+	<DashboardFilters
+		bind:search={$searchStore.search}
+		bind:tag={$searchStore.tagFilter}
+		bind:columns={columnsToShow}
+		tags={data.tags}
+	/>
 	<div class="grid grid-cols-{columnsToShow} place-items-center gap-3">
 		{#each $searchStore.filtered as dashboard}
 			<DashboardCard {dashboard} />

@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	import type { Dashboard } from '@prisma/client';
 
 	export let dashboards: Dashboard[] = [];

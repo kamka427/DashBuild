@@ -1,16 +1,12 @@
 <script lang="ts">
-	interface Data {
-		tags: {
-			tags: string[];
-		}[];
-	}
-
-	export let data: Data;
+	export let tags: {
+		tags: string[];
+	}[];
 	export let search: string;
 	export let tag: string;
 	export let columns: number;
 
-	export const tags = Array.from(new Set(data.tags.map((tag) => tag.tags).flat()));
+	export const tagsArray = Array.from(new Set(tags.map((tag) => tag.tags).flat()));
 </script>
 
 <div class="flex">
@@ -28,8 +24,8 @@
 			<span>Tag</span>
 			<select class="select-bordered select" id="tag" bind:value={tag}>
 				<option selected value="none">Filter by Tag</option>
-				{#each tags as tag}
-					<option value={tag}>{tag}</option>
+				{#each tagsArray as tag}
+					<option value={tag}>{tag === '' ? 'No tags provided' : tag}</option>
 				{/each}
 			</select>
 		</label>

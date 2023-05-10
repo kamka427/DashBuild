@@ -30,7 +30,7 @@
 		bind:search={$searchStore.search}
 		bind:tag={$searchStore.tagFilter}
 		bind:columns={columnsToShow}
-		{data}
+		tags={data.tags}
 	/>
 	<div class="grid grid-cols-{columnsToShow} place-items-center gap-3">
 		{#each $searchStore.filtered as dashboard}

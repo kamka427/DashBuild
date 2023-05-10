@@ -9,15 +9,17 @@
 			? dashboard.description.substring(0, 120) + '...'
 			: dashboard.description
 		: 'No description provided';
-
-		console.log(dashboard.tags);
+	console.log(dashboard.tags);
+	console.log(dashboard.tags.length);
+	const tags =
+		dashboard.tags.join(', ').length > 0 ? dashboard.tags.join(', ') : 'No tags provided';
 </script>
 
-<main class="card card-compact h-full w-full bg-base-300 text-base-content shadow-xl">
+<main class="card card-compact bg-base-300 text-base-content h-full w-full shadow-xl">
 	<figure>
 		<a href="/p/view/{dashboard.id}">
-		<img src={dashboard.thumbnailPath} class="w-max shadow-xl" alt="Dashboard thumbnail" />
-	</a>
+			<img src={dashboard.thumbnailPath} class="w-max shadow-xl" alt="Dashboard thumbnail" />
+		</a>
 	</figure>
 	<div class="card-body gap-4">
 		<h1 class="card-title">{dashboard.name}</h1>
@@ -29,7 +31,7 @@
 			</div>
 			<div class="stat flex flex-row">
 				<div class="stat-title text-sm">Tags</div>
-				<div class="stat-value text-sm">{dashboard.tags.join(', ')}</div>
+				<div class="stat-value text-sm">{tags}</div>
 			</div>
 			{#if currentPage === 'dashboards'}
 				<div class="stat flex flex-row">
