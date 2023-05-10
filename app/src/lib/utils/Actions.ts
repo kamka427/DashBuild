@@ -1,5 +1,5 @@
 import {
-	createDashboardQuery,
+	upsertDashboardQuery,
 	generatePanelFormJSON,
 	generateTags,
 	getUidAndSlug,
@@ -44,7 +44,6 @@ export async function saveDashboardAction(
 
 	const dashboardId = url.pathname.split('/')[3];
 
-
 	const { dashboardExists, user } = await queryExistingDashboard(session, dashboardId);
 
 	if (dashboardExists && !dashboardExists.published && dashboardExists.userId !== user.id) {
@@ -58,7 +57,7 @@ export async function saveDashboardAction(
 		dashboardName,
 		tagsList,
 		user.id,
-        url.pathname.split('/')[2] === 'edit' ? dashboardExists : undefined
+		url.pathname.split('/')[2] === 'edit' ? dashboardExists : undefined
 	);
 	const resp = await callGrafanaDashboardApi(JSON.stringify(grafanaObject));
 	if (resp.status === 'success') {
@@ -66,7 +65,7 @@ export async function saveDashboardAction(
 
 		const thumbnailPath = await initThumbnailsAndPaths(panelFormJSON, resp);
 
-		await createDashboardQuery(
+		await upsertDashboardQuery(
 			resp,
 			dashboardName,
 			dashboardDescription,

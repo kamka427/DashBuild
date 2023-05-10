@@ -1,7 +1,5 @@
 import { fail } from '@sveltejs/kit';
-import {
-	calculateGridPos,
-} from './grafanaHandler';
+import { calculateGridPos } from './grafanaHandler';
 import type { Panel, User } from '@prisma/client';
 import { GRAFANA_URL } from '$env/static/private';
 import { prisma } from './prisma';
@@ -45,7 +43,7 @@ export function generatePanelFormJSON(panelForm: string, colCount: number) {
 	return panelFormJSON;
 }
 
-export async function createDashboardQuery(
+export async function upsertDashboardQuery(
 	resp: any,
 	dashboardName: string,
 	dashboardDescription: string,
@@ -57,8 +55,11 @@ export async function createDashboardQuery(
 	user: User,
 	panelFormJSON: any
 ) {
-	await prisma.dashboard.create({
-		data: {
+	await prisma.dashboard.upsert({
+		where: {
+			id: resp.uid
+		},
+		create: {
 			id: resp.uid,
 			name: dashboardName,
 			description: dashboardDescription,
@@ -89,27 +90,8 @@ export async function createDashboardQuery(
 					position: panelElem.position
 				}))
 			}
-		}
-	});
-}
-
-export async function updateDashboardQuery(
-	resp: any,
-	dashboardName: string,
-	dashboardDescription: string,
-	published: string,
-	tags: string,
-	thumbnailPath: string,
-	grafanaObject: {},
-	colCount: number,
-	user: User,
-	panelFormJSON: any
-) {
-	await prisma.dashboard.update({
-		where: {
-			id: resp.uid
 		},
-		data: {
+		update: {
 			id: resp.uid,
 			name: dashboardName,
 			description: dashboardDescription,
