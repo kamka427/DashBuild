@@ -134,18 +134,33 @@ export async function updateDashboardQuery(
 			panels: {
 				deleteMany: {
 					id: {
-						in: panelFormJSON.map((panelElem: Panel) => `${resp.uid}-${panelElem.position}`)
+						notIn: panelFormJSON.map((panelElem: Panel) => `${resp.uid}-${panelElem.position}`)
 					}
 				},
-				create: panelFormJSON.map((panelElem: Panel) => ({
-					id: `${resp.uid}-${panelElem.position}`,
-					name: panelElem.name,
-					description: panelElem.description,
-					thumbnailPath: `/thumbnails/${resp.uid}_${panelElem.position}.png`,
-					grafanaJSON: panelElem.grafanaJSON,
-					grafanaUrl: `${GRAFANA_URL}${resp.url}?orgId=1&viewPanel=${panelElem.id}`,
-					width: panelElem.width,
-					position: panelElem.position
+				upsert: panelFormJSON.map((panelElem: Panel) => ({
+					where: {
+						id: `${resp.uid}-${panelElem.position}`
+					},
+					create: {
+						id: `${resp.uid}-${panelElem.position}`,
+						name: panelElem.name,
+						description: panelElem.description,
+						thumbnailPath: `/thumbnails/${resp.uid}_${panelElem.position}.png`,
+						grafanaJSON: panelElem.grafanaJSON,
+						grafanaUrl: `${GRAFANA_URL}${resp.url}?orgId=1&viewPanel=${panelElem.id}`,
+						width: panelElem.width,
+						position: panelElem.position
+					},
+					update: {
+						id: `${resp.uid}-${panelElem.position}`,
+						name: panelElem.name,
+						description: panelElem.description,
+						thumbnailPath: `/thumbnails/${resp.uid}_${panelElem.position}.png`,
+						grafanaJSON: panelElem.grafanaJSON,
+						grafanaUrl: `${GRAFANA_URL}${resp.url}?orgId=1&viewPanel=${panelElem.id}`,
+						width: panelElem.width,
+						position: panelElem.position
+					}
 				}))
 			}
 		}

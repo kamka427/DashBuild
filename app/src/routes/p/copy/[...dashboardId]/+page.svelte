@@ -76,8 +76,13 @@
 		let temp = panelForm[draggedPanelIndex];
 		panelForm[draggedPanelIndex] = panelForm[currentPanelIndex];
 		panelForm[currentPanelIndex] = temp;
+		swapIndexes(panelForm[draggedPanelIndex], draggedPanelIndex);
+		swapIndexes(panelForm[currentPanelIndex], currentPanelIndex);
 	}
 
+	function swapIndexes(panel: Panel, index: number) {
+		panel.position = index;
+	}
 	export let isLoading = false;
 
 	$: if (form?.error) {
