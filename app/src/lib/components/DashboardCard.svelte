@@ -5,9 +5,7 @@
 	export let dashboard: Dashboard;
 
 	const shortDescription = dashboard.description
-		? dashboard.description.length > 120
-			? dashboard.description.substring(0, 120) + '...'
-			: dashboard.description
+		? dashboard.description.slice(0, 70) + '...'
 		: 'No description provided';
 	console.log(dashboard.tags);
 	console.log(dashboard.tags.length);
@@ -37,7 +35,7 @@
 		<div class="stats shadow">
 			<div class="stat flex flex-row">
 				<div class="stat-title text-sm">Version</div>
-				<div class="stat-value text-sm">{dashboard.version}</div>
+				<div class="stat-value flex text-sm">{dashboard.version}</div>
 			</div>
 			<div class="stat flex flex-row">
 				<div class="stat-title text-sm">Tags</div>

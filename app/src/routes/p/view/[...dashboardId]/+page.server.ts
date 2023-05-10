@@ -46,7 +46,15 @@ export const actions: Actions = {
 
 		const panelList = dashboard.panels.sort((a, b) => a.position - b.position);
 
-		await updateAllThumbnails(uidAndSlug, panelList);
+		try 
+		{
+			await updateAllThumbnails(uidAndSlug, panelList);
+		} 
+		catch (error)
+		{
+			console.log(error);
+			return fail(500, { message: 'Could not refresh thumbnails' });
+		}
 
 		return {
 			status: 200,
@@ -85,7 +93,6 @@ export const actions: Actions = {
 				}
 			};
 		} catch (error) {
-			console.log(error);
 			return fail(500, { message: 'Could not publish dashboard' });
 		}
 	}
