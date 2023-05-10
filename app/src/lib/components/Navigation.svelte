@@ -7,11 +7,11 @@
 </script>
 
 <nav class="bg-base-300 text-base-content">
-	<div class="container navbar mx-auto">
+	<div class="navbar container mx-auto">
 		<div class="navbar-start">
 			<a class="btn-ghost btn text-xl normal-case" href="/">DashBuild</a>
 			{#if $page.data.session}
-				<ul class="menu menu-horizontal px-1">
+				<ul class="menu menu-horizontal px-2">
 					<li><a href="/p/create">Create</a></li>
 					<li><a href="/p/gallery">Gallery</a></li>
 					<li><a href="/p/dashboards">Dashboards</a></li>
@@ -19,7 +19,7 @@
 			{/if}
 		</div>
 		<div class="navbar-end">
-			<div class="menu menu-horizontal items-center gap-6 px-1">
+			<div class="menu menu-horizontal items-center gap-6 px-2">
 				<select class="select" data-choose-theme>
 					<option value="">System</option>
 					{#each ['light', 'dark'] as theme}
@@ -39,7 +39,7 @@
 						</div>
 					{:else}
 						<div class="placeholder avatar">
-							<div class="w-12 rounded-full bg-neutral-focus text-neutral-content">
+							<div class="bg-neutral-focus text-neutral-content w-12 rounded-full">
 								<span class="text-xl">
 									{initials}
 								</span>

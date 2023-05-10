@@ -22,8 +22,18 @@
 		</a>
 	</figure>
 	<div class="card-body gap-4">
-		<h1 class="card-title">{dashboard.name}</h1>
-		<p>{shortDescription}</p>
+		<div class="stats shadow">
+			<div class="stat">
+				<p class="stat-title">Title</p>
+				<h1 class="stat-value text-xl">{dashboard.name}</h1>
+			</div>
+		</div>
+		<div class="stats shadow">
+			<div class="stat">
+				<p class="stat-title">Short description</p>
+				<p class="stat-value text-lg">{shortDescription}</p>
+			</div>
+		</div>
 		<div class="stats shadow">
 			<div class="stat flex flex-row">
 				<div class="stat-title text-sm">Version</div>
@@ -36,19 +46,17 @@
 			{#if currentPage === 'dashboards'}
 				<div class="stat flex flex-row">
 					<div class="stat-title text-sm">Published</div>
-					<div class="stat-value text-sm">{dashboard.published}</div>
+					<div class="stat-value text-sm">{dashboard.published === true ? 'True' : 'False'}</div>
 				</div>
 			{/if}
 		</div>
 		<div class="card-actions justify-end">
 			<div class="btn-group">
-				<a href="/p/edit/{dashboard.id}" class="btn-secondary btn">
-					{#if currentPage === 'gallery'}
-						Copy
-					{:else}
-						Modify
-					{/if}
-				</a>
+				{#if currentPage === 'gallery'}
+					<a href="/p/edit/{dashboard.id}" class="btn-secondary btn"> Edit </a>
+				{:else}
+					<a href="/p/copy/{dashboard.id}" class="btn-secondary btn"> Copy </a>
+				{/if}
 				<a href="/p/view/{dashboard.id}" class="btn-primary btn">View</a>
 			</div>
 		</div>
