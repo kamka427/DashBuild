@@ -19,7 +19,7 @@ import {
 	EMAIL_TEST
 } from '$env/static/private';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import { redirect, type Handle, error } from '@sveltejs/kit';
+import { type Handle, error } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 import { prisma } from '$lib/utils/prisma';
 

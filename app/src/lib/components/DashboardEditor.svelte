@@ -77,11 +77,11 @@
 	let dragOn = false;
 
 	function dragPanel(ev: { target: { id: string } }) {
-		draggedPanel = panelForm.find((panel) => String(panel.position) === ev?.target?.id) as Panel;
+		draggedPanel = panelForm.find((panel) => panel.position === parseInt(ev?.target?.id)) as Panel;
 	}
 
 	function dropPanel(ev: { target: { id: string } }) {
-		currentPanel = panelForm.find((panel) => String(panel.position) === ev?.target?.id) as Panel;
+		currentPanel = panelForm.find((panel) => panel.position === parseInt(ev?.target?.id)) as Panel;
 
 		let draggedPanelIndex = panelForm.findIndex(
 			(panel) => panel.position === draggedPanel.position
@@ -99,7 +99,7 @@
 	}
 
 	function swapIndexes(panel: Panel, index: number) {
-		panel.position = index;
+		panel.position = index + 1;
 	}
 
 	export let isLoading = false;

@@ -13,13 +13,15 @@
 
 	export let removeAction: any;
 
-	export let dragEvent: any;
-	export let dropEvent: any;
+	export let dragEvent: (event: any) => void
+	export let dropEvent: (event: any) => void
 
 	export let colCount: number;
 	export let isDropTarget = false;
 	export let isDragged = false;
 	export let dragOn: boolean;
+
+	const positionId = String(panel.position);
 </script>
 
 <div
@@ -61,32 +63,33 @@
 		isDropTarget = false;
 		dragOn = false;
 	}}
+
 >
 	{#if isDropTarget === true && dragOn == true}
 		<div
-			id={panel.position}
+			id={positionId}
 			class="card card-compact h-full min-h-[35em] bg-base-300 text-base-content shadow-xl"
 		>
-			<div class="card-body" id={panel.position}>
-				<p id={panel.position} class="text-2xl">Drop here to swap Panels</p>
+			<div class="card-body" id={positionId}>
+				<p id={positionId} class="text-2xl">Drop here to swap Panels</p>
 			</div>
 		</div>
 	{:else}
 		<div
 			draggable="true"
-			id={panel.position}
-			class="card card-compact h-full bg-base-300 text-base-content shadow-xl"
+			id={positionId}
+			class="card card-compact bg-base-300 text-base-content shadow-xl"
 		>
 			<figure>
 				<img
 					src={panel?.thumbnailPath}
 					class="rounded-md shadow-xl"
 					alt="Dashboard thumbnail"
-					id={panel.position}
+					id={positionId}
 				/>
 			</figure>
 			{#if state === 'preview' || state === 'edit'}
-				<div id={panel.position} class="card-body gap-4">
+				<div id={positionId} class="card-body gap-4">
 					<input
 						bind:value={panel.name}
 						class="input card-title"

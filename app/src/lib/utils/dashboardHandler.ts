@@ -132,10 +132,10 @@ export function getUidAndSlug(resp: any) {
 	return resp.uid + '/' + resp.slug;
 }
 
-export async function queryExistingDashboard(session: Session, dashboardId: string | null = null) {
+export async function queryExistingDashboard(sessionUser: string, dashboardId: string | null = null) {
 	const user = await prisma.user.findUniqueOrThrow({
 		where: {
-			id: session?.user.id as string
+			id: sessionUser
 		},
 		include: {
 			dashboards: true

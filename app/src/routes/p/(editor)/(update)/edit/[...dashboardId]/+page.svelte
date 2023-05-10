@@ -2,8 +2,8 @@
 	import DashboardEditor from '$lib/components/DashboardEditor.svelte';
 	import BreadCrumbs from '$lib/components/BreadCrumbs.svelte';
 	import type { Panel } from '@prisma/client';
-	import type { ActionData, PageData } from './copy/[...dashboardId]/$types';
 	import Helper from '$lib/components/Helper.svelte';
+	import type { ActionData, PageData } from './$types';
 
 	export let data: PageData;
 	export let form: ActionData;

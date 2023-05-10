@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	export const initials = $page.data.session?.user?.name
 		?.split(' ')
-		.map((word) => word[0])
+		.map((/** @type {string[]} */ word) => word[0])
 		.join('');
 </script>
 

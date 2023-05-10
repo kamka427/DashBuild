@@ -143,8 +143,6 @@ export async function callGrafanaFolderApi(grafanaJSON: string) {
 }
 
 export async function createGrafanaFolder(user: User & { dashboards: Dashboard[] }) {
-	if (user.dashboards.length === 0) {
-		const folderObject = await createGrafanaFolderPayload(user.id);
-		await callGrafanaFolderApi(JSON.stringify(folderObject));
-	}
+	const folderObject = await createGrafanaFolderPayload(user.id);
+	await callGrafanaFolderApi(JSON.stringify(folderObject));
 }

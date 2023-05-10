@@ -57,14 +57,16 @@ export async function saveDashboardAction(
 	}
 
 	const dashboardId = url.pathname.split('/')[3];
-
-	const { dashboardExists, user } = await queryExistingDashboard(session, dashboardId);
+	const userId = session.user.id;
+	const { dashboardExists, user } = await queryExistingDashboard(userId, dashboardId);
 
 	if (dashboardExists && !dashboardExists.published && dashboardExists.userId !== user.id) {
 		return error(403, 'You are not allowed to copy this dashboard');
 	}
 
+	if (user.dashboards.length === 0) {
 	await createGrafanaFolder(user);
+	}
 
 	const grafanaObject = await createGrafanaDashboardPayload(
 		panelFormJSON,
