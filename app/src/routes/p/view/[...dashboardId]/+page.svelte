@@ -6,10 +6,9 @@
 	import type { PageData } from './$types';
 	export let data: PageData;
 
-	export const panels = data.dashboard.panels
-		.sort((a, b) => a.position - b.position);
+	export const panels = data.dashboard.panels.sort((a, b) => a.position - b.position);
 
-		console.log(data.dashboard.dashboardIterations);
+	console.log(data.dashboard.dashboardIterations);
 </script>
 
 <svelte:head>
@@ -21,10 +20,10 @@
 	<a href={data.dashboard.grafanaUrl} target="_blank" class="btn-primary btn"> Open in Grafana </a>
 	<div class="mt-6 flex gap-2">
 		<div class="container max-w-4xl">
-			<img src="{data.dashboard.thumbnailPath}" alt="Dashboard" class="rounded-xl" />
+			<img src={data.dashboard.thumbnailPath} alt="Dashboard" class="rounded-xl" />
 		</div>
-		<div class="flex flex-col gap-2 w-full">
-			<div class="stats mx-auto w-full bg-base-300 shadow">
+		<div class="flex w-full flex-col gap-2">
+			<div class="stats bg-base-300 mx-auto w-full shadow">
 				<div class="stat flex flex-row">
 					<div class="stat-title text-sm">Version</div>
 					<div class="stat-value text-sm">{data.dashboard.version}</div>
@@ -36,34 +35,20 @@
 				</div>
 				<PublishButton published={data.dashboard.published} dashboardId={data.dashboard.id} />
 			</div>
-			<div class="card-compact card flex-1 bg-base-300 text-base-content shadow-xl">
+			<div class="card-compact card bg-base-300 text-base-content flex-1 shadow-xl">
 				<div class="card-body">
 					<h2 class="card-title">{data.dashboard.name}</h2>
 					<p>{data.dashboard.description}</p>
 					<div class="card-actions justify-end">
 						<div class="btn-group">
-							<form
-								action="/p/dashboards?/deleteDashboard"
-								method="POST"
-								class="btn-error btn"
-								on:submit={(e) => {
-									if (!confirm('Are you sure you want to delete this dashboard?'))
-										e.preventDefault();
-								}}
-							>
-								<input
-									type="hidden"
-									name="dashboardId"
-									id="dashboardId"
-									value={data.dashboard.id}
-								/>
-								<button type="submit"> DELETE </button>
-							</form>
-							<a href="/p/edit/{data.dashboard.id}" class="btn-primary btn">Edit</a>
-							<a href="/p/copy/{data.dashboard.id}" class="btn-secondary btn">Copy</a>
-							<form action="?/refreshThumbnails" method="POST" class="btn-info btn">
-								<button type="submit"> Refresh </button>
-							</form>
+							<button class="btn-error btn" type="submit" form="deleteDashboard"> Delete </button>
+							<button class="btn-primary btn">
+								<a href="/p/edit/{data.dashboard.id}">Edit</a>
+							</button>
+							<button class="btn-secondary btn">
+								<a href="/p/copy/{data.dashboard.id}">Copy</a>
+							</button>
+							<button class="btn-info btn" type="submit" form="refreshThumbnails" > refresh Thumbnails </button>
 						</div>
 					</div>
 				</div>
@@ -79,3 +64,15 @@
 		</div>
 	</div>
 </div>
+
+<form id="refreshThumbnails" action="?/refreshThumbnails" method="POST" />
+<form
+	id="deleteDashboard"
+	action="/p/dashboards?/deleteDashboard"
+	method="POST"
+	on:submit={(e) => {
+		if (!confirm('Are you sure you want to delete this dashboard?')) e.preventDefault();
+	}}
+>
+	<input type="hidden" name="dashboardId" id="dashboardId" value={data.dashboard.id} />
+</form>
