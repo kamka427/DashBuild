@@ -61,11 +61,11 @@
 	let currentPanel: Panel;
 	let dragOn = false;
 
-	function drag(ev: { target: { id: string } }) {
+	function dragPanel(ev: { target: { id: string } }) {
 		draggedPanel = panelForm.find((panel) => String(panel.position) === ev?.target?.id) as Panel;
 	}
 
-	function drop(ev: { target: { id: string } }) {
+	function dropPanel(ev: { target: { id: string } }) {
 		currentPanel = panelForm.find((panel) => String(panel.position) === ev?.target?.id) as Panel;
 
 		let draggedPanelIndex = panelForm.findIndex(
@@ -107,10 +107,10 @@
 				{colCount}
 				removeAction={() => removePanel(panel.id)}
 				dragEvent={(e) => {
-					drag(e);
+					dragPanel(e);
 				}}
 				dropEvent={(e) => {
-					drop(e);
+					dropPanel(e);
 				}}
 			/>
 		{/each}

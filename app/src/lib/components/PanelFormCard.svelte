@@ -51,6 +51,11 @@
 		dropEvent(e);
 		dragOn = false;
 	}}
+	on:dragexit={(e) => {
+		e.preventDefault();
+		isDropTarget = false;
+		dragOn = false;
+	}}
 	on:mouseleave={(e) => {
 		e.preventDefault();
 		isDropTarget = false;
@@ -58,22 +63,14 @@
 	}}
 >
 	{#if isDropTarget === true && dragOn == true}
-		<svg
+		<div
 			id={panel.position}
-			class="border-base-300 h-[35em] w-full border
-		"
+			class="card-compact card bg-base-300 text-base-content h-full min-h-[35em]"
 		>
-			<text
-				x="50%"
-				y="50%"
-				text-anchor="middle"
-				dominant-baseline="middle"
-				class="text-base-content"
-				fill="currentColor"
-			>
-				Drop to swap panels
-			</text>
-		</svg>
+			<div class="card-body" id={panel.position}>
+				<p id={panel.position} class="text-2xl">Drop here to swap Panels</p>
+			</div>
+		</div>
 	{:else}
 		<div
 			draggable="true"
