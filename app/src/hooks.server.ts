@@ -19,7 +19,7 @@ import {
 	EMAIL_TEST
 } from '$env/static/private';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import { redirect, type Handle } from '@sveltejs/kit';
+import { redirect, type Handle, error } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 import { prisma } from '$lib/utils/prisma';
 
@@ -82,7 +82,7 @@ async function authorization({ event, resolve }: { event: any; resolve: any }): 
 	if (event.url.pathname.startsWith('/p')) {
 		const session = await event.locals.getSession();
 		if (!session) {
-			throw redirect(303, '/');
+			throw error(401, 'Unauthorized');
 		}
 	}
 
