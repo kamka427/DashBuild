@@ -24,7 +24,7 @@
 		};
 		thumbnailPath: string;
 	};
-
+	refreshPositions();
 	function addPanel(panel: {
 		title: string;
 		JSON: {
@@ -32,6 +32,7 @@
 		};
 		thumbnailPath: string;
 	}) {
+		refreshPositions();
 		panelForm = [
 			...panelForm,
 			{
@@ -53,8 +54,22 @@
 		];
 	}
 
+	function refreshPositions() {
+		panelForm = panelForm.map((panel, index) => {
+			console.log(panel);
+			return {
+				...panel,
+				position: index + 1,
+				id: (index + 1).toString()
+			};
+		});
+	}
+
+	$: refreshPositions();
+
 	function removePanel(panelId: string) {
 		panelForm = panelForm.filter((panel) => panel.id !== panelId);
+		refreshPositions();
 	}
 
 	let draggedPanel: Panel;
