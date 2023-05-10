@@ -1,5 +1,5 @@
 import { GRAFANA_URL, GRAFANA_API_TOKEN, PANEL_PARSER_URL } from '$env/static/private';
-import type { Dashboard, Panel } from '@prisma/client';
+import type { Dashboard, Panel, User } from '@prisma/client';
 
 export async function fetchPanels() {
 	const resp = await fetch(`${PANEL_PARSER_URL}`, {});
@@ -138,4 +138,11 @@ export async function callGrafanaFolderApi(grafanaJSON: string) {
 	const resp = await response.json();
 	console.log(resp);
 	return resp;
+}
+
+export async function createGrafanaFolder(user: User & { dashboards: Dashboard[] }) {
+	if (user.dashboards.length === 0) {
+		const folderObject = await createGrafanaFolderPayload(user.id);
+		await callGrafanaFolderApi(JSON.stringify(folderObject));
+	}
 }

@@ -7,21 +7,21 @@ import type { Panel } from '@prisma/client';
 const writeFilePromise = promisify(fs.writeFile);
 
 export async function generateDashboardThumbnail(panelList: Panel[], uid: string) {
-
+	//started
 	const locations: {
 		[key: string]: string;
 	} = {
-		'0': 'northwest',
-		'1': 'northeast',
-		'2': 'southwest',
-		'3': 'southeast'
+		1: 'northwest',
+		2: 'northeast',
+		3: 'southwest',
+		4: 'southeast'
 	};
 
 	const firstFourPanels = panelList.slice(0, 4);
-	const inputs = firstFourPanels.map((panel, index) => {
+	const inputs = firstFourPanels.map((panel) => {
 		return {
-			input: `static/${panel.thumbnailPath}`,
-			gravity: locations[index]
+			input: `${path.resolve(`static/${panel.thumbnailPath}`)}`,
+			gravity: locations[panel.position]
 		};
 	});
 
@@ -62,12 +62,13 @@ export async function copyDefaultThumbnail(
 	return `/thumbnails/${uid}_${position}.png`;
 }
 
-export async function updatePanelThumbnailsWithApi(uidAndSlug: string, panelId: string) {
+export async function updatePanelThumbnailsWithApi(uidAndSlug: string, position: string) {
 	console.log(
-		`${GRAFANA_URL}/render/d-solo/${uidAndSlug}?orgId=1&panelId=${panelId}&width=1000&height=500`
+		`${GRAFANA_URL}/render/d-solo/${uidAndSlug}?orgId=1&panelId=${position}&width=1000&height=500`
 	);
+	console.log('start', position);
 	const response = await fetch(
-		`${GRAFANA_URL}/render/d-solo/${uidAndSlug}?orgId=1&panelId=${panelId}&width=1000&height=500`,
+		`${GRAFANA_URL}/render/d-solo/${uidAndSlug}?orgId=1&panelId=${position}&width=1000&height=500`,
 		{
 			headers: {
 				Authorization: GRAFANA_API_TOKEN
@@ -77,12 +78,18 @@ export async function updatePanelThumbnailsWithApi(uidAndSlug: string, panelId: 
 
 	const buffer = await response.arrayBuffer();
 
-	const buff = await sharp(buffer).jpeg().toBuffer();
+	console.log('buffer', buffer);
 
-	console.log
+	const buff = await sharp(buffer).png().toBuffer();
+
+	console.log('buff', position);
+
+	console.log;
 	const uid = uidAndSlug.split('/')[0];
-	await writeFilePromise(`static/thumbnails/${uid}_${panelId}.png`, buff);
+	await writeFilePromise(`static/thumbnails/${uid}_${position}.png`, buff);
 	console.log(response);
+
+	console.log('end', position);
 
 	return response;
 }
@@ -90,11 +97,23 @@ export async function updatePanelThumbnailsWithApi(uidAndSlug: string, panelId: 
 export async function updateAllThumbnails(uidAndSlug: string, panelList: Panel[]) {
 	console.log('Updating all thumbnails');
 	const promises = panelList.map(async (panel) => {
+		console.log(`Updating thumbnail for panel ${panel.position}`);
 		await updatePanelThumbnailsWithApi(uidAndSlug, panel.position.toString());
 		return Promise.resolve();
 	});
 
 	await Promise.all(promises);
+	console.log('Dashboard thumbnails updated');
 	await generateDashboardThumbnail(panelList, uidAndSlug.split('/')[0]);
 	console.log('All thumbnails updated');
+}
+
+export async function initThumbnailsAndPaths(panelFormJSON: any, resp: any) {
+	const thumbnailPath = await generateDashboardThumbnail(panelFormJSON, resp.uid);
+	panelFormJSON.map(async (panel: Panel) => {
+		await copyDefaultThumbnail(resp.uid, panel.position, panel.thumbnailPath);
+		panel.thumbnailPath = `thumbnail/${resp.uid}_${panel.position}.png`;
+		return panel;
+	});
+	return thumbnailPath;
 }

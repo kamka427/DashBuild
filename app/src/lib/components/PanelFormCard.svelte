@@ -62,7 +62,7 @@
 >
 	{#if isDropTarget === true && dragOn == true}
 		<svg
-			id={panel.id}
+			id={panel.position}
 			class="h-[35em] w-full border border-base-300
 		"
 		>
@@ -78,17 +78,17 @@
 			</text>
 		</svg>
 	{:else}
-		<div draggable="true" id={panel.id} class="card-compact card bg-base-300 text-base-content">
+		<div draggable="true" id={panel.position} class="card-compact card bg-base-300 text-base-content">
 			<figure>
 				<img
 					src="{panel?.thumbnailPath}"
 					class="rounded-md shadow-xl"
 					alt="Dashboard thumbnail"
-					id={panel.id}
+					id={panel.position}
 				/>
 			</figure>
 			{#if state === 'preview' || state === 'edit'}
-				<div id={panel.id} class="card-body gap-4">
+				<div id={panel.position} class="card-body gap-4">
 					<input
 						bind:value={panel.name}
 						class="input card-title"

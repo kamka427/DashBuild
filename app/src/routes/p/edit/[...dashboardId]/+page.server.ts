@@ -3,19 +3,18 @@ import { prisma } from '$lib/utils/prisma';
 import {
 	callGrafanaDashboardApi,
 	createGrafanaDashboardPayload,
+	createGrafanaFolder,
 	fetchPanels
 } from '$lib/utils/grafanaHandler';
 import {
-	createGrafanaFolder,
 	generatePanelFormJSON,
 	generateTags,
 	getUidAndSlug,
-	initThumbnailsAndPaths,
 	queryExistingDashboard,
 	updateDashboardQuery,
 	validateForm
 } from '$lib/utils/dashboardHandler';
-import { updateAllThumbnails } from '$lib/utils/thumbnailHandler';
+import { initThumbnailsAndPaths, updateAllThumbnails } from '$lib/utils/thumbnailHandler';
 import { fail, redirect } from '@sveltejs/kit';
 import { error } from 'console';
 export const load: PageServerLoad = async ({ url }) => {
@@ -90,16 +89,9 @@ export const actions: Actions = {
 				panelFormJSON
 			);
 
-			// await updateAllThumbnails(uidAndSlug, panelFormJSON);
+			 await updateAllThumbnails(uidAndSlug, panelFormJSON);
 
 			throw redirect(301, `/p/view/${resp.uid}`);
-
-			return {
-				status: 200,
-				body: {
-					message: 'Dashboard saved'
-				}
-			};
 		} else {
 			return fail(422, {
 				description: resp.message,

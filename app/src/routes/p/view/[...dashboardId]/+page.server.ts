@@ -36,18 +36,13 @@ export const actions: Actions = {
 				id: uid
 			},
 			include: {
-				panels: {
-					include: {
-						panel: true
-					}
-				}
+				panels: true
 			}
 		});
 
 		const uidAndSlug = `${uid}/${dashboard.name}`;
 
 		const panelList = dashboard.panels
-			.map((panel) => panel.panel)
 			.sort((a, b) => a.position - b.position);
 
 		await updateAllThumbnails(uidAndSlug, panelList);

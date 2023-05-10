@@ -64,14 +64,14 @@
 	let dragOn = false;
 
 	function drag(ev: { target: { id: string } }) {
-		draggedPanel = panelForm.find((panel) => panel.id === ev?.target?.id) as Panel;
+		draggedPanel = panelForm.find((panel) => String(panel.position) === ev?.target?.id) as Panel;
 	}
 
 	function drop(ev: { target: { id: string } }) {
-		currentPanel = panelForm.find((panel) => panel.id === ev?.target?.id) as Panel;
+		currentPanel = panelForm.find((panel) => String(panel.position) === ev?.target?.id) as Panel;
 
-		let draggedPanelIndex = panelForm.findIndex((panel) => panel.id === draggedPanel.id);
-		let currentPanelIndex = panelForm.findIndex((panel) => panel.id === currentPanel.id);
+		let draggedPanelIndex = panelForm.findIndex((panel) => panel.position === draggedPanel.position);
+		let currentPanelIndex = panelForm.findIndex((panel) => panel.position === currentPanel.position);
 
 		let temp = panelForm[draggedPanelIndex];
 		panelForm[draggedPanelIndex] = panelForm[currentPanelIndex];
@@ -81,6 +81,7 @@
 	}
 
 	function swapIndexes(panel: Panel, index: number) {
+		console.log(panel, index);
 		panel.position = index;
 	}
 	export let isLoading = false;

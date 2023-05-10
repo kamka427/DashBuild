@@ -1,13 +1,10 @@
 import { fail } from '@sveltejs/kit';
 import {
 	calculateGridPos,
-	callGrafanaFolderApi,
-	createGrafanaFolderPayload
 } from './grafanaHandler';
-import type { Dashboard, Panel, User } from '@prisma/client';
+import type { Panel, User } from '@prisma/client';
 import { GRAFANA_URL } from '$env/static/private';
 import { prisma } from './prisma';
-import { copyDefaultThumbnail, generateDashboardThumbnail } from './thumbnailHandler';
 
 export function validateForm(dashboardName: string, colCount: number, published: string) {
 	if (dashboardName.length < 3 || dashboardName.length > 50) {
@@ -167,25 +164,8 @@ export async function updateDashboardQuery(
 	});
 }
 
-export async function initThumbnailsAndPaths(panelFormJSON: any, resp: any) {
-	const thumbnailPath = await generateDashboardThumbnail(panelFormJSON, resp.uid);
-	panelFormJSON.map(async (panel: Panel) => {
-		await copyDefaultThumbnail(resp.uid, panel.position, panel.thumbnailPath);
-		panel.thumbnailPath = `thumbnail/${resp.uid}_${panel.position}.png`;
-		return panel;
-	});
-	return thumbnailPath;
-}
-
 export function getUidAndSlug(resp: any) {
 	return resp.uid + '/' + resp.slug;
-}
-
-export async function createGrafanaFolder(user: User & { dashboards: Dashboard[] }) {
-	if (user.dashboards.length === 0) {
-		const folderObject = await createGrafanaFolderPayload(user.id);
-		await callGrafanaFolderApi(JSON.stringify(folderObject));
-	}
 }
 
 export async function queryExistingDashboard(session: any, dashboardId: string | null = null) {
