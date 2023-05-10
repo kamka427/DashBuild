@@ -99,7 +99,8 @@
 	}
 
 	function swapIndexes(panel: Panel, index: number) {
-		panel.position = index + 1;
+		console.log(index);
+		panel.position = index;
 	}
 
 	export let isLoading = false;
@@ -107,6 +108,8 @@
 	$: if (form?.error) {
 		isLoading = false;
 	}
+
+	$: console.log(panelForm);
 </script>
 
 <div class="flex flex-col gap-4 {isLoading ? 'pointer-events-none animate-pulse' : ''}">

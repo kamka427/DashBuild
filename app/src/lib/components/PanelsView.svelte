@@ -12,7 +12,7 @@
 	<div class="collapse-title text-xl font-medium">Click for Panels</div>
 	<div class="collapse-content">
 		<div class="flex gap-4">
-			<div class="grid grid-cols-{columns} gap-4">
+			<div class="grid grid-cols-4 gap-4">
 				{#each panels as panel}
 					<PanelPreviewCard {panel} />
 				{/each}

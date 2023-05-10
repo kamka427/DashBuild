@@ -62,7 +62,7 @@ export async function validatePublish(dashboardId: string, publishState: string)
 	}
 
 	if (publishState === 'true') {
-		const dashboard = await prisma.dashboard.findUnique({
+		const dashboard = await prisma.dashboard.findUniqueOrThrow({
 			where: {
 				id: dashboardId
 			}

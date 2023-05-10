@@ -10,16 +10,21 @@ export function generateTags(tags: string) {
 
 export function generatePanelFormJSON(panelForm: string, colCount: number) {
 	let panelFormJSON = JSON.parse(panelForm);
-	panelFormJSON = panelFormJSON.map((panel: Panel & { grafanaJSON: any }, index: number) => {
-		panel.position = index + 1;
-		return {
-			...panel,
-			grafanaJSON: {
-				...panel.grafanaJSON,
-				gridPos: calculateGridPos(panel, Number(colCount))
-			}
-		};
-	});
+	console.log(panelFormJSON);
+	panelFormJSON = panelFormJSON.map(
+		(panel: Panel & { grafanaJSON: any; id: any }, index: number) => {
+			panel.position = index + 1;
+			panel.id = index + 1;
+			return {
+				...panel,
+				grafanaJSON: {
+					...panel.grafanaJSON,
+					gridPos: calculateGridPos(panel, Number(colCount)),
+					id: index + 1
+				}
+			};
+		}
+	);
 	return panelFormJSON;
 }
 
@@ -132,7 +137,10 @@ export function getUidAndSlug(resp: any) {
 	return resp.uid + '/' + resp.slug;
 }
 
-export async function queryExistingDashboard(sessionUser: string, dashboardId: string | null = null) {
+export async function queryExistingDashboard(
+	sessionUser: string,
+	dashboardId: string | null = null
+) {
 	const user = await prisma.user.findUniqueOrThrow({
 		where: {
 			id: sessionUser
@@ -143,7 +151,7 @@ export async function queryExistingDashboard(sessionUser: string, dashboardId: s
 	});
 
 	if (dashboardId !== null) {
-		const dashboardExists = await prisma.dashboard.findFirst({
+		const dashboardExists = await prisma.dashboard.findFirstOrThrow({
 			where: {
 				userId: user.id,
 				id: dashboardId

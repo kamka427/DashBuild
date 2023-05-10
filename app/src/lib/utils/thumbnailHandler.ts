@@ -24,6 +24,7 @@ export async function generateDashboardThumbnail(panelList: Panel[], uid: string
 		};
 	});
 
+	console.log(inputs);
 	sharp({
 		create: {
 			width: 2010,
@@ -69,6 +70,9 @@ export async function updatePanelThumbnailsWithApi(uidAndSlug: string, position:
 			}
 		}
 	);
+	console.log(
+		`${GRAFANA_URL}/render/d-solo/${uidAndSlug}?orgId=1&panelId=${position}&width=1000&height=500`
+	);
 	const buffer = await response.arrayBuffer();
 	const sharpBuff = await sharp(buffer).png().toBuffer();
 	const uid = uidAndSlug.split('/')[0];
@@ -93,6 +97,7 @@ export async function initThumbnailsAndPaths(panelFormJSON: any, resp: any) {
 		Promise.resolve();
 	});
 	await Promise.all(promises);
+	console.log("here")
 	const thumbnailPath = await generateDashboardThumbnail(panelFormJSON, resp.uid);
 	return thumbnailPath;
 }
