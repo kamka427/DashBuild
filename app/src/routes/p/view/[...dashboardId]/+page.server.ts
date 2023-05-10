@@ -1,5 +1,5 @@
 import type { PageServerLoad, Actions } from './$types';
-import { fail, redirect } from '@sveltejs/kit';
+import { fail } from '@sveltejs/kit';
 import { prisma } from '$lib/utils/prisma';
 import { updateAllThumbnails } from '$lib/utils/thumbnailHandler';
 
@@ -20,10 +20,6 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 			}
 		}
 	});
-
-	if (!dashboard.published && dashboard.userId !== session?.user.id) {
-		throw redirect(300, '/p/gallery');
-	}
 	return {
 		dashboard
 	};
@@ -46,14 +42,11 @@ export const actions: Actions = {
 
 		const panelList = dashboard.panels.sort((a, b) => a.position - b.position);
 
-		try 
-		{
+		try {
 			await updateAllThumbnails(uidAndSlug, panelList);
-		} 
-		catch (error)
-		{
+		} catch (error) {
 			console.log(error);
-			return fail(500, { message: 'Could not refresh thumbnails' });
+			return fail(404, { message: 'Could not refresh thumbnails' });
 		}
 
 		return {
@@ -93,18 +86,18 @@ export const actions: Actions = {
 				}
 			};
 		} catch (error) {
-			return fail(500, { message: 'Could not publish dashboard' });
+			return fail(400, { message: 'Could not publish dashboard' });
 		}
 	}
 };
 
 async function validatePublish(dashboardId: string, publishState: string) {
 	if (!dashboardId || !publishState) {
-		return fail(400, { message: 'Missing dashboardId or publishState' });
+		return fail(403, { message: 'Missing dashboardId or publishState' });
 	}
 
 	if (publishState !== 'true' && publishState !== 'false') {
-		return fail(400, { message: 'Invalid publishState' });
+		return fail(403, { message: 'Invalid publishState' });
 	}
 
 	if (publishState === 'true') {
@@ -115,11 +108,11 @@ async function validatePublish(dashboardId: string, publishState: string) {
 		});
 
 		if (!dashboard) {
-			return fail(404, { message: 'Dashboard not found' });
+			return fail(403, { message: 'Dashboard not found' });
 		}
 
 		if (dashboard.published) {
-			return fail(400, { message: 'Dashboard already published' });
+			return fail(403, { message: 'Dashboard already published' });
 		}
 	}
 }
