@@ -1,5 +1,6 @@
 <script lang="ts">
 	import BreadCrumbs from '$lib/components/BreadCrumbs.svelte';
+	import Helper from '$lib/components/Helper.svelte';
 	import PanelPreviewCard from '$lib/components/PanelPreviewCard.svelte';
 	import PublishButton from '$lib/components/PublishButton.svelte';
 
@@ -15,8 +16,9 @@
 	<title>{data.dashboard.name}</title>
 </svelte:head>
 
-<div class="container mx-auto">
+<div class="container mx-auto space-y-6">
 	<BreadCrumbs />
+	<Helper infoMessage='This is a preview of the dashboard. Click "Open in Grafana" to view the dashboard in Grafana.' />
 	<a href={data.dashboard.grafanaUrl} target="_blank" class="btn-primary btn"> Open in Grafana </a>
 	<div class="mt-6 flex gap-2">
 		<div class="container max-w-4xl">
@@ -48,7 +50,7 @@
 							<button class="btn-secondary btn">
 								<a href="/p/copy/{data.dashboard.id}">Copy</a>
 							</button>
-							<button class="btn-info btn" type="submit" form="refreshThumbnails" > refresh Thumbnails </button>
+							<button class="btn-info btn" type="submit" form="refreshThumbnails" > Refresh Thumbnails </button>
 						</div>
 					</div>
 				</div>
@@ -66,6 +68,7 @@
 </div>
 
 <form id="refreshThumbnails" action="?/refreshThumbnails" method="POST" />
+
 <form
 	id="deleteDashboard"
 	action="/p/dashboards?/deleteDashboard"

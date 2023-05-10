@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Carousel from '../lib/components/Carousel.svelte';
+
 	import { page } from '$app/stores';
 	import type { PageData } from './$types';
 	export let data: PageData;
@@ -25,39 +27,16 @@
 				</p>
 				{#if $page.data.session}
 					<div class="card-actions">
-						<button class="btn-primary btn"
+						<button class="btn-primary btn shadow-xl"
 							><a href="/p/create"> Create a new Dashboard </a>
 						</button>
-						<button class="btn-secondary btn">
+						<button class="btn-secondary btn shadow-xl">
 							<a href="/p/dashboards"> Jump to my Dashboards </a>
 						</button>
 					</div>
 				{/if}
 			</div>
 		</article>
-		<aside class="container carousel w-full">
-			{#each data.dashboards as dashboard, index}
-				<div id="slide{index + 1}" class="carousel-item relative w-full">
-					<div class="container card bg-base-300 text-base-content">
-						<div class="card-body">
-							<h2 class="card-title">{dashboard.name}</h2>
-						</div>
-						<figure>
-							<img
-								src={dashboard.thumbnailPath}
-								class="w-full"
-								alt="A published dashboard in a carousel."
-							/>
-						</figure>
-					</div>
-					<div
-						class="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between"
-					>
-						<a id="next-btn" href="#slide{index}" class="btn-circle btn">❮</a>
-						<a href="#slide{index + 2}" class="btn-circle btn">❯</a>
-					</div>
-				</div>
-			{/each}
-		</aside>
+		<Carousel dashboards={data.dashboards} />
 	</div>
 </main>

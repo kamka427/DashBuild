@@ -8,7 +8,7 @@
 
 <div class="flex">
 	<div class="flex flex-row flex-wrap gap-4">
-		<label class="input-group flex-1">
+		<label class="input-group flex-1 shadow-xl">
 			<span>Title</span>
 			<input
 				type="text"
@@ -17,7 +17,7 @@
 				bind:value={title}
 			/>
 		</label>
-		<label class="input-group flex-1">
+		<label class="input-group flex-1 shadow-xl">
 			<span>Description</span>
 			<input
 				type="text"
@@ -26,7 +26,7 @@
 				bind:value={description}
 			/>
 		</label>
-		<label class="input-group flex-1">
+		<label class="input-group flex-1 shadow-xl">
 			<span>Tags</span>
 			<input
 				type="text"
@@ -35,11 +35,11 @@
 				bind:value={tags}
 			/>
 		</label>
-		<label class="input-group flex-1">
+		<label class="input-group flex-1 shadow-xl">
 			<span>Published</span>
 			<input type="checkbox" class=" toggle toggle-lg h-full" bind:checked={published} />
 		</label>
-		<label class="input-group flex-1">
+		<label class="input-group flex-1 shadow-xl">
 			<span>Columns</span>
 			<input
 				type="number"

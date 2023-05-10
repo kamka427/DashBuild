@@ -4,8 +4,6 @@
 	export let panels: Panel[];
 	export let state: 'selected' | 'unselected' = 'unselected';
 
-	console.log(panels);
-
 	function toggleState() {
 		if (state === 'unselected') {
 			state = 'selected';
@@ -34,9 +32,9 @@
 	}
 </script>
 
-<div class="card-compact card w-full bg-base-300 text-base-content">
+<div class="card-compact card w-full bg-base-300 text-base-content min-h-[30em] shadow-xl">
 	{#if state === 'unselected'}
-		<figure class="flex h-full w-full items-center justify-center bg-base-200">
+		<figure class="flex h-full w-full  items-center justify-center bg-base-200">
 			<button on:click={toggleState}>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"

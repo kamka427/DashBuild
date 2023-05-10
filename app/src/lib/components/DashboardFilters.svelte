@@ -13,35 +13,37 @@
 	export const tags = Array.from(new Set(data.tags.map((tag) => tag.tags).flat()));
 </script>
 
-<div class="flex flex-row gap-4">
-	<label class="input-group">
-		<span>Search</span>
-		<input
-			type="search"
-			placeholder="Search for a dashboard"
-			class="input-bordered input"
-			bind:value={search}
-		/>
-	</label>
-	<label class="input-group">
-		<span>Tag</span>
-		<select class="select-bordered select" id="tag" bind:value={tag}>
-			<option selected value="none">Filter by Tag</option>
-			{#each tags as tag}
-				<option value={tag}>{tag}</option>
-			{/each}
-		</select>
-	</label>
-	<label class="input-group">
-		<span>Columns</span>
-		<input
-			class="input-bordered input"
-			id="columns"
-			bind:value={columns}
-			min="1"
-			max="4"
-			type="number"
-			placeholder="2"
-		/>
-	</label>
+<div class="flex">
+	<div class="flex flex-row flex-wrap gap-4">
+		<label class="input-group flex-1 shadow-xl">
+			<span>Search</span>
+			<input
+				type="search"
+				placeholder="Search for a dashboard"
+				class="input-bordered input"
+				bind:value={search}
+			/>
+		</label>
+		<label class="input-group flex-1 shadow-xl">
+			<span>Tag</span>
+			<select class="select-bordered select" id="tag" bind:value={tag}>
+				<option selected value="none">Filter by Tag</option>
+				{#each tags as tag}
+					<option value={tag}>{tag}</option>
+				{/each}
+			</select>
+		</label>
+		<label class="input-group flex-1 shadow-xl">
+			<span>Columns</span>
+			<input
+				class="input-bordered input"
+				id="columns"
+				bind:value={columns}
+				min="1"
+				max="4"
+				type="number"
+				placeholder="2"
+			/>
+		</label>
+	</div>
 </div>

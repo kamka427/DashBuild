@@ -79,7 +79,7 @@ export async function generateDashboardThumbnail(panelList: Panel[], dashboardNa
 			width: 2010,
 			height: 1010,
 			channels: 4,
-			background: { r: 0, g: 0, b: 0, alpha: 0 }
+			background: { r: 0, g: 0, b: 0, alpha: 255 }
 		}
 	})
 		.composite(inputs)

@@ -13,9 +13,11 @@
 		console.log(dashboard.tags);
 </script>
 
-<main class="card card-compact h-full w-full bg-base-300 text-base-content">
+<main class="card card-compact h-full w-full bg-base-300 text-base-content shadow-xl">
 	<figure>
-		<img src={dashboard.thumbnailPath} class="w-max shadow-xl" alt="" />
+		<a href="/p/view/{dashboard.id}">
+		<img src={dashboard.thumbnailPath} class="w-max shadow-xl" alt="Dashboard thumbnail" />
+	</a>
 	</figure>
 	<div class="card-body gap-4">
 		<h1 class="card-title">{dashboard.name}</h1>
