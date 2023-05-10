@@ -11,11 +11,7 @@ import {
 	createGrafanaDashboardPayload,
 	createGrafanaFolder
 } from './grafanaHandler';
-import {
-	generateDashboardThumbnail,
-	initThumbnailsAndPaths,
-	updateAllThumbnails
-} from './thumbnailHandler';
+import { initThumbnailsAndPaths, updateAllThumbnails } from './thumbnailHandler';
 import { redirect, fail, error } from '@sveltejs/kit';
 
 export async function saveDashboardAction(
@@ -38,7 +34,6 @@ export async function saveDashboardAction(
 		tags: string;
 		published: string;
 		panelForm: string;
-		dashboardId: string;
 	};
 
 	title.trim();
@@ -47,7 +42,14 @@ export async function saveDashboardAction(
 	const tagsList = generateTags(tags);
 	const panelFormJSON = generatePanelFormJSON(panelForm, colCount);
 
-	const isInvalid = validateForm(title, description, colCount, published, tagsList, panelFormJSON);
+	const isInvalid = await validateForm(
+		title,
+		description,
+		colCount,
+		published,
+		tagsList,
+		panelFormJSON
+	);
 	if (isInvalid) {
 		return isInvalid;
 	}
@@ -91,11 +93,11 @@ export async function saveDashboardAction(
 
 		await updateAllThumbnails(uidAndSlug, panelFormJSON);
 
-		throw redirect(301, `/p/view/${resp.uid}`);
+		throw redirect(302, `/p/view/${resp.uid}`);
 	} else {
 		return fail(422, {
-			description: resp.message,
-			error: resp.status
+			description: "Couldn't save dashboard",
+			error: resp.message
 		});
 	}
 }

@@ -55,7 +55,7 @@ export const actions: Actions = {
 				}
 			};
 		} catch (error) {
-			return fail(500, { message: 'Could not delete dashboard' });
+			return fail(404, { message: 'Could not delete dashboard' });
 		}
 	}
 };
