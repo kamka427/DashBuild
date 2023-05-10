@@ -1,21 +1,21 @@
 <script lang="ts">
-	import DashboardProperties from '$lib/components/DashboardProperties.svelte';
-	import PanelFormCard from '$lib/components/PanelFormCard.svelte';
-	import BreadCrumbs from '$lib/components/BreadCrumbs.svelte';
-	import NewPanelCard from '$lib/components/NewPanelCard.svelte';
 	import type { Panel } from '@prisma/client';
-	import type { ActionData, PageData } from './$types';
-	import { enhance } from '$app/forms';
+	import DashboardProperties from './DashboardProperties.svelte';
+	import PanelFormCard from './PanelFormCard.svelte';
+	import NewPanelCard from './NewPanelCard.svelte';
+	import DashboardForm from './DashboardForm.svelte';
+	import type { ActionData } from '../../routes/p/(editor)/create/$types';
 
-	export let data: PageData;
+	export let dashboardName: string;
+	export let colCount: number;
+	export let tags: string[];
+	export let published: boolean;
+	export let panelForm: Panel[];
+
+
+    export let predefinedPanels: any
 	export let form: ActionData;
 
-	export let dashboardName = '';
-	export let colCount = 2;
-	export let tags: string[] = [];
-	export let published = false;
-
-	export let panelForm: Panel[] = [];
 	export let selectedPanel = {} as {
 		title: string;
 		JSON: {
@@ -91,25 +91,10 @@
 	$: if (form?.error) {
 		isLoading = false;
 	}
-
-	$: console.log(panelForm);
 </script>
 
-<svelte:head>
-	<title>Create Dashboard</title>
-</svelte:head>
-{#if form?.error}
-	<p class="error">{form.error}</p>
-{/if}
-<main
-	class="container mx-auto space-y-6
-	{isLoading ? 'animate-pulse' : ''}
-"
->
-	<div class="flex flex-col items-center justify-between gap-2 lg:flex-row">
-		<BreadCrumbs />
-		<DashboardProperties bind:dashboardName bind:colCount bind:tags bind:published />
-	</div>
+<div class="flex flex-col gap-4 {isLoading ? 'pointer-events-none animate-pulse' : ''}">
+	<DashboardProperties bind:dashboardName bind:colCount bind:tags bind:published />
 	<div class="grid grid-cols-{colCount} gap-4">
 		{#each panelForm as panel}
 			<PanelFormCard
@@ -126,43 +111,10 @@
 			/>
 		{/each}
 		<NewPanelCard
-			panels={data.predefinedPanels}
+			panels={predefinedPanels}
 			bind:selectedPanel
 			addAction={() => addPanel(selectedPanel)}
 		/>
 	</div>
-
-	<form
-		action="?/saveDashboard
-	
-	"
-		method="POST"
-		use:enhance
-	>
-		<input type="hidden" value={dashboardName} name="dashboardName" />
-		<input type="hidden" value="test desc" name="dashboardDescription" />
-		<input type="hidden" value={colCount} name="colCount" />
-		<input type="hidden" value={tags} name="tags" />
-		<input type="hidden" value={published} name="published" />
-		<input type="hidden" value={JSON.stringify(panelForm)} name="panelForm" />
-
-		<div class="btn-group">
-			<button
-				class="btn-secondary btn"
-				type="reset"
-				on:click={() => {
-					panelForm = [];
-				}}>Reset</button
-			>
-			<button
-				type="submit"
-				class="btn-primary btn"
-				on:click={() => {
-					isLoading = true;
-				}}
-			>
-				Save Dashboard</button
-			>
-		</div>
-	</form>
-</main>
+	<DashboardForm bind:isLoading {dashboardName} {colCount} {tags} {published} {panelForm} />
+</div>

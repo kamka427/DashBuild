@@ -11,7 +11,6 @@
 
 	const type = getPanelType(panel as Panel) as string;
 
-
 	export let removeAction: any;
 
 	export let dragEvent: any;
@@ -21,8 +20,6 @@
 	export let isDropTarget = false;
 	export let isDragged = false;
 	export let dragOn: boolean;
-
-	
 </script>
 
 <div
@@ -63,7 +60,7 @@
 	{#if isDropTarget === true && dragOn == true}
 		<svg
 			id={panel.position}
-			class="h-[35em] w-full border border-base-300
+			class="border-base-300 h-[35em] w-full border
 		"
 		>
 			<text
@@ -78,10 +75,14 @@
 			</text>
 		</svg>
 	{:else}
-		<div draggable="true" id={panel.position} class="card-compact card bg-base-300 text-base-content">
+		<div
+			draggable="true"
+			id={panel.position}
+			class="card-compact card bg-base-300 text-base-content"
+		>
 			<figure>
 				<img
-					src="{panel?.thumbnailPath}"
+					src={panel?.thumbnailPath}
 					class="rounded-md shadow-xl"
 					alt="Dashboard thumbnail"
 					id={panel.position}

@@ -4,6 +4,8 @@
 	export let panels: Panel[];
 	export let state: 'selected' | 'unselected' = 'unselected';
 
+	console.log(panels);
+
 	function toggleState() {
 		if (state === 'unselected') {
 			state = 'selected';

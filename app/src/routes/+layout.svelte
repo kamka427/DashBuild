@@ -13,4 +13,5 @@
 <Navigation />
 <main class="p-6">
 	<slot />
+	<p class="text-center text-base-content">Neszlényi Kálmán Balázs (DPU51T) 2023. ELTE-IK</p>
 </main>

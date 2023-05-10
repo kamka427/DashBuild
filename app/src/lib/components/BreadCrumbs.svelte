@@ -5,15 +5,11 @@
 		$page.url.pathname.split('/')[2].slice(0, 1).toUpperCase() +
 		$page.url.pathname.split('/')[2].slice(1);
 
-	export let title: string | null = null;
 </script>
 
 <div class="breadcrumbs text-base-content">
 	<ul>
 		<li><a class="text-2xl" href="/">DashBuild</a></li>
 		<li><p class="text-2xl">{base}</p></li>
-		{#if title}
-			<li><p class="text-2xl">{title}</p></li>
-		{/if}
 	</ul>
 </div>
