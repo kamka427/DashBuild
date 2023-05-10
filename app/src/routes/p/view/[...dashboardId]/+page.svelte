@@ -1,20 +1,19 @@
 <script lang="ts">
-	import DashboardInfo from '../../../../lib/components/DashboardInfo.svelte';
+	import { page } from '$app/stores';
 
-	import PanelsView from '../../../../lib/components/PanelsView.svelte';
-
-	import DashboardIterations from '../../../../lib/components/DashboardIterations.svelte';
-
-	import { enhance } from '$app/forms';
 	import BreadCrumbs from '$lib/components/BreadCrumbs.svelte';
+	import DashboardInfo from '$lib/components/DashboardInfo.svelte';
+	import DashboardIterations from '$lib/components/DashboardIterations.svelte';
 	import Helper from '$lib/components/Helper.svelte';
-	import PanelPreviewCard from '$lib/components/PanelPreviewCard.svelte';
+	import PanelsView from '$lib/components/PanelsView.svelte';
 	import PublishButton from '$lib/components/PublishButton.svelte';
+	import type { PageData } from './$types';
 
-	import type { ActionData, PageData } from './$types';
 	export let data: PageData;
 
 	export const panels = data.dashboard.panels.sort((a, b) => a.position - b.position);
+
+	export const isOwner = $page.data.session?.user?.id === data.dashboard.userId;
 </script>
 
 <svelte:head>
@@ -34,10 +33,12 @@
 					<a href={data.dashboard.grafanaUrl} target="_blank">Open in Grafana</a>
 				</button>
 			{/if}
-			<button class="btn-info btn" type="submit" form="refreshThumbnails">
-				Refresh Thumbnails
-			</button>
-			<PublishButton published={data.dashboard.published} dashboardId={data.dashboard.id} />
+			{#if isOwner}
+				<button class="btn-info btn" type="submit" form="refreshThumbnails">
+					Refresh Thumbnails
+				</button>
+				<PublishButton published={data.dashboard.published} dashboardId={data.dashboard.id} />
+			{/if}
 		</div>
 	</div>
 	<div class="mt-6 flex flex-wrap gap-2 sm:flex-nowrap">
