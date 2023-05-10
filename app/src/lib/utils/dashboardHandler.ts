@@ -4,11 +4,25 @@ import type { Panel, User } from '@prisma/client';
 import { GRAFANA_URL } from '$env/static/private';
 import { prisma } from './prisma';
 
-export function validateForm(dashboardName: string, colCount: number, published: string) {
-	if (dashboardName.length < 3 || dashboardName.length > 50) {
+export function validateForm(
+	title: string,
+	description: string,
+	colCount: number,
+	published: string,
+	tagsList: string[],
+	panelForm: Panel[]
+) {
+	if (title.length < 3 || title.length > 50) {
 		return fail(422, {
-			description: dashboardName,
+			description: title,
 			error: "The dashboard's name should be between 3 and 60 characters"
+		});
+	}
+
+	if (description.length > 100) {
+		return fail(422, {
+			description: description,
+			error: "The dashboard's description should be less than 100 characters"
 		});
 	}
 
@@ -22,6 +36,21 @@ export function validateForm(dashboardName: string, colCount: number, published:
 	if (published !== 'true' && published !== 'false') {
 		console.log(published);
 		return fail(422, { description: published, error: 'Published should be a boolean' });
+	}
+
+	if (tagsList.length > 0) {
+		if (tagsList.length > 5) {
+			return fail(422, {
+				description: tagsList,
+				error: 'You can only have a maximum of 5 tags'
+			});
+		}
+	}
+	if (panelForm.length < 1) {
+		return fail(422, {
+			description: panelForm,
+			error: 'You need to have at least 1 panel'
+		});
 	}
 }
 
@@ -55,6 +84,8 @@ export async function upsertDashboardQuery(
 	user: User,
 	panelFormJSON: any
 ) {
+	const parsedPublished = published === 'true' ? true : false;
+
 	await prisma.dashboard.upsert({
 		where: {
 			id: resp.uid
@@ -63,7 +94,7 @@ export async function upsertDashboardQuery(
 			id: resp.uid,
 			name: dashboardName,
 			description: dashboardDescription,
-			published: Boolean(published),
+			published: parsedPublished,
 			tags: tags,
 			thumbnailPath: thumbnailPath,
 			grafanaJSON: grafanaObject,

@@ -20,11 +20,18 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 			}
 		}
 	});
+	const uid = url.pathname.split('/')[3];
+	const uidAndSlug = `${uid}/${dashboard.name}`;
+	const panelList = dashboard.panels.sort((a, b) => a.position - b.position);
+
+	updateAllThumbnails(uidAndSlug, panelList);
 
 	if (!dashboard.published && dashboard.userId !== session?.user.id) {
 		throw redirect(300, '/p/gallery');
 	}
-	return { dashboard };
+	return { 
+		dashboard,
+	};
 };
 
 export const actions: Actions = {
@@ -42,8 +49,7 @@ export const actions: Actions = {
 
 		const uidAndSlug = `${uid}/${dashboard.name}`;
 
-		const panelList = dashboard.panels
-			.sort((a, b) => a.position - b.position);
+		const panelList = dashboard.panels.sort((a, b) => a.position - b.position);
 
 		await updateAllThumbnails(uidAndSlug, panelList);
 

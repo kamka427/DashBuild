@@ -48,7 +48,7 @@ async function main() {
 				grafanaJSON: panel.JSON,
 				grafanaUrl: null,
 				width: Math.floor(Math.random() * columns) + 1,
-				position: i,
+				position: i + 1,
 				createdAt: null,
 				updatedAt: null,
 				dashboardId: ''

@@ -7,7 +7,8 @@
 	export let data: PageData;
 	export let form: ActionData;
 
-	export let dashboardName = data.dashboard.name;
+	export let title = data.dashboard.name;
+	export let description = data.dashboard.description;
 	export let colCount = data.dashboard.columns;
 	export let tags = data.dashboard.tags;
 	export let published = data.dashboard.published;
@@ -21,7 +22,8 @@
 <main class="container mx-auto space-y-6">
 	<BreadCrumbs />
 	<DashboardEditor
-		{dashboardName}
+		{title}
+		{description}
 		{colCount}
 		{tags}
 		{published}

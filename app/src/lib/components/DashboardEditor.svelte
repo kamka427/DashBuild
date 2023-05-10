@@ -5,15 +5,16 @@
 	import NewPanelCard from './NewPanelCard.svelte';
 	import DashboardForm from './DashboardForm.svelte';
 	import type { ActionData } from '../../routes/p/(editor)/create/$types';
+	import Error from './Error.svelte';
 
-	export let dashboardName: string;
+	export let title: string;
+	export let description: string;
 	export let colCount: number;
 	export let tags: string[];
 	export let published: boolean;
 	export let panelForm: Panel[];
 
-
-    export let predefinedPanels: any
+	export let predefinedPanels: any;
 	export let form: ActionData;
 
 	export let selectedPanel = {} as {
@@ -94,7 +95,10 @@
 </script>
 
 <div class="flex flex-col gap-4 {isLoading ? 'pointer-events-none animate-pulse' : ''}">
-	<DashboardProperties bind:dashboardName bind:colCount bind:tags bind:published />
+	<DashboardProperties bind:title bind:description bind:colCount bind:tags bind:published />
+	{#if form?.error}
+		<Error errorMessage={form?.error} />
+	{/if}
 	<div class="grid grid-cols-{colCount} gap-4">
 		{#each panelForm as panel}
 			<PanelFormCard
@@ -116,5 +120,5 @@
 			addAction={() => addPanel(selectedPanel)}
 		/>
 	</div>
-	<DashboardForm bind:isLoading {dashboardName} {colCount} {tags} {published} {panelForm} />
+	<DashboardForm bind:isLoading {title} {description} {colCount} {tags} {published} {panelForm} />
 </div>

@@ -42,7 +42,7 @@ export async function fetchPanels() {
 		panels.push({
 			title: panel.json_data.title,
 			JSON: panel.json_data,
-			thumbnailPath: `thumbnails/${panel.file_name}.png`
+			thumbnailPath: `/thumbnails/${panel.file_name}.png`
 		});
 	});
 

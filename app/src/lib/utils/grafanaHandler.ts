@@ -68,14 +68,16 @@ export function calculateGridPos(
 
 export async function createGrafanaDashboardPayload(
 	panelForm: Panel[],
-	dashboardName: string,
+	title: string,
+	description: string,
 	tags: string[],
 	userFolder: string,
 	existingDashboard: Dashboard | null = null
 ) {
 	const grafanaObject = {
 		dashboard: {
-			title: dashboardName,
+			title: title,
+			description: description,
 			panels: panelForm.map((panel) => panel.grafanaJSON),
 			tags: tags,
 			uid: existingDashboard !== null ? existingDashboard.id : null,
@@ -101,7 +103,7 @@ export async function callGrafanaDashboardApi(grafanaJSON: string) {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
-			Authorization: GRAFANA_API_TOKEN,
+			Authorization: GRAFANA_API_TOKEN
 		},
 		body: grafanaJSON
 	});
@@ -116,8 +118,8 @@ export async function deleteDashboardOnGrafana(uid: string) {
 		method: 'DELETE',
 		headers: {
 			'Content-Type': 'application/json',
-			Authorization: GRAFANA_API_TOKEN,
-		},
+			Authorization: GRAFANA_API_TOKEN
+		}
 	});
 
 	const resp = await response.json();
@@ -130,7 +132,7 @@ export async function callGrafanaFolderApi(grafanaJSON: string) {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
-			Authorization: GRAFANA_API_TOKEN,
+			Authorization: GRAFANA_API_TOKEN
 		},
 		body: grafanaJSON
 	});

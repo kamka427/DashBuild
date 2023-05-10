@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import type { Panel } from '@prisma/client';
-	export let dashboardName: string;
+	export let title: string;
+    export let description: string;
 	export let colCount: number;
 	export let tags: string[];
 	export let published: boolean;
@@ -11,12 +12,13 @@
 </script>
 
 <form
+class="self-center"
 	action="?/saveDashboard"
 	method="POST"
 	use:enhance
 >
-	<input type="hidden" value={dashboardName} name="dashboardName" />
-	<input type="hidden" value="test desc" name="dashboardDescription" />
+	<input type="hidden" value={title} name="title" />
+	<input type="hidden" value={description} name="description" />
 	<input type="hidden" value={colCount} name="colCount" />
 	<input type="hidden" value={tags} name="tags" />
 	<input type="hidden" value={published} name="published" />

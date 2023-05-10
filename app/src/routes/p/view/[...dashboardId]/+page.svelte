@@ -17,7 +17,7 @@
 </svelte:head>
 
 <div class="container mx-auto">
-	<BreadCrumbs title={data.dashboard.name} />
+	<BreadCrumbs />
 	<a href={data.dashboard.grafanaUrl} target="_blank" class="btn-primary btn"> Open in Grafana </a>
 	<div class="mt-6 flex gap-2">
 		<div class="container max-w-4xl">

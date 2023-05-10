@@ -11,7 +11,11 @@ import {
 	createGrafanaDashboardPayload,
 	createGrafanaFolder
 } from './grafanaHandler';
-import { initThumbnailsAndPaths, updateAllThumbnails } from './thumbnailHandler';
+import {
+	generateDashboardThumbnail,
+	initThumbnailsAndPaths,
+	updateAllThumbnails
+} from './thumbnailHandler';
 import { redirect, fail, error } from '@sveltejs/kit';
 
 export async function saveDashboardAction(
@@ -25,22 +29,28 @@ export async function saveDashboardAction(
 ) {
 	const session = await locals.getSession();
 
-	const { dashboardName, dashboardDescription, colCount, tags, published, panelForm } =
-		Object.fromEntries(await request.formData()) as unknown as {
-			dashboardName: string;
-			dashboardDescription: string;
-			colCount: number;
-			tags: string;
-			published: string;
-			panelForm: string;
-			dashboardId: string;
-		};
+	const { title, description, colCount, tags, published, panelForm } = Object.fromEntries(
+		await request.formData()
+	) as unknown as {
+		title: string;
+		description: string;
+		colCount: number;
+		tags: string;
+		published: string;
+		panelForm: string;
+		dashboardId: string;
+	};
 
-	validateForm(dashboardName, colCount, published);
-
+	title.trim();
+	description.trim();
+	tags.trim();
 	const tagsList = generateTags(tags);
+	const panelFormJSON = generatePanelFormJSON(panelForm, colCount);
 
-	let panelFormJSON = generatePanelFormJSON(panelForm, colCount);
+	const isInvalid = validateForm(title, description, colCount, published, tagsList, panelFormJSON);
+	if (isInvalid) {
+		return isInvalid;
+	}
 
 	const dashboardId = url.pathname.split('/')[3];
 
@@ -54,7 +64,8 @@ export async function saveDashboardAction(
 
 	const grafanaObject = await createGrafanaDashboardPayload(
 		panelFormJSON,
-		dashboardName,
+		title,
+		description,
 		tagsList,
 		user.id,
 		url.pathname.split('/')[2] === 'edit' ? dashboardExists : undefined
@@ -67,8 +78,8 @@ export async function saveDashboardAction(
 
 		await upsertDashboardQuery(
 			resp,
-			dashboardName,
-			dashboardDescription,
+			title,
+			description,
 			published,
 			tags,
 			thumbnailPath,
