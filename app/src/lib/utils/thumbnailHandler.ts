@@ -6,7 +6,7 @@ import { promisify } from 'util';
 import type { Panel } from '@prisma/client';
 const writeFilePromise = promisify(fs.writeFile);
 
-export async function generateDashboardThumbnail(panelList: Panel[], uid: string) {
+export async function generateDashboardThumbnail(uid: string, panelList: Panel[]) {
 	const locations: {
 		[key: string]: string;
 	} = {
@@ -24,7 +24,6 @@ export async function generateDashboardThumbnail(panelList: Panel[], uid: string
 		};
 	});
 
-	const pathToDashboard = `/thumbnails/${uid}_dashboard.png`;
 	try {
 		await sharp({
 			create: {
@@ -36,7 +35,7 @@ export async function generateDashboardThumbnail(panelList: Panel[], uid: string
 		})
 			.composite(inputs)
 			.png()
-			.toFile(`static/${pathToDashboard}`, (err) => {
+			.toFile(`static/thumbnails/${uid}_dashboard.png`, (err) => {
 				if (err) {
 					console.log(err);
 				}
@@ -44,18 +43,12 @@ export async function generateDashboardThumbnail(panelList: Panel[], uid: string
 	} catch (err) {
 		console.log(err);
 	}
-
-	return pathToDashboard;
 }
 
-export async function copyDefaultThumbnail(
-	uid: string,
-	position: number,
-	defaultThumbnailPath: string
-) {
+export async function copyDefaultThumbnail(uid: string, position: number, panelType: string) {
 	try {
 		fs.copyFileSync(
-			`${path.resolve(`static/${defaultThumbnailPath}`)}`,
+			`${path.resolve(`static/thumbnails/${panelType}.png`)}`,
 			`${path.resolve(`static/thumbnails/${uid}_${position}.png`)}`
 		);
 	} catch (err) {
@@ -73,7 +66,7 @@ export async function updatePanelThumbnailsWithApi(uidAndSlug: string, position:
 			}
 		}
 	);
-	console.log(
+	console.log("Calling",
 		`${GRAFANA_URL}/render/d-solo/${uidAndSlug}?orgId=1&panelId=${position}&width=1000&height=500`
 	);
 	const buffer = await response.arrayBuffer();
@@ -90,21 +83,15 @@ export async function updateAllThumbnails(uidAndSlug: string, panelList: Panel[]
 	});
 
 	await Promise.all(promises);
-	await generateDashboardThumbnail(panelList, uidAndSlug.split('/')[0]);
+	await generateDashboardThumbnail(uidAndSlug.split('/')[0], panelList);
 }
 
-export async function initThumbnailsAndPaths(panelFormJSON: any, resp: any) {
-	const promises = panelFormJSON.map(async (panel: Panel) => {
-		const pathToThumbnail = `thumbnails/${resp.uid}_${panel.id}.png`;
-		if (panel.thumbnailPath !== pathToThumbnail) {
-			await copyDefaultThumbnail(resp.uid, panel.position, panel.thumbnailPath);
-			panel.thumbnailPath = `thumbnails/${resp.uid}_${panel.id}.png`;
-		}
+export async function initThumbnailsAndPaths(uid: string, panelList: Panel[]) {
+	const promises = panelList.map(async (panel: Panel) => {
+		await copyDefaultThumbnail(uid, panel.position, panel.type);
+		panel.thumbnailPath = `thumbnails/${uid}_${panel.position}.png`;
 		Promise.resolve();
 	});
 	await Promise.all(promises);
-	console.log('here');
-	const thumbnailPath = await generateDashboardThumbnail(panelFormJSON, resp.uid);
-	console.log('ahoy');
-	return thumbnailPath;
+	await generateDashboardThumbnail(uid, panelList);
 }

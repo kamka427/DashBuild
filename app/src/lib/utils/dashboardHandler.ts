@@ -133,7 +133,7 @@ export async function upsertDashboardQuery(
 	});
 }
 
-export function getUidAndSlug(resp: any) {
+export function getUidAndSlug(resp: { uid: string; slug: string }) {
 	return resp.uid + '/' + resp.slug;
 }
 

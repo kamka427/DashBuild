@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Dashboard } from '@prisma/client';
 	import { page } from '$app/stores';
+	import { redirect } from '@sveltejs/kit';
 
 	export let dashboard: Dashboard;
 
@@ -56,7 +57,9 @@
 		<div class="flex justify-between">
 			<div class="btn-group justify-start">
 				{#if isOwner}
-					<button class="btn-error btn" type="submit" form="deleteDashboard">Delete</button>
+					<button class="btn-error btn" type="submit" form="deleteDashboard"
+							
+					>Delete</button>
 				{/if}
 			</div>
 

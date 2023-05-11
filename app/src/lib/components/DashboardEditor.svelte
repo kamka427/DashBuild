@@ -15,8 +15,7 @@
 	export let published: boolean;
 	export let panelForm: Panel[];
 
-	export let predefinedPanels: any;
-	$: console.log(predefinedPanels);
+	export let predefinedPanels: panelEntry[] = [];
 	export let form: ActionData;
 
 	export let selectedPanel = {} as {
@@ -28,7 +27,6 @@
 		fileName: string;
 	};
 
-	$: console.log(selectedPanel);
 
 	refreshPositions();
 	function addPanel(panelEntry: panelEntry) {
@@ -57,7 +55,6 @@
 
 	function refreshPositions() {
 		panelForm = panelForm.map((panel, index) => {
-			console.log(panel);
 			return {
 				...panel,
 				position: index + 1
@@ -99,7 +96,6 @@
 	}
 
 	function swapIndexes(panel: Panel, index: number) {
-		console.log(index);
 		panel.position = index + 1;
 	}
 
