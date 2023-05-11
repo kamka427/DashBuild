@@ -68,6 +68,7 @@ export async function saveDashboardAction(
 		});
 	}
 
+	console.log(user.dashboards.length);
 	if (user.dashboards.length === 0) {
 		await createGrafanaFolder(user);
 	}
@@ -105,7 +106,7 @@ export async function saveDashboardAction(
 			panelList
 		);
 
-		if (IMAGE_RENDERER) {
+		if (IMAGE_RENDERER === 'true') {
 			try {
 				await updateAllThumbnails(uidAndSlug, panelList);
 			} catch (error) {
@@ -146,10 +147,9 @@ export async function deleteDashboardAction(
 			}
 		});
 
-		const resp = await deleteDashboardOnGrafana(dashboardId);
-		console.log(resp);
-		
-		return { status: 200 }
+		await deleteDashboardOnGrafana(dashboardId);
+
+		return { status: 200 };
 	} catch (error) {
 		console.log(error);
 		fail(500, {
@@ -174,7 +174,7 @@ export async function refreshThumbnailsAction(url: { pathname: string }) {
 	const panelList = dashboard.panels.sort((a, b) => a.position - b.position);
 
 	try {
-		if (IMAGE_RENDERER) {
+		if (IMAGE_RENDERER === 'true') {
 			await updateAllThumbnails(uidAndSlug, panelList);
 		} else {
 			await initThumbnailsAndPaths(uid, panelList);
@@ -185,6 +185,8 @@ export async function refreshThumbnailsAction(url: { pathname: string }) {
 			message: 'Could not update thumbnails'
 		});
 	}
+
+	return { status: 200 };
 }
 
 export async function publishDashboardAction(
