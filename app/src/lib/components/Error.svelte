@@ -2,7 +2,7 @@
 	export let errorMessage: string = 'Something went wrong. Please try again later.';
 </script>
 
-<div class="alert alert-error container mx-auto shadow-xl">
+<div class="container alert alert-error mx-auto shadow-xl">
 	<div>
 		<svg
 			xmlns="http://www.w3.org/2000/svg"

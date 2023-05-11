@@ -10,12 +10,12 @@
 </script>
 
 <nav class="bg-base-300 text-base-content">
-	<div class="navbar container mx-auto">
+	<div class="container navbar mx-auto">
 		<div class="navbar-start">
 			<div class="dropdown">
 				<!-- svelte-ignore a11y-label-has-associated-control -->
 				<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-				<label tabindex="0" class="btn btn-ghost xl:hidden">
+				<label tabindex="0" class="btn-ghost btn xl:hidden">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						class="h-5 w-5"
@@ -33,7 +33,7 @@
 				<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 				<ul
 					tabindex="0"
-					class="menu menu-compact dropdown-content bg-base-300 rounded-box mt-3 w-52 p-2 shadow"
+					class="dropdown-content menu rounded-box menu-compact mt-3 w-52 bg-base-300 p-2 shadow"
 				>
 					{#if $page.data.session}
 						<li><a href="/p/create">Create</a></li>
@@ -73,7 +73,7 @@
 						</div>
 					{:else}
 						<div class="placeholder avatar">
-							<div class="bg-neutral-focus text-neutral-content w-12 rounded-full">
+							<div class="w-12 rounded-full bg-neutral-focus text-neutral-content">
 								<span class="text-xl">
 									{initials}
 								</span>

@@ -57,9 +57,7 @@
 		<div class="flex justify-between">
 			<div class="btn-group justify-start">
 				{#if isOwner}
-					<button class="btn-error btn" type="submit" form="deleteDashboard"
-							
-					>Delete</button>
+					<button class="btn-error btn" type="submit" form="deleteDashboard">Delete</button>
 				{/if}
 			</div>
 

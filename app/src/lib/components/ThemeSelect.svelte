@@ -7,7 +7,7 @@
 		.join('');
 </script>
 
-<select class="select select-bordered" data-choose-theme>
+<select class="select-bordered select" data-choose-theme>
 	{#each themeConfig as theme}
 		<option value={theme.value}>{theme.key}</option>
 	{/each}

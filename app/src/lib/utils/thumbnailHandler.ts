@@ -66,7 +66,8 @@ export async function updatePanelThumbnailsWithApi(uidAndSlug: string, position:
 			}
 		}
 	);
-	console.log("Calling",
+	console.log(
+		'Calling',
 		`${GRAFANA_URL}/render/d-solo/${uidAndSlug}?orgId=1&panelId=${position}&width=1000&height=500`
 	);
 	const buffer = await response.arrayBuffer();

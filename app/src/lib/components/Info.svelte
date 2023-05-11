@@ -7,7 +7,7 @@
 {#if !isClosed}
 	<div class="container alert alert-info mx-auto shadow-xl">
 		<svg
-		class="h-6 w-6 flex-shrink-0"
+			class="h-6 w-6 flex-shrink-0"
 			xmlns="http://www.w3.org/2000/svg"
 			fill-rule="evenodd"
 			clip-rule="evenodd"
