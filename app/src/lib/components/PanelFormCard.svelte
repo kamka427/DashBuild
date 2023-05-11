@@ -95,7 +95,7 @@
 	{#if isDropTarget === true && dragOn == true}
 		<div
 			id={positionId}
-			class="card card-compact bg-base-300 text-base-content h-full min-h-[35em] shadow-xl"
+			class="card card-compact h-full min-h-[35em] bg-base-300 text-base-content shadow-xl"
 		>
 			<div class="card-body" id={positionId}>
 				<p id={positionId} class="text-2xl">Drop here to swap Panels</p>

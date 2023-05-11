@@ -7,7 +7,7 @@ export type responsePanel = {
 	};
 	config: {
 		[key: string]: any;
-	}
+	};
 };
 
 export type panelEntry = {
