@@ -18,18 +18,12 @@
 		</a>
 	</figure>
 	<div class="card-body gap-4">
-		<div class="stats shadow">
-			<div class="stat">
-				<p class="stat-title">Title</p>
-				<h1 class="stat-value text-xl">{dashboard.name}</h1>
-			</div>
-		</div>
-		<div class="stats shadow">
-			<div class="stat">
-				<p class="stat-title">Short description</p>
-				<p class="stat-value text-lg">{shortDescription}</p>
-			</div>
-		</div>
+		<h1 class="card-title text-xl">{dashboard.name}</h1>
+
+		<p class="text-lg">
+			<b>Description: </b>
+			{shortDescription}
+		</p>
 		<div class="stats shadow">
 			<div class="stat flex flex-row">
 				<div class="stat-title text-sm">Version</div>

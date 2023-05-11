@@ -1,7 +1,9 @@
 export type responsePanel = {
     file_name: string;
     json_data: {
-        title: string;
+        title: string,
+        description: string,
+        [key: string]: any
     };
 };
 

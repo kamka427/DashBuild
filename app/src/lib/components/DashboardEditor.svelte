@@ -18,14 +18,7 @@
 	export let predefinedPanels: panelEntry[] = [];
 	export let form: ActionData;
 
-	export let selectedPanel = {} as {
-		title: string;
-		JSON: {
-			description: string;
-		};
-		thumbnailPath: string;
-		fileName: string;
-	};
+	export let selectedPanel: panelEntry;
 
 
 	refreshPositions();
@@ -110,7 +103,7 @@
 	{#if form?.error}
 		<Error errorMessage={form?.error} />
 	{/if}
-	<div class="flex flex-wrap justify-between">
+	<div class="flex flex-wrap justify-between gap-4">
 		<DashboardProperties bind:title bind:description bind:colCount bind:tags bind:published />
 		<DashboardForm
 			bind:isLoading

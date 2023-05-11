@@ -11,7 +11,7 @@
 
 <div class="flex">
 	<div class="flex flex-row flex-wrap gap-4">
-		<label class="input-group flex-1 shadow-xl">
+		<label class="input-group flex-1">
 			<span>Search</span>
 			<input
 				type="search"
@@ -20,7 +20,7 @@
 				bind:value={search}
 			/>
 		</label>
-		<label class="input-group flex-1 shadow-xl">
+		<label class="input-group flex-1">
 			<span>Tag</span>
 			<select class="select-bordered select" id="tag" bind:value={tag}>
 				<option selected value="none">Filter by Tag</option>
@@ -29,7 +29,7 @@
 				{/each}
 			</select>
 		</label>
-		<label class="input-group flex-1 shadow-xl">
+		<label class="input-group flex-1">
 			<span>Columns</span>
 			<input
 				class="input-bordered input"
