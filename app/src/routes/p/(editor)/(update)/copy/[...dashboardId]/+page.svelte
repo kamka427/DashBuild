@@ -14,7 +14,7 @@
 	export let tags = data.dashboard.tags;
 	export let published = data.dashboard.published;
 	export const panelList = data.dashboard.panels;
-	export let panelForm: Panel[] = panelList;
+	export let panelForm: Panel[] = panelList.sort((a, b) => a.position - b.position);
 
 	export let predefinedPanels: any = data.predefinedPanels;
 </script>

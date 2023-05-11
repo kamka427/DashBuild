@@ -10,22 +10,23 @@ export async function generateDashboardThumbnail(panelList: Panel[], uid: string
 	const locations: {
 		[key: string]: string;
 	} = {
-		1: 'northwest',
-		2: 'northeast',
-		3: 'southwest',
-		4: 'southeast'
+		0: 'northwest',
+		1: 'northeast',
+		2: 'southwest',
+		3: 'southeast'
 	};
 
 	const firstFourPanels = panelList.slice(0, 4);
-	const inputs = firstFourPanels.map((panel) => {
+	const inputs = firstFourPanels.map((panel, index) => {
 		return {
 			input: `${path.resolve(`static/${panel.thumbnailPath}`)}`,
-			gravity: locations[panel.position]
+			gravity: locations[index]
 		};
 	});
 
 	console.log(inputs);
-	sharp({
+	try {
+	await sharp({
 		create: {
 			width: 2010,
 			height: 1010,
@@ -40,6 +41,9 @@ export async function generateDashboardThumbnail(panelList: Panel[], uid: string
 				console.log(err);
 			}
 		});
+	} catch (err) {
+		console.log(err);
+	}
 
 	return `/thumbnails/${uid}_dashboard.png`;
 }
@@ -49,15 +53,14 @@ export async function copyDefaultThumbnail(
 	position: number,
 	defaultThumbnailPath: string
 ) {
-	fs.copyFile(
-		`${path.resolve(`static/${defaultThumbnailPath}`)}`,
-		`${path.resolve(`static/thumbnails/${uid}_${position}.png`)}`,
-		(err) => {
-			if (err) {
-				console.log(err);
-			}
-		}
-	);
+	try {
+		fs.copyFileSync(
+			`${path.resolve(`static/${defaultThumbnailPath}`)}`,
+			`${path.resolve(`static/thumbnails/${uid}_${position}.png`)}`
+		);
+	} catch (err) {
+		console.log(err);
+	}
 	return `/thumbnails/${uid}_${position}.png`;
 }
 
@@ -93,11 +96,12 @@ export async function updateAllThumbnails(uidAndSlug: string, panelList: Panel[]
 export async function initThumbnailsAndPaths(panelFormJSON: any, resp: any) {
 	const promises = panelFormJSON.map(async (panel: Panel) => {
 		await copyDefaultThumbnail(resp.uid, panel.position, panel.thumbnailPath);
-		panel.thumbnailPath = `thumbnails/${resp.uid}_${panel.position}.png`;
+		panel.thumbnailPath = `thumbnails/${resp.uid}_${panel.id}.png`;
 		Promise.resolve();
 	});
 	await Promise.all(promises);
-	console.log("here")
+	console.log('here');
 	const thumbnailPath = await generateDashboardThumbnail(panelFormJSON, resp.uid);
+	console.log('ahoy');
 	return thumbnailPath;
 }

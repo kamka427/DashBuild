@@ -2,7 +2,6 @@
 	import PanelPreviewCard from '$lib/components/PanelPreviewCard.svelte';
 	import type { Panel } from '@prisma/client';
 
-	export let columns: number;
 	export let panels: Panel[];
 
 	panels = panels.sort((a, b) => a.position - b.position);

@@ -95,7 +95,7 @@ export async function saveDashboardAction(
 			panelFormJSON
 		);
 
-		await updateAllThumbnails(uidAndSlug, panelFormJSON);
+		// await updateAllThumbnails(uidAndSlug, panelFormJSON);
 
 		throw redirect(302, `/p/view/${resp.uid}`);
 	} else {
