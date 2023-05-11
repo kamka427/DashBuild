@@ -21,7 +21,7 @@
 		</div>
 		<div class="navbar-end">
 			<div class="menu menu-horizontal items-center gap-6 px-2">
-				<select class="select" data-choose-theme>
+				<select class="select select-bordered" data-choose-theme>
 					{#each themeConfig as theme}
 						<option value={theme.value}>{theme.key}</option>
 					{/each}

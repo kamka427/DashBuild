@@ -1,6 +1,6 @@
 {
 	"themeConfig": [
-		{ "key": "System", "value": "system" },
+		{ "key": "Select Theme", "value": "system" },
 		{ "key": "Light", "value": "light" },
 		{ "key": "Dark", "value": "dark" }
 	]
