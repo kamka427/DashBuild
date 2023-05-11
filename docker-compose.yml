@@ -13,6 +13,11 @@ services:
         target: /var/lib/postgresql/data
     ports:
       - 5432:5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   grafana:
     image: grafana/grafana-oss:9.4.3
@@ -48,9 +53,10 @@ services:
     ports:
       - 80:80
     depends_on:
-      - postgres
-      - grafana
-      - grafana_image_renderer
+      postgres:
+        condition: service_healthy
+      # - grafana
+      # - grafana_image_renderer
 
 volumes:
   db_data:

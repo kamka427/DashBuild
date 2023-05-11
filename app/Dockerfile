@@ -7,4 +7,5 @@ RUN npx prisma generate
 EXPOSE 80
 ENV PORT=80
 ENV ORIGIN=http://localhost:80
-ENTRYPOINT [ "node", "build" ]
+CMD ["npx", "prisma", "migrate", "deploy"] 
+ENTRYPOINT ["node", "build" ]
