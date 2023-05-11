@@ -31,11 +31,12 @@
 				currentObject = currentObject[pathArray[i]];
 			}
 		}
-		const oldJSON = panel.grafanaJSON;
+
+		const grafanaJSON = panel.grafanaJSON as object;
 		panel = {
 			...panel,
 			grafanaJSON: {
-				...panel.grafanaJSON,
+				...grafanaJSON,
 				...currentObject
 			}
 		};
@@ -145,9 +146,7 @@
 											class="select-bordered select"
 											bind:value={prop.selected}
 											on:change={(e) => {
-												console.log(prop.path);
-												console.log(e.target.value);
-												deepUpdate(prop.path, e.target.value);
+												deepUpdateEvent(prop.path, e);
 												updateProps(panel, propertyList);
 											}}
 										>
