@@ -60,7 +60,6 @@
 			return {
 				...panel,
 				position: index + 1,
-				id: (index + 1).toString()
 			};
 		});
 	}
@@ -100,7 +99,7 @@
 
 	function swapIndexes(panel: Panel, index: number) {
 		console.log(index);
-		panel.position = index;
+		panel.position = index +1;
 	}
 
 	export let isLoading = false;

@@ -24,28 +24,28 @@ export async function generateDashboardThumbnail(panelList: Panel[], uid: string
 		};
 	});
 
-	console.log(inputs);
+	const pathToDashboard = `/thumbnails/${uid}_dashboard.png`;
 	try {
-	await sharp({
-		create: {
-			width: 2010,
-			height: 1010,
-			channels: 4,
-			background: { r: 0, g: 0, b: 0, alpha: 255 }
-		}
-	})
-		.composite(inputs)
-		.png()
-		.toFile(`static/thumbnails/${uid}_dashboard.png`, (err) => {
-			if (err) {
-				console.log(err);
+		await sharp({
+			create: {
+				width: 2010,
+				height: 1010,
+				channels: 4,
+				background: { r: 0, g: 0, b: 0, alpha: 255 }
 			}
-		});
+		})
+			.composite(inputs)
+			.png()
+			.toFile(`static/${pathToDashboard}`, (err) => {
+				if (err) {
+					console.log(err);
+				}
+			});
 	} catch (err) {
 		console.log(err);
 	}
 
-	return `/thumbnails/${uid}_dashboard.png`;
+	return pathToDashboard;
 }
 
 export async function copyDefaultThumbnail(
@@ -95,8 +95,11 @@ export async function updateAllThumbnails(uidAndSlug: string, panelList: Panel[]
 
 export async function initThumbnailsAndPaths(panelFormJSON: any, resp: any) {
 	const promises = panelFormJSON.map(async (panel: Panel) => {
-		await copyDefaultThumbnail(resp.uid, panel.position, panel.thumbnailPath);
-		panel.thumbnailPath = `thumbnails/${resp.uid}_${panel.id}.png`;
+		const pathToThumbnail = `thumbnails/${resp.uid}_${panel.id}.png`;
+		if (panel.thumbnailPath !== pathToThumbnail) {
+			await copyDefaultThumbnail(resp.uid, panel.position, panel.thumbnailPath);
+			panel.thumbnailPath = `thumbnails/${resp.uid}_${panel.id}.png`;
+		}
 		Promise.resolve();
 	});
 	await Promise.all(promises);

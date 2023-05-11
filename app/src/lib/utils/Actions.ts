@@ -11,7 +11,11 @@ import {
 	createGrafanaFolder,
 	deleteDashboardOnGrafana
 } from './grafanaHandler';
-import { initThumbnailsAndPaths, updateAllThumbnails } from './thumbnailHandler';
+import {
+	initThumbnails,
+	initThumbnailsAndPaths,
+	updateAllThumbnails,
+} from './thumbnailHandler';
 import { redirect, fail, error } from '@sveltejs/kit';
 import { permissionCheck, validateForm, validatePublish } from './validators';
 import { prisma } from './prisma';
@@ -65,8 +69,10 @@ export async function saveDashboardAction(
 	}
 
 	if (user.dashboards.length === 0) {
-	await createGrafanaFolder(user);
+		await createGrafanaFolder(user);
 	}
+
+	const method = url.pathname.split('/')[2];
 
 	const grafanaObject = await createGrafanaDashboardPayload(
 		panelFormJSON,
@@ -74,7 +80,7 @@ export async function saveDashboardAction(
 		description,
 		tagsList,
 		user.id,
-		url.pathname.split('/')[2] === 'edit' ? dashboardExists : undefined
+		method === 'edit' ? dashboardExists : undefined
 	);
 	const resp = await callGrafanaDashboardApi(JSON.stringify(grafanaObject));
 	if (resp.status === 'success') {
