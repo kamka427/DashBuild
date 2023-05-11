@@ -7,8 +7,6 @@ export async function fetchPanels() {
 
 	const data = await resp.json();
 
-	
-
 	const panels: panelEntry[] = [];
 
 	data.map((panel: responsePanel) => {

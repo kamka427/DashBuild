@@ -6,7 +6,7 @@
 	import BreadCrumbs from '$lib/components/BreadCrumbs.svelte';
 	import DashboardInfo from '$lib/components/DashboardInfo.svelte';
 	import DashboardIterations from '$lib/components/DashboardIterations.svelte';
-	import Helper from '$lib/components/Helper.svelte';
+	import Info from '$lib/components/Info.svelte';
 	import PanelGrid from '$lib/components/PanelGrid.svelte';
 	import PublishButton from '$lib/components/PublishButton.svelte';
 	import type { PageData } from './$types';
@@ -26,7 +26,7 @@
 
 <div class="container mx-auto space-y-6">
 	<BreadCrumbs />
-	<Helper
+	<Info
 		infoMessage="This is a preview of the dashboard. Click Open in Grafana to view the dashboard in Grafana."
 	/>
 	<div class="container mx-auto space-y-6 {isLoading ? 'pointer-events-none animate-pulse' : ''}">

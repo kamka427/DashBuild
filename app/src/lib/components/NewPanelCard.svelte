@@ -1,7 +1,8 @@
 <script lang="ts">
 	import type { panelEntry } from '$lib/utils/types';
+	import type { Panel } from '@prisma/client';
 
-	export let panels: panelEntry[];
+	export let predefinedPanels: panelEntry[];
 
 	export let addAction: (panel: panelEntry) => void;
 
@@ -22,7 +23,7 @@
 			<ul
 					class="bg-base-100 grid max-h-[60em] w-full grid-cols-2 gap-4 overflow-y-auto rounded-lg p-4"
 				>
-					{#each panels as panel}
+					{#each predefinedPanels as panel}
 						<li>
 							<!-- svelte-ignore a11y-click-events-have-key-events -->
 							<label

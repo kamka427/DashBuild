@@ -6,7 +6,7 @@
 	import BreadCrumbs from '$lib/components/BreadCrumbs.svelte';
 	import type { PageData } from './$types';
 	import Error from '$lib/components/Error.svelte';
-	import Helper from '$lib/components/Helper.svelte';
+	import Info from '$lib/components/Info.svelte';
 
 	export let data: PageData;
 
@@ -26,7 +26,7 @@
 </svelte:head>
 <main class="container mx-auto space-y-6">
 	<BreadCrumbs />
-	<Helper
+	<Info
 		infoMessage="This is the Dashboards page. Here you can find all the dashboards that you have created. You can search for dashboards by name or tag. You can also filter the dashboards by the number of columns they have."
 	/>
 	<DashboardFilters

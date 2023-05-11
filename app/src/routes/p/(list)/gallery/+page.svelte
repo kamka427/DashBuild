@@ -6,7 +6,7 @@
 	import DashboardCard from '$lib/components/DashboardCard.svelte';
 	import type { PageData } from './$types';
 	import Error from '$lib/components/Error.svelte';
-	import Helper from '$lib/components/Helper.svelte';
+	import Info from '$lib/components/Info.svelte';
 
 	export let data: PageData;
 	const searchStore = createSearchStore(data.dashboards);
@@ -23,7 +23,7 @@
 </svelte:head>
 <main class="container mx-auto space-y-6">
 	<BreadCrumbs />
-	<Helper
+	<Info
 		infoMessage="This is the gallery page. Here you can find all the dashboards that have been published by other users. You can search for dashboards by name or tag. You can also filter the dashboards by the number of columns they have."
 	/>
 	<DashboardFilters

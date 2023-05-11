@@ -18,8 +18,7 @@
 	export let predefinedPanels: panelEntry[] = [];
 	export let form: ActionData;
 
-	export let selectedPanel: panelEntry;
-
+	let selectedPanel: panelEntry;
 
 	refreshPositions();
 	function addPanel(panelEntry: panelEntry) {
@@ -130,10 +129,6 @@
 				}}
 			/>
 		{/each}
-		<NewPanelCard
-			panels={predefinedPanels}
-			bind:selectedPanel
-			addAction={() => addPanel(selectedPanel)}
-		/>
+		<NewPanelCard {predefinedPanels} bind:selectedPanel addAction={() => addPanel(selectedPanel)} />
 	</div>
 </div>
