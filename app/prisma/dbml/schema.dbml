@@ -92,6 +92,7 @@ Table Panel {
   width Int [not null, default: 1]
   position Int [not null, default: 1]
   type String [not null]
+  properties Json
   dashboard Dashboard [not null]
   dashboardId String [not null]
   createdAt DateTime [default: `now()`]

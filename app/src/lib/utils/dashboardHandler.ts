@@ -72,7 +72,8 @@ export async function upsertDashboardQuery(
 					grafanaUrl: `${GRAFANA_URL}${resp.url}?orgId=1&viewPanel=${panelElem.id}`,
 					width: panelElem.width,
 					position: panelElem.position,
-					type: panelElem.type
+					type: panelElem.type,
+					properties: panelElem.properties
 				}))
 			}
 		},
@@ -114,7 +115,8 @@ export async function upsertDashboardQuery(
 						grafanaUrl: `${GRAFANA_URL}${resp.url}?orgId=1&viewPanel=${panelElem.id}`,
 						width: panelElem.width,
 						position: panelElem.position,
-						type: panelElem.type
+						type: panelElem.type,
+						properties: panelElem.properties
 					},
 					update: {
 						id: `${resp.uid}-${panelElem.position}`,
@@ -125,7 +127,8 @@ export async function upsertDashboardQuery(
 						grafanaUrl: `${GRAFANA_URL}${resp.url}?orgId=1&viewPanel=${panelElem.id}`,
 						width: panelElem.width,
 						position: panelElem.position,
-						type: panelElem.type
+						type: panelElem.type,
+						properties: panelElem.properties
 					}
 				}))
 			}

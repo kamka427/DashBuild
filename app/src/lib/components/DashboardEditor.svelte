@@ -40,7 +40,8 @@
 				width: 1,
 				createdAt: null,
 				updatedAt: null,
-				dashboardId: 'null'
+				dashboardId: 'null',
+				properties: panelEntry.properties
 			}
 		];
 	}

@@ -6,6 +6,7 @@ export async function fetchPanels() {
 	const resp = await fetch(`${PANEL_PARSER_URL}`, {});
 
 	const data = await resp.json();
+	console.log(data);
 
 	const panels: panelEntry[] = [];
 
@@ -14,7 +15,8 @@ export async function fetchPanels() {
 			title: panel.json_data.title,
 			JSON: panel.json_data,
 			thumbnailPath: `/thumbnails/${panel.file_name}.png`,
-			fileName: panel.file_name
+			fileName: panel.file_name,
+			properties: panel.config
 		});
 	});
 

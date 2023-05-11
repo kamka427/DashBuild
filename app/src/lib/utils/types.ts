@@ -5,6 +5,9 @@ export type responsePanel = {
 		description: string;
 		[key: string]: any;
 	};
+	config: {
+		[key: string]: any;
+	}
 };
 
 export type panelEntry = {
@@ -12,4 +15,5 @@ export type panelEntry = {
 	JSON: responsePanel['json_data'];
 	thumbnailPath: string;
 	fileName: responsePanel['file_name'];
+	properties: responsePanel['config'];
 };

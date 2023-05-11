@@ -3,13 +3,7 @@
 
 	export let panel: Panel;
 
-	export let state: 'preview' | 'edit' = 'preview';
-
-	function getPanelType(panel: Panel) {
-		return panel?.grafanaJSON?.type;
-	}
-
-	const type = getPanelType(panel as Panel) as string;
+	export let state: 'preview' | 'edit' = 'edit';
 
 	export let removeAction: any;
 
@@ -22,6 +16,39 @@
 	export let dragOn: boolean;
 
 	const positionId = String(panel.position);
+
+	function deepUpdate(path: string, value: any) {
+		console.log(path);
+		console.log(value);
+		const pathArray = path.split('.');
+		const pathArrayLength = pathArray.length;
+		let currentObject = panel.grafanaJSON as any;
+
+		for (let i = 0; i < pathArrayLength; i++) {
+			if (i === pathArrayLength - 1) {
+				currentObject[pathArray[i]] = value;
+			} else {
+				currentObject = currentObject[pathArray[i]];
+			}
+		}
+		const oldJSON = panel.grafanaJSON;
+		panel = {
+			...panel,
+			grafanaJSON: {
+				...panel.grafanaJSON,
+				...currentObject
+			}
+		};
+	}
+	function deepUpdateEvent(path: string, event: any) {
+		deepUpdate(path, event.target.value);
+	}
+
+	function updateProps(panel: { properties: any }, properties: any) {
+		panel.properties = properties;
+	}
+	console.log(panel);
+	const propertyList = panel.properties as any[];
 </script>
 
 <div
@@ -67,7 +94,7 @@
 	{#if isDropTarget === true && dragOn == true}
 		<div
 			id={positionId}
-			class="card card-compact h-full min-h-[35em] bg-base-300 text-base-content shadow-xl"
+			class="card card-compact bg-base-300 text-base-content h-full min-h-[35em] shadow-xl"
 		>
 			<div class="card-body" id={positionId}>
 				<p id={positionId} class="text-2xl">Drop here to swap Panels</p>
@@ -95,7 +122,7 @@
 						type="text"
 						placeholder="Panel title"
 						on:input={() => {
-							updateJSON('title', panel.name);
+							deepUpdate('title', panel.name);
 						}}
 					/>
 					<input
@@ -108,27 +135,32 @@
 						<div class="divider" />
 						<h2 class="text-xl">Properties</h2>
 						<div class="flex flex-col gap-3">
-							{#each props as prop}
-								<label class="input-group">
-									<span class="bg-accent text-accent-content">{prop}</span>
-									<select class="select-bordered select">
-										<!-- {#each enabledPanelFields[type][prop] as option}
-											<option
-												value={option}
-												on:input={() => {
-													updateJSON(prop, option);
-												}}>{option}</option
-											>
-										{/each} -->
-									</select>
-								</label>
-							{/each}
+							{#if propertyList === null}
+								<p class="text-lg">No properties available</p>
+							{:else}
+								{#each propertyList as prop}
+									<label class="input-group">
+										<span class="bg-accent text-accent-content">{prop.key}</span>
+										<select
+											class="select-bordered select"
+											bind:value={prop.selected}
+											on:change={(e) => {
+												console.log(prop.path);
+												console.log(e.target.value);
+												deepUpdate(prop.path, e.target.value);
+												updateProps(panel, propertyList);
+											}}
+										>
+											{#each prop.values as option}
+												<option value={option}>{option}</option>
+											{/each}
+										</select>
+									</label>
+								{/each}
+							{/if}
 						</div>
 					{/if}
-					<div
-						class="card-actions flex flex-wrap justify-between gap-2
-			"
-					>
+					<div class="card-actions flex flex-wrap justify-between gap-2">
 						<label class="input-group flex-1">
 							<span class="bg-base-200 text-white">Width</span>
 							<input

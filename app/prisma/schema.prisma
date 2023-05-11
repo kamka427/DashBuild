@@ -102,6 +102,7 @@ model Panel {
   width         Int       @default(1)
   position      Int       @default(1)
   type          String
+  properties    Json?
   dashboard     Dashboard @relation(fields: [dashboardId], references: [id], onDelete: Cascade)
   dashboardId   String
   createdAt     DateTime? @default(now())
