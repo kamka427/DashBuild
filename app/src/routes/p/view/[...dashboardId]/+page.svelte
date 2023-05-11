@@ -1,15 +1,14 @@
 <script lang="ts">
-	import { applyAction, enhance } from '$app/forms';
-	import { goto, invalidate, invalidateAll } from '$app/navigation';
+	import { enhance } from '$app/forms';
+	import { goto, invalidateAll } from '$app/navigation';
 	import { page } from '$app/stores';
 
 	import BreadCrumbs from '$lib/components/BreadCrumbs.svelte';
 	import DashboardInfo from '$lib/components/DashboardInfo.svelte';
 	import DashboardIterations from '$lib/components/DashboardIterations.svelte';
 	import Helper from '$lib/components/Helper.svelte';
-	import PanelsView from '$lib/components/PanelsView.svelte';
+	import PanelGrid from '$lib/components/PanelGrid.svelte';
 	import PublishButton from '$lib/components/PublishButton.svelte';
-	import { redirect } from '@sveltejs/kit';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -58,7 +57,7 @@
 			<DashboardInfo dashboard={data.dashboard} />
 		</div>
 		<DashboardIterations iterations={data.dashboard.dashboardIterations} />
-		<PanelsView {panels} />
+		<PanelGrid {panels} />
 	</div>
 </div>
 

@@ -14,9 +14,14 @@
 				<div class="card card-compact bg-base-300 text-base-content h-full w-full shadow-xl">
 					<div class="card-body gap-4">
 						<code class="card-title">Version: {iteration.version}</code>
-						<code class="overflow-x-scroll">
-							{JSON.stringify(iteration.grafanaJSON)}
-						</code>
+						<div class="mockup-code overflow-x-scroll">
+							<p class="p-6">
+
+								<code>
+									{JSON.stringify(iteration.grafanaJSON)}
+								</code>
+							</p>
+						</div>
 						<code>Created at: {iteration.createdAt}</code>
 					</div>
 				</div>
