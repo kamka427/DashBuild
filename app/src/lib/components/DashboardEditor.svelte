@@ -6,6 +6,7 @@
 	import DashboardForm from './DashboardForm.svelte';
 	import type { ActionData } from '../../routes/p/(editor)/create/$types';
 	import Error from './Error.svelte';
+	import type { panelEntry } from '$lib/utils/types';
 
 	export let title: string;
 	export let description: string;
@@ -15,6 +16,7 @@
 	export let panelForm: Panel[];
 
 	export let predefinedPanels: any;
+	$: console.log(predefinedPanels);
 	export let form: ActionData;
 
 	export let selectedPanel = {} as {
@@ -23,29 +25,28 @@
 			description: string;
 		};
 		thumbnailPath: string;
+		fileName: string;
 	};
+
+	$: console.log(selectedPanel);
+
 	refreshPositions();
-	function addPanel(panel: {
-		title: string;
-		JSON: {
-			description: string;
-		};
-		thumbnailPath: string;
-	}) {
+	function addPanel(panelEntry: panelEntry) {
 		refreshPositions();
 		panelForm = [
 			...panelForm,
 			{
 				id: (panelForm.length + 1).toString(),
-				name: `${panel.title}`,
-				description: panel.JSON.description || 'No description provided',
-				thumbnailPath: panel.thumbnailPath,
+				name: `${panelEntry.title}`,
+				description: panelEntry.JSON.description || 'No description provided',
+				thumbnailPath: panelEntry.thumbnailPath,
 				grafanaJSON: {
-					...panel.JSON,
+					...panelEntry.JSON,
 					id: panelForm.length + 1
 				},
 				grafanaUrl: null,
 				position: panelForm.length + 1,
+				type: panelEntry.fileName,
 				width: 1,
 				createdAt: null,
 				updatedAt: null,
@@ -59,7 +60,7 @@
 			console.log(panel);
 			return {
 				...panel,
-				position: index + 1,
+				position: index + 1
 			};
 		});
 	}
@@ -99,7 +100,7 @@
 
 	function swapIndexes(panel: Panel, index: number) {
 		console.log(index);
-		panel.position = index +1;
+		panel.position = index + 1;
 	}
 
 	export let isLoading = false;
@@ -107,8 +108,6 @@
 	$: if (form?.error) {
 		isLoading = false;
 	}
-
-	$: console.log(panelForm);
 </script>
 
 <div class="flex flex-col gap-4 {isLoading ? 'pointer-events-none animate-pulse' : ''}">

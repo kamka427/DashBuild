@@ -48,9 +48,10 @@ async function main() {
 				grafanaUrl: null,
 				width: Math.floor(Math.random() * columns) + 1,
 				position: i + 1,
-				createdAt: null,
-				updatedAt: null,
-				dashboardId: ''
+				createdAt: new Date(),
+				updatedAt: new Date(),
+				dashboardId: '',
+				type: panel.title
 			});
 		}
 
@@ -86,6 +87,7 @@ async function main() {
 						grafanaUrl: panel.grafanaUrl,
 						width: panel.width,
 						position: panel.position,
+						type: panel.type,
 						createdAt: panel.createdAt,
 						updatedAt: panel.updatedAt
 					}))

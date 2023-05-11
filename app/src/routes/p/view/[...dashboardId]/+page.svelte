@@ -48,7 +48,7 @@
 		<DashboardInfo dashboard={data.dashboard} />
 	</div>
 	<DashboardIterations iterations={data.dashboard.dashboardIterations} />
-	<PanelsView {panels} columns={data.dashboard.columns} />
+	<PanelsView {panels} />
 </div>
 
 <form id="refreshThumbnails" action="?/refreshThumbnails" method="POST" />

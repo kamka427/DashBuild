@@ -1,4 +1,3 @@
-import { fail } from '@sveltejs/kit';
 import { calculateGridPos } from './grafanaHandler';
 import type { Panel, Session, User } from '@prisma/client';
 import { GRAFANA_URL } from '$env/static/private';
@@ -27,14 +26,12 @@ export function generatePanelFormJSON(panelForm: string, colCount: number) {
 	);
 	return panelFormJSON;
 }
-
 export async function upsertDashboardQuery(
 	resp: any,
 	dashboardName: string,
 	dashboardDescription: string,
 	published: string,
 	tags: string,
-	thumbnailPath: string,
 	grafanaObject: {},
 	colCount: number,
 	user: User,
@@ -52,7 +49,7 @@ export async function upsertDashboardQuery(
 			description: dashboardDescription,
 			published: parsedPublished,
 			tags: tags,
-			thumbnailPath: thumbnailPath,
+			thumbnailPath: `/thumbnails/${resp.uid}_dashboard.png`,
 			grafanaJSON: grafanaObject,
 			columns: Number(colCount),
 			grafanaUrl: `${GRAFANA_URL}${resp.url}`,
@@ -74,7 +71,8 @@ export async function upsertDashboardQuery(
 					grafanaJSON: panelElem.grafanaJSON,
 					grafanaUrl: `${GRAFANA_URL}${resp.url}?orgId=1&viewPanel=${panelElem.id}`,
 					width: panelElem.width,
-					position: panelElem.position
+					position: panelElem.position,
+					type: panelElem.type
 				}))
 			}
 		},
@@ -84,7 +82,7 @@ export async function upsertDashboardQuery(
 			description: dashboardDescription,
 			published: Boolean(published),
 			tags: tags,
-			thumbnailPath: thumbnailPath,
+			thumbnailPath: `/thumbnails/${resp.uid}_dashboard.png`,
 			grafanaJSON: grafanaObject,
 			columns: Number(colCount),
 			grafanaUrl: `${GRAFANA_URL}${resp.url}`,
@@ -115,7 +113,8 @@ export async function upsertDashboardQuery(
 						grafanaJSON: panelElem.grafanaJSON,
 						grafanaUrl: `${GRAFANA_URL}${resp.url}?orgId=1&viewPanel=${panelElem.id}`,
 						width: panelElem.width,
-						position: panelElem.position
+						position: panelElem.position,
+						type: panelElem.type
 					},
 					update: {
 						id: `${resp.uid}-${panelElem.position}`,
@@ -125,7 +124,8 @@ export async function upsertDashboardQuery(
 						grafanaJSON: panelElem.grafanaJSON,
 						grafanaUrl: `${GRAFANA_URL}${resp.url}?orgId=1&viewPanel=${panelElem.id}`,
 						width: panelElem.width,
-						position: panelElem.position
+						position: panelElem.position,
+						type: panelElem.type
 					}
 				}))
 			}

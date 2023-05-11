@@ -1,4 +1,4 @@
-import { saveDashboardAction } from '$lib/utils/actions';
+import { saveDashboardAction } from '$lib/utils/formActions';
 import type { Actions } from '@sveltejs/kit';
 
 export const actions: Actions = {

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { panelEntry } from '$lib/utils/types';
 	import type { Panel } from '@prisma/client';
 
 	export let panels: Panel[];
@@ -11,21 +12,12 @@
 			state = 'unselected';
 		}
 	}
-	type responsePanel = {
-		file_name: string;
-		json_data: {
-			title: string;
-		};
-	};
+	
 
-	type panelEntry = {
-		title: string;
-		JSON: responsePanel['json_data'];
-		thumbnailPath: string;
-	};
+
 	export let addAction: (panel: panelEntry) => void;
 
-	export let selectedPanel: object;
+	export let selectedPanel: panelEntry;
 
 	function setSelection(panel: panelEntry) {
 		selectedPanel = panel;

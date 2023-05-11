@@ -1,7 +1,7 @@
 import type { PageServerLoad, Actions } from './$types';
 import { error } from '@sveltejs/kit';
 import { prisma } from '$lib/utils/prisma';
-import { publishDashboardAction, refreshThumbnailsAction } from '$lib/utils/actions';
+import { publishDashboardAction, refreshThumbnailsAction } from '$lib/utils/formActions';
 
 export const load: PageServerLoad = async ({ locals, url }) => {
 	const session = await locals.getSession();

@@ -101,6 +101,7 @@ model Panel {
   grafanaUrl    String?
   width         Int       @default(1)
   position      Int       @default(1)
+  type          String
   dashboard     Dashboard @relation(fields: [dashboardId], references: [id], onDelete: Cascade)
   dashboardId   String
   createdAt     DateTime? @default(now())

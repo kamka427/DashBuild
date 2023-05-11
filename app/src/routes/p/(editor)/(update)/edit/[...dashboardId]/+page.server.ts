@@ -1,4 +1,4 @@
-import { saveDashboardAction } from '$lib/utils/actions';
+import { saveDashboardAction } from '$lib/utils/formActions';
 import { fetchPanels } from '$lib/utils/grafanaHandler';
 import { prisma } from '$lib/utils/prisma';
 import type { PageServerLoad } from './$types';

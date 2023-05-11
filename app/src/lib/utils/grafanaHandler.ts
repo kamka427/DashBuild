@@ -1,23 +1,13 @@
 import { GRAFANA_URL, GRAFANA_API_TOKEN, PANEL_PARSER_URL } from '$env/static/private';
 import type { Dashboard, Panel, User } from '@prisma/client';
+import type { panelEntry, responsePanel } from './types';
 
 export async function fetchPanels() {
 	const resp = await fetch(`${PANEL_PARSER_URL}`, {});
 
 	const data = await resp.json();
 
-	type responsePanel = {
-		file_name: string;
-		json_data: {
-			title: string;
-		};
-	};
-
-	type panelEntry = {
-		title: string;
-		JSON: responsePanel['json_data'];
-		thumbnailPath: string;
-	};
+	
 
 	const panels: panelEntry[] = [];
 
@@ -25,7 +15,8 @@ export async function fetchPanels() {
 		panels.push({
 			title: panel.json_data.title,
 			JSON: panel.json_data,
-			thumbnailPath: `/thumbnails/${panel.file_name}.png`
+			thumbnailPath: `/thumbnails/${panel.file_name}.png`,
+			fileName: panel.file_name
 		});
 	});
 

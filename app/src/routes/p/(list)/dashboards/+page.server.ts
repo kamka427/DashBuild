@@ -1,9 +1,6 @@
 import type { PageServerLoad, Actions } from './$types';
-import { error, fail } from '@sveltejs/kit';
 import { prisma } from '$lib/utils/prisma';
-import { deleteDashboardOnGrafana } from '$lib/utils/grafanaHandler';
-import { permissionCheck } from '$lib/utils/validators';
-import { deleteDashboardAction } from '$lib/utils/actions';
+import { deleteDashboardAction } from '$lib/utils/formActions';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.getSession();

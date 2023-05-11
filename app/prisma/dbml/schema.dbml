@@ -40,9 +40,7 @@ Table User {
   image String
   accounts Account [not null]
   sessions Session [not null]
-  team String [not null, default: 'Individual']
   dashboards Dashboard [not null]
-  role String [not null, default: 'user']
 }
 
 Table VerificationToken {
@@ -69,7 +67,7 @@ Table Dashboard {
   tags String[] [not null]
   user User [not null]
   userId String [not null]
-  panels PanelsOnDashboards [not null]
+  panels Panel [not null]
   createdAt DateTime [default: `now()`]
   updatedAt DateTime
 }
@@ -93,30 +91,19 @@ Table Panel {
   grafanaUrl String
   width Int [not null, default: 1]
   position Int [not null, default: 1]
-  dashboards PanelsOnDashboards [not null]
-  createdAt DateTime [default: `now()`]
-  updatedAt DateTime
-}
-
-Table PanelsOnDashboards {
-  panel Panel [not null]
-  panelId String [not null]
+  type String [not null]
   dashboard Dashboard [not null]
   dashboardId String [not null]
-
-  indexes {
-    (panelId, dashboardId) [pk]
-  }
+  createdAt DateTime [default: `now()`]
+  updatedAt DateTime
 }
 
 Ref: Account.userId > User.id [delete: Cascade]
 
 Ref: Session.userId > User.id [delete: Cascade]
 
-Ref: Dashboard.userId > User.id
+Ref: Dashboard.userId > User.id [delete: Cascade]
 
-Ref: DashboardIteration.dashboardId > Dashboard.id
+Ref: DashboardIteration.dashboardId > Dashboard.id [delete: Cascade]
 
-Ref: PanelsOnDashboards.panelId > Panel.id [delete: Cascade]
-
-Ref: PanelsOnDashboards.dashboardId > Dashboard.id [delete: Cascade]
+Ref: Panel.dashboardId > Dashboard.id [delete: Cascade]
