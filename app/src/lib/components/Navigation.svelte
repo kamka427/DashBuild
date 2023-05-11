@@ -1,5 +1,6 @@
 <script>
 	import { page } from '$app/stores';
+	import { themeConfig } from '$lib/config/themeConfig.json';
 	export const initials = $page.data.session?.user?.name
 		?.split(' ')
 		.map((/** @type {string[]} */ word) => word[0])
@@ -7,7 +8,7 @@
 </script>
 
 <nav class="bg-base-300 text-base-content">
-	<div class="container navbar mx-auto">
+	<div class="navbar container mx-auto">
 		<div class="navbar-start">
 			<a class="btn-ghost btn text-xl normal-case" href="/">DashBuild</a>
 			{#if $page.data.session}
@@ -21,9 +22,8 @@
 		<div class="navbar-end">
 			<div class="menu menu-horizontal items-center gap-6 px-2">
 				<select class="select" data-choose-theme>
-					<option value="">System</option>
-					{#each ['light', 'dark'] as theme}
-						<option value={theme}>{theme.charAt(0).toUpperCase() + theme.slice(1)}</option>
+					{#each themeConfig as theme}
+						<option value={theme.value}>{theme.key}</option>
 					{/each}
 				</select>
 				{#if $page.data.session}
@@ -39,7 +39,7 @@
 						</div>
 					{:else}
 						<div class="placeholder avatar">
-							<div class="w-12 rounded-full bg-neutral-focus text-neutral-content">
+							<div class="bg-neutral-focus text-neutral-content w-12 rounded-full">
 								<span class="text-xl">
 									{initials}
 								</span>
