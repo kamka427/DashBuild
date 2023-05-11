@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { Dashboard } from '@prisma/client';
 	import { page } from '$app/stores';
-	import { redirect } from '@sveltejs/kit';
 
 	export let dashboard: Dashboard;
 

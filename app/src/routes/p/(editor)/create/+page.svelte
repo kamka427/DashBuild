@@ -9,9 +9,9 @@
 	export let data: PageData;
 	export let form: ActionData;
 
-	export let title: string = '';
-	export let description: string = '';
-	export let colCount: number = 2;
+	export let title = '';
+	export let description = '';
+	export let colCount = 2;
 	export let tags: string[] = [];
 	export let published = false;
 	export let panelForm: Panel[] = [];

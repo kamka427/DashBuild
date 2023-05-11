@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { SvelteKitAuth } from '@auth/sveltekit';
 import Email from '@auth/core/providers/email';
 import Azure from '@auth/core/providers/azure-ad';

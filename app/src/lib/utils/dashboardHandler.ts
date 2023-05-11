@@ -1,5 +1,5 @@
 import { calculateGridPos } from './grafanaHandler';
-import type { Panel, Session, User } from '@prisma/client';
+import type { Panel, User } from '@prisma/client';
 import { GRAFANA_URL } from '$env/static/private';
 import { prisma } from './prisma';
 
@@ -27,15 +27,15 @@ export function generatePanelFormJSON(panelForm: string, colCount: number) {
 	return panelFormJSON;
 }
 export async function upsertDashboardQuery(
-	resp: any,
+	resp: { uid: string; url: string; version: number },
 	dashboardName: string,
 	dashboardDescription: string,
 	published: string,
 	tags: string,
-	grafanaObject: {},
+	grafanaObject: object,
 	colCount: number,
 	user: User,
-	panelFormJSON: any
+	panelList: any
 ) {
 	const parsedPublished = published === 'true' ? true : false;
 
@@ -63,7 +63,7 @@ export async function upsertDashboardQuery(
 			},
 			userId: user.id,
 			panels: {
-				create: panelFormJSON.map((panelElem: Panel) => ({
+				create: panelList.map((panelElem: Panel) => ({
 					id: `${resp.uid}-${panelElem.position}`,
 					name: panelElem.name,
 					description: panelElem.description,
@@ -99,10 +99,10 @@ export async function upsertDashboardQuery(
 			panels: {
 				deleteMany: {
 					id: {
-						notIn: panelFormJSON.map((panelElem: Panel) => `${resp.uid}-${panelElem.position}`)
+						notIn: panelList.map((panelElem: Panel) => `${resp.uid}-${panelElem.position}`)
 					}
 				},
-				upsert: panelFormJSON.map((panelElem: Panel) => ({
+				upsert: panelList.map((panelElem: Panel) => ({
 					where: {
 						id: `${resp.uid}-${panelElem.position}`
 					},

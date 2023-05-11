@@ -67,7 +67,7 @@ export async function generateDashboardThumbnail(panelList: Panel[], dashboardNa
 		};
 	});
 
-	let filteredDashboardName = dashboardName
+	const filteredDashboardName = dashboardName
 		.split('')
 		.filter((word) => word !== '/')
 		.join('')
@@ -88,6 +88,7 @@ export async function generateDashboardThumbnail(panelList: Panel[], dashboardNa
 			if (err) {
 				console.log(err);
 			}
+			console.log(info);
 		});
 
 	return `/thumbnails/seeder_${filteredDashboardName}.png`;

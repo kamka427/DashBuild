@@ -59,7 +59,7 @@
 		isDragged = true;
 		dragOn = true;
 	}}
-	on:dragend={(e) => {
+	on:dragend={() => {
 		isDragged = false;
 		dragOn = false;
 	}}

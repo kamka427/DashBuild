@@ -2,7 +2,6 @@
 	import ThemeSelect from './ThemeSelect.svelte';
 
 	import { page } from '$app/stores';
-	import { themeConfig } from '$lib/config/themeConfig.json';
 	export const initials = $page.data.session?.user?.name
 		?.split(' ')
 		.map((/** @type {string[]} */ word) => word[0])

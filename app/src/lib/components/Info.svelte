@@ -1,7 +1,7 @@
 <script lang="ts">
-	export let infoMessage: string = 'There is no info message';
+	export let infoMessage = 'There is no info message';
 
-	export let isClosed: boolean = false;
+	export let isClosed = false;
 </script>
 
 {#if !isClosed}

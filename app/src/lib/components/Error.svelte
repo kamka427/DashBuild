@@ -1,5 +1,5 @@
 <script lang="ts">
-	export let errorMessage: string = 'Something went wrong. Please try again later.';
+	export let errorMessage = 'Something went wrong. Please try again later.';
 </script>
 
 <div class="container alert alert-error mx-auto shadow-xl">

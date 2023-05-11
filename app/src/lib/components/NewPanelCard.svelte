@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { panelEntry } from '$lib/utils/types';
-	import type { Panel } from '@prisma/client';
 
 	export let predefinedPanels: panelEntry[];
 
