@@ -13,8 +13,8 @@
 
 	export let removeAction: any;
 
-	export let dragEvent: (event: any) => void
-	export let dropEvent: (event: any) => void
+	export let dragEvent: (event: any) => void;
+	export let dropEvent: (event: any) => void;
 
 	export let colCount: number;
 	export let isDropTarget = false;
@@ -63,12 +63,11 @@
 		isDropTarget = false;
 		dragOn = false;
 	}}
-
 >
 	{#if isDropTarget === true && dragOn == true}
 		<div
 			id={positionId}
-			class="card card-compact h-full min-h-[35em] bg-base-300 text-base-content shadow-xl"
+			class="card card-compact bg-base-300 text-base-content h-full min-h-[35em] shadow-xl"
 		>
 			<div class="card-body" id={positionId}>
 				<p id={positionId} class="text-2xl">Drop here to swap Panels</p>
@@ -127,12 +126,11 @@
 						</div>
 					{/if}
 					<div
-						class="card-actions flex
-			justify-end"
+						class="card-actions flex flex-wrap justify-between gap-2
+			"
 					>
-						<div class="btn-group">
-							<label class="input-group">
-								<span class="bg-info text-white">Width</span>
+							<label class="input-group flex-1">
+								<span class="bg-base-200 text-white">Width</span>
 								<input
 									type="number"
 									class="input-bordered input"
@@ -141,6 +139,7 @@
 									max={colCount}
 								/>
 							</label>
+						<div class="btn-group flex flex-wrap">
 							<button
 								on:click={() => {
 									removeAction(panel?.id);

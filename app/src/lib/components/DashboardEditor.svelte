@@ -114,7 +114,7 @@
 			bind:panelForm
 		/>
 	</div>
-	<div class="grid grid-cols-{colCount} gap-4">
+	<div class="grid md:grid-cols-{colCount} grid-cols-1 gap-4">
 		{#each panelForm as panel}
 			<PanelFormCard
 				bind:dragOn

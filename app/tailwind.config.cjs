@@ -13,7 +13,11 @@ module.exports = {
 		'col-span-1',
 		'col-span-2',
 		'col-span-3',
-		'col-span-4'
+		'col-span-4',
+		'md:grid-cols-1',
+		'md:grid-cols-2',
+		'md:grid-cols-3',
+		'md:grid-cols-4',
 	],
 	daisyui: {
 		themes: ['light', 'dark']
