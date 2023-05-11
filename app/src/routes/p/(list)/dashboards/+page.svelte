@@ -27,7 +27,7 @@
 <main class="container mx-auto space-y-6">
 	<BreadCrumbs />
 	<Info
-		infoMessage="This is the Dashboards page. Here you can find all the dashboards that you have created. You can search for dashboards by name or tag. You can also filter the dashboards by the number of columns they have."
+		infoMessage="This is the Dashboards page. Here you can find all the dashboards that you have created. You can search for dashboards by name, description and tags. You can also change how many columns you want to see the dashboards in."
 	/>
 	<DashboardFilters
 		bind:search={$searchStore.search}

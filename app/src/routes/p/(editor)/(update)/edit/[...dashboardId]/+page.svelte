@@ -26,7 +26,7 @@
 <main class="container mx-auto space-y-6">
 	<BreadCrumbs />
 	<Info
-		infoMessage="This is the dashboard editor page. Here you can edit the dashboard you have created. You can change the name, description, number of columns, tags and panels of the dashboard. You can also publish or unpublish the dashboard."
+		infoMessage="This is the dashboard editor page. The page where you can create, edit and copy dashboards. Click on the Plus sign to get started."
 	/>
 	<DashboardEditor
 		{title}

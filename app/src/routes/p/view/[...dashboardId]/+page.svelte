@@ -27,7 +27,7 @@
 <div class="container mx-auto space-y-6">
 	<BreadCrumbs />
 	<Info
-		infoMessage="This is a preview of the dashboard. Click Open in Grafana to view the dashboard in Grafana."
+		infoMessage="This is the Dashboard details page. The page where you can view the details of a dashboard. Click on the Versions or Panels section to see more information.
 	/>
 	<div class="container mx-auto space-y-6 {isLoading ? 'pointer-events-none animate-pulse' : ''}">
 		<div
