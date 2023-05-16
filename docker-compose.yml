@@ -53,7 +53,7 @@ services:
     volumes:
       - type: volume
         source: app_data
-        target: /app
+        target: /app/static
     ports:
       - 80:80
     depends_on:
