@@ -16,7 +16,6 @@ import { redirect, fail, error as svelteError } from '@sveltejs/kit';
 import { permissionCheck, validateForm, validatePublish } from './validators';
 import { prisma } from './prisma';
 import { IMAGE_RENDERER } from '$env/static/private';
-import { invalidateAll } from '$app/navigation';
 
 export async function saveDashboardAction(
 	request: {

@@ -51,7 +51,8 @@ async function main() {
 				createdAt: new Date(),
 				updatedAt: new Date(),
 				dashboardId: '',
-				type: panel.title
+				type: panel.title,
+				properties: panel.properties
 			});
 		}
 
@@ -88,6 +89,7 @@ async function main() {
 						width: panel.width,
 						position: panel.position,
 						type: panel.type,
+						properties: panel.properties as any,
 						createdAt: panel.createdAt,
 						updatedAt: panel.updatedAt
 					}))

@@ -23,18 +23,26 @@ export async function fetchPanels() {
 
 	const data = await resp.json();
 
-	type responsePanel = {
+	 type responsePanel = {
 		file_name: string;
 		json_data: {
 			title: string;
+			description: string;
+			[key: string]: any;
+		};
+		config: {
+			[key: string]: any;
 		};
 	};
-
-	type panelEntry = {
+	
+	 type panelEntry = {
 		title: string;
 		JSON: responsePanel['json_data'];
 		thumbnailPath: string;
+		fileName: responsePanel['file_name'];
+		properties: responsePanel['config'];
 	};
+	
 
 	const panels: panelEntry[] = [];
 
@@ -42,7 +50,9 @@ export async function fetchPanels() {
 		panels.push({
 			title: panel.json_data.title,
 			JSON: panel.json_data,
-			thumbnailPath: `/thumbnails/${panel.file_name}.png`
+			thumbnailPath: `/thumbnails/${panel.file_name}.png`,
+			fileName: panel.file_name,
+			properties: panel.config
 		});
 	});
 
