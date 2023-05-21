@@ -15,18 +15,10 @@ async function main() {
 	await prisma.user.deleteMany();
 	await prisma.dashboardIteration.deleteMany();
 
-	await prisma.user.createMany({
-		data: {
-			id: faker.datatype.uuid(),
-			name: 'Admin',
-			email: 'admin@admin.com'
-		}
-	});
-
-	const fakeUsers = Array.from({ length: Math.floor(Math.random() * 15) + 5 }).map(() => ({
+	const fakeUsers = Array.from({ length: 10 }).map((_,index) => ({
 		id: faker.datatype.uuid(),
 		name: faker.name.fullName(),
-		email: faker.internet.email()
+		email: `user${index}@dashbuild.com`,
 	}));
 
 	await prisma.user.createMany({
