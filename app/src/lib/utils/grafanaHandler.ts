@@ -80,9 +80,9 @@ export async function createGrafanaDashboardPayload(
 	return grafanaObject;
 }
 
-export async function createGrafanaFolderPayload(folderName: string) {
+export async function createGrafanaFolderPayload(uid: string, folderName: string) {
 	const grafanaObject = {
-		uid: folderName,
+		uid: uid,
 		title: folderName
 	};
 
@@ -134,6 +134,6 @@ export async function callGrafanaFolderApi(grafanaJSON: string) {
 }
 
 export async function createGrafanaFolder(user: User & { dashboards: Dashboard[] }) {
-	const folderObject = await createGrafanaFolderPayload(user.id);
+	const folderObject = await createGrafanaFolderPayload(user.id, user.email);
 	await callGrafanaFolderApi(JSON.stringify(folderObject));
 }
