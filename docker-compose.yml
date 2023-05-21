@@ -60,17 +60,6 @@ services:
       postgres:
         condition: service_healthy
 
-  thumbnail_server:
-    image: httpd:2.4
-    volumes:
-      - type: volume
-        source: app_data
-        target: /usr/local/apache2/htdocs/
-    ports:
-      - 8080:80
-    depends_on:
-      - app
-
 volumes:
   app_data:
   db_data:

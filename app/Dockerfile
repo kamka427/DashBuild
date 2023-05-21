@@ -8,4 +8,4 @@ EXPOSE 80
 ENV PORT=80
 ENV ORIGIN=http://localhost:80
 CMD ["npx", "prisma", "migrate", "deploy"] 
-ENTRYPOINT ["node", "build" ]
+ENTRYPOINT ["node", "express-server.js" ]
