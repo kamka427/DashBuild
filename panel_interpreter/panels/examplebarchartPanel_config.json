@@ -12,7 +12,7 @@
     "values": ["true", "false"]
   },
   {
-    "key": "scaleDistributionType",
+    "key": "scaleDistribution",
     "path": "fieldConfig.defaults.custom.scaleDistribution.type",
     "selected": "linear",
     "values": ["linear", "logarithmic", "symlog"]

@@ -12,7 +12,7 @@
     "values": ["linear", "smooth", "stepBefore", "stepAfter"]
   },
   {
-    "key": "scaleDistributionType",
+    "key": "scaleDistribution",
     "path": "fieldConfig.defaults.custom.scaleDistribution.type",
     "selected": "linear",
     "values": ["linear", "logarithmic", "symlog"]

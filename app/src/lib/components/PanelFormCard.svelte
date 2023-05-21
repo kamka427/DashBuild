@@ -18,36 +18,34 @@
 	const positionId = String(panel.position);
 
 	function deepUpdate(path: string, value: any) {
-		console.log(path);
-		console.log(value);
 		const pathArray = path.split('.');
-		const pathArrayLength = pathArray.length;
 		let currentObject = panel.grafanaJSON as any;
 
-		for (let i = 0; i < pathArrayLength; i++) {
-			if (i === pathArrayLength - 1) {
+		for (let i = 0; i < pathArray.length; i++) {
+			if (i === pathArray.length - 1) {
+				console.log('hit');
 				currentObject[pathArray[i]] = value;
 			} else {
+				console.log('hit2');
 				currentObject = currentObject[pathArray[i]];
 			}
 		}
 
+		console.log(currentObject);
 		const grafanaJSON = panel.grafanaJSON as object;
 		panel = {
 			...panel,
 			grafanaJSON: {
-				...grafanaJSON,
-				...currentObject
+				...grafanaJSON
 			}
 		};
+
+		console.log(grafanaJSON);
 	}
 	function deepUpdateEvent(path: string, event: any) {
 		deepUpdate(path, event.target.value);
 	}
 
-	function updateProps(panel: { properties: any }, properties: any) {
-		panel.properties = properties;
-	}
 	const propertyList = panel.properties as any[];
 	console.log(propertyList);
 </script>
@@ -156,7 +154,6 @@
 														bind:value={prop.selected}
 														on:change={(e) => {
 															deepUpdateEvent(prop.path, e);
-															updateProps(panel, propertyList);
 														}}
 													>
 														{#each prop.values as option}
