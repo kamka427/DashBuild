@@ -67,7 +67,6 @@ export async function saveDashboardAction(
 		});
 	}
 
-	console.log(user.dashboards.length);
 	if (user.dashboards.length === 0) {
 		await createGrafanaFolder(user);
 	}
