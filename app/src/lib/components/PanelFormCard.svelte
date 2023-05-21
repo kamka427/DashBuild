@@ -139,29 +139,40 @@
 							{#if propertyList === null}
 								<p class="text-lg">No properties available</p>
 							{:else}
-								{#each propertyList as prop}
-									<label class="input-group">
-										<span class="bg-accent text-accent-content">{prop.key}</span>
-										<select
-											class="select-bordered select"
-											bind:value={prop.selected}
-											on:change={(e) => {
-												deepUpdateEvent(prop.path, e);
-												updateProps(panel, propertyList);
-											}}
-										>
-											{#each prop.values as option}
-												<option value={option}>{option}</option>
-											{/each}
-										</select>
-									</label>
-								{/each}
+							<table class="table w-full">
+								<!-- head -->
+								<thead>
+								  <tr>
+									<th>Key</th>
+									<th>Value</th>
+								  </tr>
+								</thead>
+								<tbody>
+									{#each propertyList as prop}
+								  <tr>
+									<td>{prop.key}</td>
+									<td><select
+										class="select w-full select-bordered"
+										bind:value={prop.selected}
+										on:change={(e) => {
+											deepUpdateEvent(prop.path, e);
+											updateProps(panel, propertyList);
+										}}
+									>
+										{#each prop.values as option}
+											<option value={option}>{option}</option>
+										{/each}
+									</select></td>
+								  </tr>
+								  {/each}
+								</tbody>
+							  </table>
 							{/if}
 						</div>
 					{/if}
 					<div class="card-actions flex flex-wrap justify-between gap-2">
 						<label class="input-group flex-1">
-							<span class="bg-base-200 text-white">Width</span>
+							<span class="bg-base-content text-white">Width</span>
 							<input
 								type="number"
 								class="input-bordered input"
