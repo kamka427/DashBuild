@@ -45,10 +45,10 @@ export async function generateDashboardThumbnail(uid: string, panelList: Panel[]
 	}
 }
 
-export async function copyDefaultThumbnail(uid: string, position: number, panelType: string) {
+export async function copyDefaultThumbnail(uid: string, position: number, thumbailPath: string) {
 	try {
 		fs.copyFileSync(
-			`${path.resolve(`static/thumbnails/${panelType}.png`)}`,
+			`${path.resolve(`static/${thumbailPath}`)}`,
 			`${path.resolve(`static/thumbnails/${uid}_${position}.png`)}`
 		);
 	} catch (err) {
@@ -89,7 +89,7 @@ export async function updateAllThumbnails(uidAndSlug: string, panelList: Panel[]
 
 export async function initThumbnailsAndPaths(uid: string, panelList: Panel[]) {
 	const promises = panelList.map(async (panel: Panel) => {
-		await copyDefaultThumbnail(uid, panel.position, panel.type);
+		await copyDefaultThumbnail(uid, panel.position, panel.thumbnailPath);
 		panel.thumbnailPath = `thumbnails/${uid}_${panel.position}.png`;
 		Promise.resolve();
 	});
