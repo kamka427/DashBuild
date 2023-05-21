@@ -1,0 +1,20 @@
+[
+  {
+    "key": "axisPlacement",
+    "path": "fieldConfig.defaults.custom.axisPlacement",
+    "selected": "auto",
+    "values": ["auto", "opposite", "left", "right"]
+  },
+  {
+    "key": "axisCenteredZero",
+    "path": "fieldConfig.defaults.custom.axisCenteredZero",
+    "selected": "false",
+    "values": ["true", "false"]
+  },
+  {
+    "key": "scaleDistributionType",
+    "path": "fieldConfig.defaults.custom.scaleDistribution.type",
+    "selected": "linear",
+    "values": ["linear", "logarithmic", "symlog"]
+  }
+]

@@ -1,0 +1,52 @@
+{
+    "datasource": {
+      "type": "datasource",
+      "uid": "grafana"
+    },
+    "fieldConfig": {
+      "defaults": {
+        "mappings": [],
+        "thresholds": {
+          "mode": "absolute",
+          "steps": [
+            {
+              "color": "green",
+              "value": null
+            },
+            {
+              "color": "red",
+              "value": 80
+            }
+          ]
+        },
+        "color": {
+          "mode": "thresholds"
+        }
+      },
+      "overrides": []
+    },
+    "gridPos": {
+      "h": 8,
+      "w": 12,
+      "x": 0,
+      "y": 0
+    },
+    "id": 10,
+    "options": {
+      "reduceOptions": {
+        "values": false,
+        "calcs": [
+          "lastNotNull"
+        ],
+        "fields": ""
+      },
+      "orientation": "auto",
+      "displayMode": "gradient",
+      "showUnfilled": true,
+      "minVizWidth": 0,
+      "minVizHeight": 10
+    },
+    "pluginVersion": "9.4.3",
+    "title": "Example Bar gauge",
+    "type": "bargauge"
+  }

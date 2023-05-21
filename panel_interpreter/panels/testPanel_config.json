@@ -1,8 +1,0 @@
-[
-  {
-    "key": "drawStyle",
-    "path": "fieldConfig.defaults.custom.drawStyle",
-    "selected": "bars",
-    "values": ["lines", "bars", "points"]
-  }
-]

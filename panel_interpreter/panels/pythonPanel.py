@@ -1,7 +1,7 @@
 from grafanalib.core import TimeSeries
 
 testPanel = TimeSeries(
-    title="Test Panel",
+    title="Python Panel",
     description="This is a test panel",
     drawStyle="bars",
 )

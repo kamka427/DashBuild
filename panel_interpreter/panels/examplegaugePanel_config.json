@@ -1,0 +1,14 @@
+[
+  {
+    "key": "showThresholdLabels",
+    "path": "options.showThresholdLabels",
+    "selected": "false",
+    "values": ["true", "false"]
+  },
+  {
+    "key": "showThresholdMarkers",
+    "path": "options.showThresholdMarkers",
+    "selected": "true",
+    "values": ["true", "false"]
+  }
+]

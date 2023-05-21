@@ -1,0 +1,20 @@
+[
+  {
+    "key": "drawStyle",
+    "path": "fieldConfig.defaults.custom.drawStyle",
+    "selected": "lines",
+    "values": ["lines", "bars", "points"]
+  },
+  {
+    "key": "lineInterpolation",
+    "path": "fieldConfig.defaults.custom.lineInterpolation",
+    "selected": "linear",
+    "values": ["linear", "smooth", "stepBefore", "stepAfter"]
+  },
+  {
+    "key": "scaleDistributionType",
+    "path": "fieldConfig.defaults.custom.scaleDistribution.type",
+    "selected": "linear",
+    "values": ["linear", "logarithmic", "symlog"]
+  }
+]

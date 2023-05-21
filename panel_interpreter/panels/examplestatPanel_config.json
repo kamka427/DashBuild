@@ -1,0 +1,14 @@
+[
+  {
+    "key": "orientation",
+    "path": "options.orientation",
+    "selected": "auto",
+    "values": ["auto", "horizontal", "vertical"]
+  },
+  {
+    "key": "justifyMode",
+    "path": "options.justifyMode",
+    "selected": "auto",
+    "values": ["auto", "center"]
+  }
+]
