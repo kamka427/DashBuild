@@ -3,7 +3,7 @@
 
 	export let panel: Panel;
 
-	export let state: 'preview' | 'edit' = 'edit';
+	export let state: 'preview' | 'edit' = 'preview';
 
 	export let removeAction: any;
 
@@ -175,13 +175,13 @@
 								on:click={() => {
 									removeAction(panel?.id);
 								}}
-								class="btn-secondary btn">Remove</button
+								class="btn-secondary btn">Remove Panel</button
 							>
 							<button
 								class="btn-primary btn"
 								on:click={() => {
 									state = state === 'preview' ? 'edit' : 'preview';
-								}}>{state === 'preview' ? 'Customize' : 'Minimize'}</button
+								}}>{state === 'preview' ? 'Show Properties' : 'Hide Properties'}</button
 							>
 						</div>
 					</div>
