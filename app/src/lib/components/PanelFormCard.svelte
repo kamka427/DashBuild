@@ -48,8 +48,8 @@
 	function updateProps(panel: { properties: any }, properties: any) {
 		panel.properties = properties;
 	}
-	console.log(panel);
 	const propertyList = panel.properties as any[];
+	console.log(propertyList);
 </script>
 
 <div
@@ -95,7 +95,7 @@
 	{#if isDropTarget === true && dragOn == true}
 		<div
 			id={positionId}
-			class="card card-compact h-full min-h-[35em] bg-base-300 text-base-content shadow-xl"
+			class="card card-compact bg-base-300 text-base-content h-full min-h-[35em] shadow-xl"
 		>
 			<div class="card-body" id={positionId}>
 				<p id={positionId} class="text-2xl">Drop here to swap Panels</p>
@@ -136,37 +136,38 @@
 						<div class="divider" />
 						<h2 class="text-xl">Properties</h2>
 						<div class="flex flex-col gap-3">
-							{#if propertyList === null}
+							{#if propertyList === undefined}
 								<p class="text-lg">No properties available</p>
 							{:else}
-							<table class="table w-full">
-								<!-- head -->
-								<thead>
-								  <tr>
-									<th>Key</th>
-									<th>Value</th>
-								  </tr>
-								</thead>
-								<tbody>
-									{#each propertyList as prop}
-								  <tr>
-									<td>{prop.key}</td>
-									<td><select
-										class="select w-full select-bordered"
-										bind:value={prop.selected}
-										on:change={(e) => {
-											deepUpdateEvent(prop.path, e);
-											updateProps(panel, propertyList);
-										}}
-									>
-										{#each prop.values as option}
-											<option value={option}>{option}</option>
+								<table class="table w-full">
+									<thead>
+										<tr>
+											<th>Key</th>
+											<th>Value</th>
+										</tr>
+									</thead>
+									<tbody>
+										{#each propertyList as prop}
+											<tr>
+												<td>{prop.key}</td>
+												<td
+													><select
+														class="select select-bordered w-full"
+														bind:value={prop.selected}
+														on:change={(e) => {
+															deepUpdateEvent(prop.path, e);
+															updateProps(panel, propertyList);
+														}}
+													>
+														{#each prop.values as option}
+															<option value={option}>{option}</option>
+														{/each}
+													</select></td
+												>
+											</tr>
 										{/each}
-									</select></td>
-								  </tr>
-								  {/each}
-								</tbody>
-							  </table>
+									</tbody>
+								</table>
 							{/if}
 						</div>
 					{/if}
@@ -192,7 +193,10 @@
 								class="btn-primary btn"
 								on:click={() => {
 									state = state === 'preview' ? 'edit' : 'preview';
-								}}>{state === 'preview' ? 'Show Properties' : 'Hide Properties'}</button
+								}}
+								>{state === 'preview' && propertyList !== null
+									? 'Show Properties'
+									: 'Hide Properties'}</button
 							>
 						</div>
 					</div>
