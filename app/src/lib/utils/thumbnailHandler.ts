@@ -62,11 +62,11 @@ export const generateDashboardThumbnail = async (uid: string, panelList: Panel[]
  * @param thumbailPath - The path to the default thumbnail image.
  * @returns The path to the new thumbnail image.
  */
-export const copyDefaultThumbnail = async (uid: string, position: number, thumbailPath: string) => {
+export const copyDefaultThumbnail = async (uid: string, position: number, type: string) => {
 	try {
 		// Copy the default thumbnail image to the specified position
 		fs.copyFileSync(
-			`${path.resolve(`static/${thumbailPath}`)}`,
+			`${path.resolve(`static/thumbnails/${type}.png`)}`,
 			`${path.resolve(`static/thumbnails/${uid}_${position}.png`)}`
 		);
 	} catch (err) {
@@ -130,7 +130,7 @@ export const updateAllThumbnails = async (uidAndSlug: string, panelList: Panel[]
 export const initThumbnailsAndPaths = async (uid: string, panelList: Panel[]) => {
 	// Copy the default thumbnail image to each panel and update the thumbnail path
 	const promises = panelList.map(async (panel: Panel) => {
-		await copyDefaultThumbnail(uid, panel.position, panel.thumbnailPath);
+		await copyDefaultThumbnail(uid, panel.position, panel.type);
 		panel.thumbnailPath = `thumbnails/${uid}_${panel.position}.png`;
 		Promise.resolve();
 	});
