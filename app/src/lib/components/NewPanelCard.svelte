@@ -23,7 +23,7 @@
 		</div>
 		<!-- List of predefined panels -->
 		<ul
-			class="grid max-h-[60em] w-full grid-cols-2 gap-4 overflow-y-auto rounded-lg bg-base-100 p-4"
+			class="grid max-h-[40em] w-full grid-cols-2 gap-4 overflow-y-auto rounded-lg bg-base-100 p-4"
 		>
 			{#each predefinedPanels as panel}
 				<li>
