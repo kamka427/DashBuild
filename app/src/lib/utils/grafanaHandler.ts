@@ -34,7 +34,19 @@ export const fetchPanels = async (): Promise<panelEntry[]> => {
  * @returns The grid position of the panel.
  */
 export const calculateGridPos = (
-	panel: Panel & {
+	prevPanel:
+		| (Panel & {
+				grafanaJSON: {
+					gridPos: {
+						h: number;
+						w: number;
+						x: number;
+						y: number;
+					};
+				};
+		  })
+		| null,
+	currPanel: Panel & {
 		grafanaJSON: {
 			gridPos: {
 				h: number;
@@ -48,20 +60,22 @@ export const calculateGridPos = (
 ): { h: number; w: number; x: number; y: number } => {
 	const gridPos = {
 		h: 9,
-		w: 24 / colCount,
+		w: (currPanel.width * 24) / colCount,
 		x: 0,
 		y: 0
 	};
 
-	const panelIndex = panel.position - 1;
-
-	const row = Math.floor(panelIndex / colCount);
-	const col = panelIndex % colCount;
-
-	gridPos.x = col * gridPos.w;
-	gridPos.y = row * gridPos.h;
-
-	panel.grafanaJSON.gridPos = gridPos;
+	// Please note that if a panel has no neighbor at its topside, it will be placed at the top of that column on Grafana.
+	if (
+		prevPanel !== null &&
+		prevPanel.grafanaJSON.gridPos.x + prevPanel.grafanaJSON.gridPos.w + gridPos.w <= 24
+	) {
+		gridPos.x = prevPanel.grafanaJSON.gridPos.x + prevPanel.grafanaJSON.gridPos.w;
+		gridPos.y = prevPanel.grafanaJSON.gridPos.y;
+	} else {
+		gridPos.x = 0;
+		gridPos.y = prevPanel !== null ? prevPanel.grafanaJSON.gridPos.y + 9 : 0;
+	}
 
 	return gridPos;
 };

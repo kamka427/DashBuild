@@ -66,19 +66,14 @@ describe('calculateGridPos', () => {
 					x: 0,
 					y: 0
 				}
-			}
+			},
+			width: 1
 		};
 		const colCount = 2;
 
-		const result = calculateGridPos(panel as any, colCount);
+		const result = calculateGridPos(null, panel as any, colCount);
 
 		expect(result).toEqual({
-			h: 9,
-			w: 12,
-			x: 0,
-			y: 0
-		});
-		expect(panel.grafanaJSON.gridPos).toEqual({
 			h: 9,
 			w: 12,
 			x: 0,
@@ -86,9 +81,21 @@ describe('calculateGridPos', () => {
 		});
 	});
 
-	it('should calculate the correct grid position for a panel in the second row', () => {
+	it('should calculate the correct grid position for a panel with a previous panel', () => {
+		const prevPanel = {
+			position: 1,
+			grafanaJSON: {
+				gridPos: {
+					h: 9,
+					w: 12,
+					x: 0,
+					y: 0
+				}
+			},
+			width: 1
+		};
 		const panel = {
-			position: 3,
+			position: 2,
 			grafanaJSON: {
 				gridPos: {
 					h: 0,
@@ -96,23 +103,18 @@ describe('calculateGridPos', () => {
 					x: 0,
 					y: 0
 				}
-			}
+			},
+			width: 1
 		};
 		const colCount = 2;
 
-		const result = calculateGridPos(panel as any, colCount);
+		const result = calculateGridPos(prevPanel as any, panel as any, colCount);
 
 		expect(result).toEqual({
 			h: 9,
 			w: 12,
-			x: 0,
-			y: 9
-		});
-		expect(panel.grafanaJSON.gridPos).toEqual({
-			h: 9,
-			w: 12,
-			x: 0,
-			y: 9
+			x: 12,
+			y: 0
 		});
 	});
 });
