@@ -1,6 +1,6 @@
 import { calculateGridPos } from './grafanaHandler';
 import type { Dashboard, Panel, User } from '@prisma/client';
-import { GRAFANA_URL } from '$env/static/private';
+import { GRAFANA_PUBLIC_URL } from '$env/static/private';
 import { prisma } from './prisma';
 
 /**
@@ -31,12 +31,20 @@ export const generatePanelFormJSON = (panelForm: string, colCount: number): Pane
 				...panel,
 				grafanaJSON: {
 					...panel.grafanaJSON,
-					gridPos: calculateGridPos(panel, Number(colCount)),
+					gridPos: {},
 					id: index + 1
 				}
 			};
 		}
 	);
+
+	for (let i = 0; i < panelFormJSON.length; i++) {
+		if (i === 0) {
+			panelFormJSON[i].grafanaJSON.gridPos = calculateGridPos(null, panelFormJSON[i], colCount);
+		} else {
+			panelFormJSON[i].grafanaJSON.gridPos = calculateGridPos(panelFormJSON[i - 1], panelFormJSON[i], colCount);
+		}
+	}
 	return panelFormJSON;
 };
 
@@ -78,7 +86,7 @@ export const upsertDashboardQuery = async (
 			thumbnailPath: `/thumbnails/${resp.uid}_dashboard.png`,
 			grafanaJSON: grafanaObject,
 			columns: Number(colCount),
-			grafanaUrl: `${GRAFANA_URL}${resp.url}`,
+			grafanaUrl: `${GRAFANA_PUBLIC_URL}${resp.url}`,
 			version: resp.version,
 			dashboardIterations: {
 				create: {
@@ -95,11 +103,11 @@ export const upsertDashboardQuery = async (
 					description: panelElem.description,
 					thumbnailPath: `/thumbnails/${resp.uid}_${panelElem.position}.png`,
 					grafanaJSON: panelElem.grafanaJSON,
-					grafanaUrl: `${GRAFANA_URL}${resp.url}?orgId=1&viewPanel=${panelElem.id}`,
+					grafanaUrl: `${GRAFANA_PUBLIC_URL}${resp.url}?orgId=1&viewPanel=${panelElem.id}`,
 					width: panelElem.width,
 					position: panelElem.position,
 					type: panelElem.type,
-					properties: panelElem.properties
+					properties: panelElem.properties ? panelElem.properties : undefined,
 				}))
 			}
 		},
@@ -107,12 +115,12 @@ export const upsertDashboardQuery = async (
 			id: resp.uid,
 			name: dashboardName,
 			description: dashboardDescription,
-			published: Boolean(published),
+			published: parsedPublished,
 			tags: tags,
 			thumbnailPath: `/thumbnails/${resp.uid}_dashboard.png`,
 			grafanaJSON: grafanaObject,
 			columns: Number(colCount),
-			grafanaUrl: `${GRAFANA_URL}${resp.url}`,
+			grafanaUrl: `${GRAFANA_PUBLIC_URL}${resp.url}`,
 			version: resp.version,
 			dashboardIterations: {
 				create: {
@@ -138,11 +146,11 @@ export const upsertDashboardQuery = async (
 						description: panelElem.description,
 						thumbnailPath: `/thumbnails/${resp.uid}_${panelElem.position}.png`,
 						grafanaJSON: panelElem.grafanaJSON,
-						grafanaUrl: `${GRAFANA_URL}${resp.url}?orgId=1&viewPanel=${panelElem.id}`,
+						grafanaUrl: `${GRAFANA_PUBLIC_URL}${resp.url}?orgId=1&viewPanel=${panelElem.id}`,
 						width: panelElem.width,
 						position: panelElem.position,
 						type: panelElem.type,
-						properties: panelElem.properties
+						properties: panelElem.properties ? panelElem.properties : undefined,
 					},
 					update: {
 						id: `${resp.uid}-${panelElem.position}`,
@@ -150,11 +158,11 @@ export const upsertDashboardQuery = async (
 						description: panelElem.description,
 						thumbnailPath: `/thumbnails/${resp.uid}_${panelElem.position}.png`,
 						grafanaJSON: panelElem.grafanaJSON,
-						grafanaUrl: `${GRAFANA_URL}${resp.url}?orgId=1&viewPanel=${panelElem.id}`,
+						grafanaUrl: `${GRAFANA_PUBLIC_URL}${resp.url}?orgId=1&viewPanel=${panelElem.id}`,
 						width: panelElem.width,
 						position: panelElem.position,
 						type: panelElem.type,
-						properties: panelElem.properties
+						properties: panelElem.properties ? panelElem.properties : undefined,
 					}
 				}))
 			}
