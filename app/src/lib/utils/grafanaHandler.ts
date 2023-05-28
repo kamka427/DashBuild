@@ -7,24 +7,24 @@ import type { panelEntry, responsePanel } from './types';
  * @returns An array of panel entries.
  */
 export const fetchPanels = async (): Promise<panelEntry[]> => {
-    const resp = await fetch(`${PANEL_PARSER_URL}`, {});
+	const resp = await fetch(`${PANEL_PARSER_URL}`, {});
 
-    const data = await resp.json();
-    console.log(data);
+	const data = await resp.json();
+	console.log(data);
 
-    const panels: panelEntry[] = [];
+	const panels: panelEntry[] = [];
 
-    data.map((panel: responsePanel) => {
-        panels.push({
-            title: panel.json_data.title,
-            JSON: panel.json_data,
-            thumbnailPath: `/thumbnails/${panel.file_name}.png`,
-            fileName: panel.file_name,
-            properties: panel.config
-        });
-    });
+	data.map((panel: responsePanel) => {
+		panels.push({
+			title: panel.json_data.title,
+			JSON: panel.json_data,
+			thumbnailPath: `/thumbnails/${panel.file_name}.png`,
+			fileName: panel.file_name,
+			properties: panel.config
+		});
+	});
 
-    return panels;
+	return panels;
 };
 
 /**
@@ -34,36 +34,36 @@ export const fetchPanels = async (): Promise<panelEntry[]> => {
  * @returns The grid position of the panel.
  */
 export const calculateGridPos = (
-    panel: Panel & {
-        grafanaJSON: {
-            gridPos: {
-                h: number;
-                w: number;
-                x: number;
-                y: number;
-            };
-        };
-    },
-    colCount: number
+	panel: Panel & {
+		grafanaJSON: {
+			gridPos: {
+				h: number;
+				w: number;
+				x: number;
+				y: number;
+			};
+		};
+	},
+	colCount: number
 ): { h: number; w: number; x: number; y: number } => {
-    const gridPos = {
-        h: 9,
-        w: 24 / colCount,
-        x: 0,
-        y: 0
-    };
+	const gridPos = {
+		h: 9,
+		w: 24 / colCount,
+		x: 0,
+		y: 0
+	};
 
-    const panelIndex = panel.position - 1;
+	const panelIndex = panel.position - 1;
 
-    const row = Math.floor(panelIndex / colCount);
-    const col = panelIndex % colCount;
+	const row = Math.floor(panelIndex / colCount);
+	const col = panelIndex % colCount;
 
-    gridPos.x = col * gridPos.w;
-    gridPos.y = row * gridPos.h;
+	gridPos.x = col * gridPos.w;
+	gridPos.y = row * gridPos.h;
 
-    panel.grafanaJSON.gridPos = gridPos;
+	panel.grafanaJSON.gridPos = gridPos;
 
-    return gridPos;
+	return gridPos;
 };
 
 /**
@@ -77,36 +77,36 @@ export const calculateGridPos = (
  * @returns The Grafana dashboard payload object.
  */
 export const createGrafanaDashboardPayload = async (
-    panelForm: Panel[],
-    title: string,
-    description: string,
-    tags: string[],
-    userFolder: string,
-    existingDashboard: Dashboard | null = null
+	panelForm: Panel[],
+	title: string,
+	description: string,
+	tags: string[],
+	userFolder: string,
+	existingDashboard: Dashboard | null = null
 ): Promise<{
-    dashboard: {
-        title: string;
-        description: string;
-        panels: any[];
-        tags: string[];
-        uid: string | null;
-        version: number;
-    };
-    folderUid: string;
+	dashboard: {
+		title: string;
+		description: string;
+		panels: any[];
+		tags: string[];
+		uid: string | null;
+		version: number;
+	};
+	folderUid: string;
 }> => {
-    const grafanaObject = {
-        dashboard: {
-            title: title,
-            description: description,
-            panels: panelForm.map((panel) => panel.grafanaJSON),
-            tags: tags,
-            uid: existingDashboard !== null ? existingDashboard.id : null,
-            version: existingDashboard !== null ? existingDashboard.version : 1
-        },
-        folderUid: userFolder
-    };
+	const grafanaObject = {
+		dashboard: {
+			title: title,
+			description: description,
+			panels: panelForm.map((panel) => panel.grafanaJSON),
+			tags: tags,
+			uid: existingDashboard !== null ? existingDashboard.id : null,
+			version: existingDashboard !== null ? existingDashboard.version : 1
+		},
+		folderUid: userFolder
+	};
 
-    return grafanaObject;
+	return grafanaObject;
 };
 
 /**
@@ -116,15 +116,15 @@ export const createGrafanaDashboardPayload = async (
  * @returns The Grafana folder payload object.
  */
 export const createGrafanaFolderPayload = async (
-    uid: string,
-    folderName: string
+	uid: string,
+	folderName: string
 ): Promise<{ uid: string; title: string }> => {
-    const grafanaObject = {
-        uid: uid,
-        title: folderName
-    };
+	const grafanaObject = {
+		uid: uid,
+		title: folderName
+	};
 
-    return grafanaObject;
+	return grafanaObject;
 };
 
 /**
@@ -133,18 +133,18 @@ export const createGrafanaFolderPayload = async (
  * @returns The response from the API.
  */
 export const callGrafanaDashboardApi = async (grafanaJSON: string): Promise<any> => {
-    const response = await fetch(`${GRAFANA_URL}/api/dashboards/db`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: GRAFANA_API_TOKEN
-        },
-        body: grafanaJSON
-    });
+	const response = await fetch(`${GRAFANA_URL}/api/dashboards/db`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: GRAFANA_API_TOKEN
+		},
+		body: grafanaJSON
+	});
 
-    const resp = await response.json();
-    console.log(resp);
-    return resp;
+	const resp = await response.json();
+	console.log(resp);
+	return resp;
 };
 
 /**
@@ -153,17 +153,17 @@ export const callGrafanaDashboardApi = async (grafanaJSON: string): Promise<any>
  * @returns The response from the API.
  */
 export const deleteDashboardOnGrafana = async (uid: string): Promise<any> => {
-    const response = await fetch(`${GRAFANA_URL}/api/dashboards/uid/${uid}`, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: GRAFANA_API_TOKEN
-        }
-    });
+	const response = await fetch(`${GRAFANA_URL}/api/dashboards/uid/${uid}`, {
+		method: 'DELETE',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: GRAFANA_API_TOKEN
+		}
+	});
 
-    const resp = await response.json();
-    console.log(resp);
-    return resp;
+	const resp = await response.json();
+	console.log(resp);
+	return resp;
 };
 
 /**
@@ -172,18 +172,18 @@ export const deleteDashboardOnGrafana = async (uid: string): Promise<any> => {
  * @returns The response from the API.
  */
 export const callGrafanaFolderApi = async (grafanaJSON: string): Promise<any> => {
-    const response = await fetch(`${GRAFANA_URL}/api/folders`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: GRAFANA_API_TOKEN
-        },
-        body: grafanaJSON
-    });
+	const response = await fetch(`${GRAFANA_URL}/api/folders`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: GRAFANA_API_TOKEN
+		},
+		body: grafanaJSON
+	});
 
-    const resp = await response.json();
-    console.log(resp);
-    return resp;
+	const resp = await response.json();
+	console.log(resp);
+	return resp;
 };
 
 /**
@@ -191,6 +191,6 @@ export const callGrafanaFolderApi = async (grafanaJSON: string): Promise<any> =>
  * @param user - The user to create the folder for.
  */
 export const createGrafanaFolder = async (user: User): Promise<void> => {
-    const folderObject = await createGrafanaFolderPayload(user.id, user.email);
-    await callGrafanaFolderApi(JSON.stringify(folderObject));
+	const folderObject = await createGrafanaFolderPayload(user.id, user.email);
+	await callGrafanaFolderApi(JSON.stringify(folderObject));
 };
