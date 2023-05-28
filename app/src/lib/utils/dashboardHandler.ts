@@ -42,7 +42,11 @@ export const generatePanelFormJSON = (panelForm: string, colCount: number): Pane
 		if (i === 0) {
 			panelFormJSON[i].grafanaJSON.gridPos = calculateGridPos(null, panelFormJSON[i], colCount);
 		} else {
-			panelFormJSON[i].grafanaJSON.gridPos = calculateGridPos(panelFormJSON[i - 1], panelFormJSON[i], colCount);
+			panelFormJSON[i].grafanaJSON.gridPos = calculateGridPos(
+				panelFormJSON[i - 1],
+				panelFormJSON[i],
+				colCount
+			);
 		}
 	}
 	return panelFormJSON;
@@ -107,7 +111,7 @@ export const upsertDashboardQuery = async (
 					width: panelElem.width,
 					position: panelElem.position,
 					type: panelElem.type,
-					properties: panelElem.properties ? panelElem.properties : undefined,
+					properties: panelElem.properties ? panelElem.properties : undefined
 				}))
 			}
 		},
@@ -150,7 +154,7 @@ export const upsertDashboardQuery = async (
 						width: panelElem.width,
 						position: panelElem.position,
 						type: panelElem.type,
-						properties: panelElem.properties ? panelElem.properties : undefined,
+						properties: panelElem.properties ? panelElem.properties : undefined
 					},
 					update: {
 						id: `${resp.uid}-${panelElem.position}`,
@@ -162,7 +166,7 @@ export const upsertDashboardQuery = async (
 						width: panelElem.width,
 						position: panelElem.position,
 						type: panelElem.type,
-						properties: panelElem.properties ? panelElem.properties : undefined,
+						properties: panelElem.properties ? panelElem.properties : undefined
 					}
 				}))
 			}

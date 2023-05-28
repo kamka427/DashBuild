@@ -76,7 +76,9 @@ if (env.AZURE_ID && env.AZURE_SECRET && env.AZURE_TENANT_ID) {
 
 // Add the GitHub provider if GITHUB_ID and GITHUB_SECRET are defined
 if (env.GITHUB_ID && env.GITHUB_SECRET) {
-	availableProviders.push(GitHub({ clientId: env.GITHUB_ID, clientSecret: env.GITHUB_SECRET }) as any);
+	availableProviders.push(
+		GitHub({ clientId: env.GITHUB_ID, clientSecret: env.GITHUB_SECRET }) as any
+	);
 }
 
 // Define the authorization function
