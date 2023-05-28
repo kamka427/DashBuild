@@ -82,8 +82,9 @@
 		return async ({ result }) => {
 			console.log(result);
 			if (result.status === 200) {
+				isLoading = false;
 				invalidateAll();
-				goto(`/p/dashboards/${data.dashboard.id}`);
+				goto(`/p/view/${data.dashboard.id}`);
 			}
 		};
 	}}
