@@ -1,4 +1,5 @@
 <script lang="ts">
+	// Define the props passed to the component
 	export let title: string;
 	export let description: string;
 	export let colCount: number;
@@ -8,6 +9,7 @@
 
 <div class="flex">
 	<div class="flex flex-row flex-wrap gap-4">
+		<!-- Title input -->
 		<label class="input-group flex-1">
 			<span>Title</span>
 			<input
@@ -17,6 +19,7 @@
 				bind:value={title}
 			/>
 		</label>
+		<!-- Description input -->
 		<label class="input-group flex-1">
 			<span>Description</span>
 			<input
@@ -26,6 +29,7 @@
 				bind:value={description}
 			/>
 		</label>
+		<!-- Tags input -->
 		<label class="input-group flex-1">
 			<span>Tags</span>
 			<input
@@ -35,10 +39,12 @@
 				bind:value={tags}
 			/>
 		</label>
+		<!-- Published checkbox -->
 		<label class="input-group flex-1">
 			<span>Published</span>
 			<input type="checkbox" class=" toggle toggle-lg h-full" bind:checked={published} />
 		</label>
+		<!-- Columns input -->
 		<label class="input-group flex-1">
 			<span>Columns</span>
 			<input

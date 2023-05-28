@@ -9,6 +9,7 @@
 	export let data: PageData;
 	export let form: ActionData;
 
+	// Define variables for the dashboard form fields
 	export let title = data.dashboard.name;
 	export let description = data.dashboard.description || '';
 	export let colCount = data.dashboard.columns;

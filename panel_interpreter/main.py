@@ -12,7 +12,13 @@ os.chdir(PANEL_PATH)
 app = FastAPI()
 
 
-def parse_grafanalib_panels():
+def parse_grafanalib_panels() -> list:
+    """
+    Parses the Grafana library panels and returns a list of panel dictionaries.
+
+    Returns:
+        A list of panel dictionaries, where each dictionary contains the file name and JSON data for a panel.
+    """
     panels = []
     for file in os.listdir(PANEL_PATH):
         if file.endswith(".py"):
@@ -28,7 +34,13 @@ def parse_grafanalib_panels():
     return panels
 
 
-def parse_json_panels():
+def parse_json_panels() -> list:
+    """
+    Parses the JSON panels and returns a list of panel dictionaries.
+
+    Returns:
+        A list of panel dictionaries, where each dictionary contains the file name and JSON data for a panel.
+    """
     panels = []
     for file in os.listdir(PANEL_PATH):
         if file.endswith(".json"):
@@ -41,7 +53,13 @@ def parse_json_panels():
     return panels
 
 
-def parse_panel_configs():
+def parse_panel_configs() -> list:
+    """
+    Parses the panel configuration files and returns a list of configuration dictionaries.
+
+    Returns:
+        A list of configuration dictionaries, where each dictionary contains the file name and JSON data for a panel configuration.
+    """
     configs = []
     for file in os.listdir(PANEL_PATH):
         if file.endswith(".json"):
@@ -54,7 +72,13 @@ def parse_panel_configs():
     return configs
 
 
-def combine_panels_and_configs():
+def combine_panels_and_configs() -> list:
+    """
+    Combines the Grafana library panels, JSON panels, and panel configurations into a single list of panel dictionaries.
+
+    Returns:
+        A list of panel dictionaries, where each dictionary contains the file name, JSON data, and configuration data for a panel.
+    """
     panels = []
     panels.extend(parse_grafanalib_panels())
     panels.extend(parse_json_panels())
@@ -67,7 +91,13 @@ def combine_panels_and_configs():
 
 
 @app.get("/")
-async def root():
+async def root() -> list:
+    """
+    Defines the root endpoint for the FastAPI app.
+
+    Returns:
+        A list of panel dictionaries, where each dictionary contains the file name, JSON data, and configuration data for a panel.
+    """
     resp = combine_panels_and_configs()
 
     return resp

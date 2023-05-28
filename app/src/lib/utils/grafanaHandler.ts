@@ -2,7 +2,11 @@ import { GRAFANA_URL, GRAFANA_API_TOKEN, PANEL_PARSER_URL } from '$env/static/pr
 import type { Dashboard, Panel, User } from '@prisma/client';
 import type { panelEntry, responsePanel } from './types';
 
-export async function fetchPanels() {
+/**
+ * Fetches panels from the panel parser API.
+ * @returns An array of panel entries.
+ */
+export async function fetchPanels(): Promise<panelEntry[]> {
 	const resp = await fetch(`${PANEL_PARSER_URL}`, {});
 
 	const data = await resp.json();
@@ -23,6 +27,12 @@ export async function fetchPanels() {
 	return panels;
 }
 
+/**
+ * Calculates the grid position of a panel based on its position in the dashboard and the number of columns.
+ * @param panel - The panel to calculate the grid position for.
+ * @param colCount - The number of columns in the dashboard.
+ * @returns The grid position of the panel.
+ */
 export function calculateGridPos(
 	panel: Panel & {
 		grafanaJSON: {
@@ -34,9 +44,8 @@ export function calculateGridPos(
 			};
 		};
 	},
-
 	colCount: number
-) {
+): { h: number; w: number; x: number; y: number } {
 	const gridPos = {
 		h: 9,
 		w: 24 / colCount,
@@ -57,6 +66,16 @@ export function calculateGridPos(
 	return gridPos;
 }
 
+/**
+ * Creates a Grafana dashboard payload object for the given panel form, title, description, tags, user folder, and existing dashboard.
+ * @param panelForm - The panel form to create the dashboard payload for.
+ * @param title - The title of the dashboard.
+ * @param description - The description of the dashboard.
+ * @param tags - The tags for the dashboard.
+ * @param userFolder - The user folder for the dashboard.
+ * @param existingDashboard - The existing dashboard to update, if any.
+ * @returns The Grafana dashboard payload object.
+ */
 export async function createGrafanaDashboardPayload(
 	panelForm: Panel[],
 	title: string,
@@ -64,7 +83,17 @@ export async function createGrafanaDashboardPayload(
 	tags: string[],
 	userFolder: string,
 	existingDashboard: Dashboard | null = null
-) {
+): Promise<{
+	dashboard: {
+		title: string;
+		description: string;
+		panels: any[];
+		tags: string[];
+		uid: string | null;
+		version: number;
+	};
+	folderUid: string;
+}> {
 	const grafanaObject = {
 		dashboard: {
 			title: title,
@@ -80,7 +109,16 @@ export async function createGrafanaDashboardPayload(
 	return grafanaObject;
 }
 
-export async function createGrafanaFolderPayload(uid: string, folderName: string) {
+/**
+ * Creates a Grafana folder payload object for the given UID and folder name.
+ * @param uid - The UID of the folder.
+ * @param folderName - The name of the folder.
+ * @returns The Grafana folder payload object.
+ */
+export async function createGrafanaFolderPayload(
+	uid: string,
+	folderName: string
+): Promise<{ uid: string; title: string }> {
 	const grafanaObject = {
 		uid: uid,
 		title: folderName
@@ -89,7 +127,12 @@ export async function createGrafanaFolderPayload(uid: string, folderName: string
 	return grafanaObject;
 }
 
-export async function callGrafanaDashboardApi(grafanaJSON: string) {
+/**
+ * Calls the Grafana dashboard API with the given Grafana JSON payload.
+ * @param grafanaJSON - The Grafana JSON payload to send to the API.
+ * @returns The response from the API.
+ */
+export async function callGrafanaDashboardApi(grafanaJSON: string): Promise<any> {
 	const response = await fetch(`${GRAFANA_URL}/api/dashboards/db`, {
 		method: 'POST',
 		headers: {
@@ -104,7 +147,12 @@ export async function callGrafanaDashboardApi(grafanaJSON: string) {
 	return resp;
 }
 
-export async function deleteDashboardOnGrafana(uid: string) {
+/**
+ * Deletes a dashboard from Grafana with the given UID.
+ * @param uid - The UID of the dashboard to delete.
+ * @returns The response from the API.
+ */
+export async function deleteDashboardOnGrafana(uid: string): Promise<any> {
 	const response = await fetch(`${GRAFANA_URL}/api/dashboards/uid/${uid}`, {
 		method: 'DELETE',
 		headers: {
@@ -118,7 +166,12 @@ export async function deleteDashboardOnGrafana(uid: string) {
 	return resp;
 }
 
-export async function callGrafanaFolderApi(grafanaJSON: string) {
+/**
+ * Calls the Grafana folder API with the given Grafana JSON payload.
+ * @param grafanaJSON - The Grafana JSON payload to send to the API.
+ * @returns The response from the API.
+ */
+export async function callGrafanaFolderApi(grafanaJSON: string): Promise<any> {
 	const response = await fetch(`${GRAFANA_URL}/api/folders`, {
 		method: 'POST',
 		headers: {
@@ -133,7 +186,11 @@ export async function callGrafanaFolderApi(grafanaJSON: string) {
 	return resp;
 }
 
-export async function createGrafanaFolder(user: User & { dashboards: Dashboard[] }) {
+/**
+ * Creates a Grafana folder for the given user.
+ * @param user - The user to create the folder for.
+ */
+export async function createGrafanaFolder(user: User): Promise<void> {
 	const folderObject = await createGrafanaFolderPayload(user.id, user.email);
 	await callGrafanaFolderApi(JSON.stringify(folderObject));
 }

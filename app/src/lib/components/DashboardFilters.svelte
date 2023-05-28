@@ -1,4 +1,5 @@
 <script lang="ts">
+	// Define the props passed to the component
 	export let tags: {
 		tags: string[];
 	}[];
@@ -6,11 +7,13 @@
 	export let tag: string;
 	export let columns: number;
 
+	// Define the tagsArray variable based on the tags prop
 	export const tagsArray = Array.from(new Set(tags.map((tag) => tag.tags).flat()));
 </script>
 
 <div class="flex">
 	<div class="flex flex-row flex-wrap gap-4">
+		<!-- Search input -->
 		<label class="input-group flex-1">
 			<span>Search</span>
 			<input
@@ -20,6 +23,7 @@
 				bind:value={search}
 			/>
 		</label>
+		<!-- Tag select -->
 		<label class="input-group flex-1">
 			<span>Tag</span>
 			<select class="select-bordered select" id="tag" bind:value={tag}>
@@ -29,6 +33,7 @@
 				{/each}
 			</select>
 		</label>
+		<!-- Columns input -->
 		<label class="input-group flex-1">
 			<span>Columns</span>
 			<input

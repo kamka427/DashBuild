@@ -1,4 +1,5 @@
 <script lang="ts">
+	// Import the Panel type from Prisma and the Svelte components used in the file
 	import type { Panel } from '@prisma/client';
 	import DashboardProperties from './DashboardProperties.svelte';
 	import PanelFormCard from './PanelFormCard.svelte';
@@ -8,6 +9,7 @@
 	import Error from './Error.svelte';
 	import type { panelEntry } from '$lib/utils/types';
 
+	// Define the props passed to the component
 	export let title: string;
 	export let description: string;
 	export let colCount: number;
@@ -15,11 +17,14 @@
 	export let published: boolean;
 	export let panelForm: Panel[];
 
+	// Define the predefinedPanels and form variables passed to the component
 	export let predefinedPanels: panelEntry[] = [];
 	export let form: ActionData;
 
+	// Define the selectedPanel variable
 	let selectedPanel: panelEntry;
 
+	// Define the refreshPositions function to update the panelForm positions
 	refreshPositions();
 	function addPanel(panelEntry: panelEntry) {
 		refreshPositions();
@@ -46,6 +51,7 @@
 		];
 	}
 
+	// Define the refreshPositions function to update the panelForm positions
 	function refreshPositions() {
 		panelForm = panelForm.map((panel, index) => {
 			return {
@@ -55,21 +61,26 @@
 		});
 	}
 
+	// Call the refreshPositions function whenever the panelForm changes
 	$: refreshPositions();
 
+	// Define the removePanel function to remove a panel from the panelForm
 	function removePanel(panelId: string) {
 		panelForm = panelForm.filter((panel) => panel.id !== panelId);
 		refreshPositions();
 	}
 
+	// Define the draggedPanel, currentPanel, and dragOn variables used in drag and drop functionality
 	let draggedPanel: Panel;
 	let currentPanel: Panel;
 	let dragOn = false;
 
+	// Define the dragPanel function to set the draggedPanel variable
 	function dragPanel(ev: { target: { id: string } }) {
 		draggedPanel = panelForm.find((panel) => panel.position === parseInt(ev?.target?.id)) as Panel;
 	}
 
+	// Define the dropPanel function to swap the positions of two panels in the panelForm
 	function dropPanel(ev: { target: { id: string } }) {
 		currentPanel = panelForm.find((panel) => panel.position === parseInt(ev?.target?.id)) as Panel;
 
@@ -88,12 +99,15 @@
 		swapIndexes(panelForm[currentPanelIndex], currentPanelIndex);
 	}
 
+	// Define the swapIndexes function to update the position of a panel in the panelForm
 	function swapIndexes(panel: Panel, index: number) {
 		panel.position = index + 1;
 	}
 
+	// Define the isLoading variable used to display a loading spinner
 	export let isLoading = false;
 
+	// If there is an error in the form data, set isLoading to false
 	$: if (form?.error) {
 		isLoading = false;
 	}

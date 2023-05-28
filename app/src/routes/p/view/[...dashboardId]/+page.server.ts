@@ -3,6 +3,13 @@ import { error } from '@sveltejs/kit';
 import { prisma } from '$lib/utils/prisma';
 import { publishDashboardAction, refreshThumbnailsAction } from '$lib/utils/formActions';
 
+/**
+ * Loads the dashboard data for the dashboard page.
+ * @param locals - The session object.
+ * @param url - The URL object.
+ * @returns An object containing the dashboard data.
+ * @throws An error if the user does not have permission to view the dashboard.
+ */
 export const load: PageServerLoad = async ({ locals, url }) => {
 	const session = await locals.getSession();
 
@@ -29,6 +36,9 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 	};
 };
 
+/**
+ * Defines the actions that can be performed on the dashboard page.
+ */
 export const actions: Actions = {
 	refreshThumbnails: async ({ url }) => await refreshThumbnailsAction(url),
 	publishDashboard: async ({ request, locals }) => await publishDashboardAction(request, locals)

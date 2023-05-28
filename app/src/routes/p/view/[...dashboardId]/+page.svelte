@@ -11,12 +11,24 @@
 	import PublishButton from '$lib/components/PublishButton.svelte';
 	import type { PageData } from './$types';
 
+	/**
+	 * The data object containing the dashboard data.
+	 */
 	export let data: PageData;
 
+	/**
+	 * The panels array sorted by position.
+	 */
 	export const panels = data.dashboard.panels.sort((a, b) => a.position - b.position);
 
+	/**
+	 * A boolean indicating whether the user is the owner of the dashboard.
+	 */
 	export const isOwner = $page.data.session?.user?.id === data.dashboard.userId;
 
+	/**
+	 * A boolean indicating whether the page is currently loading.
+	 */
 	export let isLoading = false;
 </script>
 

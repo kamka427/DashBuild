@@ -10,10 +10,13 @@
 
 	export let data: PageData;
 
+	// Create a search store for the dashboards
 	const searchStore = createSearchStore(data.dashboards);
 
+	// Subscribe to changes in the search store
 	const unsubscribe = searchStore.subscribe((model) => searchHandler(model));
 
+	// Unsubscribe from the search store when the component is destroyed
 	onDestroy(() => {
 		unsubscribe();
 	});

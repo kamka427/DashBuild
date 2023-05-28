@@ -1,20 +1,24 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
+// Define the Prisma client generator
 generator client {
   provider      = "prisma-client-js"
   binaryTargets = ["native"]
 }
 
+// Define the database connection
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
+// Define the DBML generator
 generator dbml {
   provider = "prisma-dbml-generator"
 }
 
+// Define the Account model
 model Account {
   id                       String  @id @default(cuid())
   userId                   String
@@ -36,6 +40,7 @@ model Account {
   @@unique([provider, providerAccountId])
 }
 
+// Define the Session model
 model Session {
   id           String   @id @default(cuid())
   sessionToken String   @unique
@@ -44,6 +49,7 @@ model Session {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+// Define the User model
 model User {
   id            String      @id @default(cuid())
   name          String?
@@ -55,6 +61,7 @@ model User {
   dashboards    Dashboard[]
 }
 
+// Define the VerificationToken model
 model VerificationToken {
   identifier String
   token      String   @unique
@@ -63,6 +70,7 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
+// Define the Dashboard model
 model Dashboard {
   id                  String               @id @default(cuid())
   name                String
@@ -82,6 +90,7 @@ model Dashboard {
   updatedAt           DateTime?            @updatedAt
 }
 
+// Define the DashboardIteration model
 model DashboardIteration {
   id          String    @id @default(cuid())
   version     Int       @default(1)
@@ -92,6 +101,7 @@ model DashboardIteration {
   updatedAt   DateTime? @updatedAt
 }
 
+// Define the Panel model
 model Panel {
   id            String    @id @default(cuid())
   name          String

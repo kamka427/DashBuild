@@ -1,6 +1,8 @@
 <script lang="ts">
+	// Import the Panel type from the Prisma client
 	import type { Panel } from '@prisma/client';
 
+	// Define the props passed to the component
 	export let panel: Panel;
 
 	export let state: 'preview' | 'edit' = 'preview';
@@ -15,8 +17,10 @@
 	export let isDragged = false;
 	export let dragOn: boolean;
 
+	// Convert the panel position to a string
 	const positionId = String(panel.position);
 
+	// Function to update a nested property in the panel object
 	function deepUpdate(path: string, value: any) {
 		const pathArray = path.split('.');
 		let currentObject = panel.grafanaJSON as any;
@@ -42,10 +46,13 @@
 
 		console.log(grafanaJSON);
 	}
+
+	// Function to update a nested property in the panel object based on an event
 	function deepUpdateEvent(path: string, event: any) {
 		deepUpdate(path, event.target.value);
 	}
 
+	// Get the list of properties for the panel
 	const propertyList = panel.properties as any[];
 	console.log(propertyList);
 </script>
@@ -93,7 +100,7 @@
 	{#if isDropTarget === true && dragOn == true}
 		<div
 			id={positionId}
-			class="card card-compact bg-base-300 text-base-content h-full min-h-[35em] shadow-xl"
+			class="card card-compact h-full min-h-[35em] bg-base-300 text-base-content shadow-xl"
 		>
 			<div class="card-body" id={positionId}>
 				<p id={positionId} class="text-2xl">Drop here to swap Panels</p>
@@ -150,7 +157,7 @@
 												<td>{prop.key}</td>
 												<td
 													><select
-														class="select select-bordered w-full"
+														class="select-bordered select w-full"
 														bind:value={prop.selected}
 														on:change={(e) => {
 															deepUpdateEvent(prop.path, e);

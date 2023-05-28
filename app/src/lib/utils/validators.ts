@@ -2,6 +2,16 @@ import type { Panel } from '@prisma/client';
 import { error, fail } from '@sveltejs/kit';
 import { prisma } from './prisma';
 
+/**
+ * Validates the form data for creating or updating a dashboard.
+ * @param title - The title of the dashboard.
+ * @param description - The description of the dashboard.
+ * @param colCount - The number of columns in the dashboard.
+ * @param published - The published state of the dashboard.
+ * @param tagsList - The list of tags for the dashboard.
+ * @param panelForm - The list of panels for the dashboard.
+ * @returns A fail response if the form data is invalid, otherwise nothing.
+ */
 export async function validateForm(
 	title: string,
 	description: string,
@@ -52,6 +62,12 @@ export async function validateForm(
 	}
 }
 
+/**
+ * Validates the publish state of a dashboard.
+ * @param dashboardId - The ID of the dashboard.
+ * @param publishState - The publish state of the dashboard.
+ * @returns A fail response if the publish state is invalid, otherwise nothing.
+ */
 export async function validatePublish(dashboardId: string, publishState: string) {
 	if (!dashboardId || !publishState) {
 		return fail(403, { message: 'Missing dashboardId or publishState' });
@@ -78,6 +94,13 @@ export async function validatePublish(dashboardId: string, publishState: string)
 	}
 }
 
+/**
+ * Checks if the user has permission to access a dashboard.
+ * @param locals - The SvelteKit locals object.
+ * @param dashboardId - The ID of the dashboard.
+ * @param errorMessage - The error message to display if the user does not have permission.
+ * @throws An error with the specified error message if the user does not have permission.
+ */
 export async function permissionCheck(
 	locals: App.Locals,
 	dashboardId: string,

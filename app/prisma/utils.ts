@@ -3,13 +3,19 @@ import fs from 'fs';
 import path from 'path';
 import type { Panel } from '@prisma/client';
 
+// Remove any existing thumbnails
 export function removeThumbnails() {
+	// Define the directory where the thumbnails are stored
 	const directory = 'static/thumbnails';
 
+	// Read the contents of the directory
 	fs.readdir(directory, (err: any, files: any) => {
 		if (err) throw err;
 
+		// Filter out any files that contain the word "Panel"
 		files = files.filter((file: any) => !file.includes('Panel'));
+
+		// Delete each file in the directory
 		for (const file of files) {
 			fs.unlink(path.join(directory, file), (err: any) => {
 				if (err) throw err;
@@ -18,12 +24,16 @@ export function removeThumbnails() {
 	});
 }
 
+// Fetch the available panels from the server
 export async function fetchPanels() {
+	// Make a GET request to the server to fetch the panels
 	const resp = await fetch(`http://localhost:8000`);
 
+	// Parse the response as JSON
 	const data = await resp.json();
 
-	 type responsePanel = {
+	// Define the types for the response data
+	type responsePanel = {
 		file_name: string;
 		json_data: {
 			title: string;
@@ -34,16 +44,16 @@ export async function fetchPanels() {
 			[key: string]: any;
 		};
 	};
-	
-	 type panelEntry = {
+
+	type panelEntry = {
 		title: string;
 		JSON: responsePanel['json_data'];
 		thumbnailPath: string;
 		fileName: responsePanel['file_name'];
 		properties: responsePanel['config'];
 	};
-	
 
+	// Map the response data to an array of panel objects
 	const panels: panelEntry[] = [];
 
 	data.map((panel: responsePanel) => {
@@ -59,7 +69,9 @@ export async function fetchPanels() {
 	return panels;
 }
 
+// Generate a thumbnail for a dashboard
 export async function generateDashboardThumbnail(panelList: Panel[], dashboardName: string) {
+	// Define the locations for each panel in the thumbnail
 	const locations: {
 		[key: string]: string;
 	} = {
@@ -69,7 +81,10 @@ export async function generateDashboardThumbnail(panelList: Panel[], dashboardNa
 		'3': 'southeast'
 	};
 
+	// Select the first four panels from the panel list
 	const firstFourPanels = panelList.slice(0, 4);
+
+	// Define the inputs for the thumbnail
 	const inputs = firstFourPanels.map((panel, index) => {
 		return {
 			input: `static/${panel.thumbnailPath}`,
@@ -77,6 +92,7 @@ export async function generateDashboardThumbnail(panelList: Panel[], dashboardNa
 		};
 	});
 
+	// Filter the dashboard name to remove any invalid characters
 	const filteredDashboardName = dashboardName
 		.split('')
 		.filter((word) => word !== '/')
@@ -84,6 +100,7 @@ export async function generateDashboardThumbnail(panelList: Panel[], dashboardNa
 		.split(' ')
 		.join('_');
 
+	// Generate the thumbnail using the Sharp library
 	sharp({
 		create: {
 			width: 2010,

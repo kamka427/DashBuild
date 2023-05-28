@@ -1,8 +1,11 @@
+// Import the SvelteKitAuth middleware and the authentication providers
 import { SvelteKitAuth } from '@auth/sveltekit';
 import Email from '@auth/core/providers/email';
 import Azure from '@auth/core/providers/azure-ad';
 import GitHub from '@auth/core/providers/github';
 import CredentialsProvider from '@auth/core/providers/credentials';
+
+// Import the environment variables and the Prisma adapter
 import {
 	AZURE_ID,
 	AZURE_SECRET,
@@ -18,12 +21,18 @@ import {
 	EMAIL_TEST
 } from '$env/static/private';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
+
+// Import the Handle and error types from the SvelteKit framework
 import { type Handle, error } from '@sveltejs/kit';
+
+// Import the sequence and prisma functions
 import { sequence } from '@sveltejs/kit/hooks';
 import { prisma } from '$lib/utils/prisma';
 
+// Define the available authentication providers
 const availableProviders = [];
 
+// Add the CredentialsProvider if EMAIL_TEST is true
 if (EMAIL_TEST) {
 	availableProviders.push(
 		CredentialsProvider({
@@ -47,6 +56,7 @@ if (EMAIL_TEST) {
 	);
 }
 
+// Add the Email provider if SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD, and EMAIL_FROM are defined
 if (SMTP_HOST && SMTP_PORT && SMTP_USER && SMTP_PASSWORD && EMAIL_FROM) {
 	availableProviders.push(
 		Email({
@@ -63,6 +73,8 @@ if (SMTP_HOST && SMTP_PORT && SMTP_USER && SMTP_PASSWORD && EMAIL_FROM) {
 		}) as any
 	);
 }
+
+// Add the Azure provider if AZURE_ID, AZURE_SECRET, and AZURE_TENANT_ID are defined
 if (AZURE_ID && AZURE_SECRET && AZURE_TENANT_ID) {
 	availableProviders.push(
 		Azure({
@@ -73,10 +85,13 @@ if (AZURE_ID && AZURE_SECRET && AZURE_TENANT_ID) {
 		}) as any
 	);
 }
+
+// Add the GitHub provider if GITHUB_ID and GITHUB_SECRET are defined
 if (GITHUB_ID && GITHUB_SECRET) {
 	availableProviders.push(GitHub({ clientId: GITHUB_ID, clientSecret: GITHUB_SECRET }) as any);
 }
 
+// Define the authorization function
 async function authorization({ event, resolve }: { event: any; resolve: any }): Promise<Response> {
 	if (event.url.pathname.startsWith('/p')) {
 		const session = await event.locals.getSession();
@@ -91,6 +106,7 @@ async function authorization({ event, resolve }: { event: any; resolve: any }): 
 	return result;
 }
 
+// Define the SvelteKit handle function
 export const handle = sequence(
 	SvelteKitAuth({
 		adapter: PrismaAdapter(prisma) as any,

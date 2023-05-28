@@ -1,6 +1,8 @@
 <script>
+	// Import the ThemeSelect component
 	import ThemeSelect from './ThemeSelect.svelte';
 
+	// Import the page store and get the user's initials
 	import { page } from '$app/stores';
 	export const initials = $page.data.session?.user?.name
 		?.split(' ')
@@ -12,6 +14,7 @@
 	<div class="container navbar mx-auto">
 		<div class="navbar-start">
 			<div class="dropdown">
+				<!-- Hamburger menu button -->
 				<!-- svelte-ignore a11y-label-has-associated-control -->
 				<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 				<label tabindex="0" class="btn-ghost btn xl:hidden">
@@ -29,6 +32,7 @@
 						/></svg
 					>
 				</label>
+				<!-- Dropdown menu -->
 				<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 				<ul
 					tabindex="0"
@@ -40,10 +44,13 @@
 						<li><a href="/p/dashboards">Dashboards</a></li>
 						<li><a href="/auth/signout">Log Out</a></li>
 					{/if}
+					<!-- Render the ThemeSelect component -->
 					<ThemeSelect />
 				</ul>
 			</div>
+			<!-- DashBuild logo -->
 			<a class="btn-ghost btn text-xl normal-case" href="/">DashBuild</a>
+			<!-- Navigation links -->
 			<div class="hidden xl:flex">
 				{#if $page.data.session}
 					<ul class="menu menu-horizontal px-2">
@@ -55,15 +62,19 @@
 			</div>
 		</div>
 		<div class="navbar-end">
+			<!-- User info and logout button -->
 			<div class="menu menu-horizontal items-center gap-6 px-2">
 				<div class="hidden xl:flex">
+					<!-- Render the ThemeSelect component -->
 					<ThemeSelect />
 				</div>
 				{#if $page.data.session}
+					<!-- User info -->
 					<span>
 						<p class="text-sm">Signed in as</p>
 						<p>{$page.data.session.user?.name}</p>
 					</span>
+					<!-- User avatar or initials -->
 					{#if $page.data.session.user?.image}
 						<div class="avatar">
 							<div class="w-12 rounded-full">
@@ -79,8 +90,10 @@
 							</div>
 						</div>
 					{/if}
+					<!-- Logout button -->
 					<a class="btn hidden xl:flex" href="/auth/signout">Log Out</a>
 				{:else}
+					<!-- Sign in button -->
 					<a class="btn-primary btn w-24" href="/auth/signin"> Sign In </a>
 				{/if}
 			</div>

@@ -1,7 +1,9 @@
 <script lang="ts">
+	// Import the Dashboard type from Prisma and the page store from SvelteKit
 	import type { Dashboard } from '@prisma/client';
 	import { page } from '$app/stores';
 
+	// Define the dashboards variable as an array of Dashboard objects
 	export let dashboards: Dashboard[] = [];
 </script>
 

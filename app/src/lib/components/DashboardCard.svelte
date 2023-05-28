@@ -1,9 +1,15 @@
 <script lang="ts">
+	// Import the Dashboard type from Prisma and the page store from SvelteKit
 	import type { Dashboard } from '@prisma/client';
 	import { page } from '$app/stores';
-	const currentPage = $page.url.pathname.split('/')[2];
+
+	// Define the props passed to the component
 	export let dashboard: Dashboard;
 
+	// Define the currentPage variable based on the current page URL
+	const currentPage = $page.url.pathname.split('/')[2];
+
+	// Define the shortDescription and tags variables based on the dashboard object
 	const shortDescription = dashboard.description
 		? dashboard.description.slice(0, 70) + '...'
 		: 'No description provided';

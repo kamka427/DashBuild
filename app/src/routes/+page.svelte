@@ -1,7 +1,9 @@
 <script lang="ts">
+	// Import the Carousel component and the page store
 	import Carousel from '../lib/components/Carousel.svelte';
-
 	import { page } from '$app/stores';
+
+	// Import the PageData type and the data parameter
 	import type { PageData } from './$types';
 	export let data: PageData;
 </script>
@@ -9,8 +11,11 @@
 <svelte:head>
 	<title>DashBuild</title>
 </svelte:head>
+
+<!-- Display the main content -->
 <main class="container mx-auto">
 	<div class="flex flex-col items-start gap-3 lg:flex-row">
+		<!-- Display the hero section -->
 		<article class="hero text-base-content">
 			<div class="hero-content flex-col items-start">
 				<h1 class="text-4xl">Welcome to DashBuild</h1>
@@ -25,6 +30,7 @@
 					dashboards to help you make informed decisions and stay on top of your data. Sign up today
 					and start building your own dashboards in minutes!
 				</p>
+				<!-- Display the create and jump buttons if the user is logged in -->
 				{#if $page.data.session}
 					<div class="card-actions">
 						<button class="btn-primary btn shadow-xl"
@@ -37,6 +43,7 @@
 				{/if}
 			</div>
 		</article>
+		<!-- Display the Carousel component -->
 		<Carousel dashboards={data.dashboards} />
 	</div>
 </main>

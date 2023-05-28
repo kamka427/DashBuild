@@ -1,6 +1,11 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import Error from '$lib/components/Error.svelte';
+
+	/**
+	 * The error message to display.
+	 */
+	export let errorMessage = $page?.error?.message;
 </script>
 
-<Error errorMessage={$page?.error?.message} />
+<Error {errorMessage} />
