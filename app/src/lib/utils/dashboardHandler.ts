@@ -8,7 +8,11 @@ import { prisma } from './prisma';
  * @param tags - A comma-separated string of tags.
  * @returns An array of tags.
  */
-export const generateTags = (tags: string): string[] => tags.split(',').map((tag) => tag.trim());
+export const generateTags = (tags: string): string[] =>
+	tags
+		.split(',')
+		.filter((tag) => tag !== '')
+		.map((tag) => tag.trim());
 
 /**
  * Generates a JSON object from a stringified JSON object, and adds position and ID properties to each panel.
