@@ -6,20 +6,8 @@ import GitHub from '@auth/core/providers/github';
 import CredentialsProvider from '@auth/core/providers/credentials';
 
 // Import the environment variables and the Prisma adapter
-import {
-	AZURE_ID,
-	AZURE_SECRET,
-	AZURE_TENANT_ID,
-	GITHUB_ID,
-	GITHUB_SECRET,
-	SMTP_HOST,
-	SMTP_PORT,
-	SMTP_USER,
-	SMTP_PASSWORD,
-	EMAIL_FROM,
-	AUTH_SECRET,
-	EMAIL_TEST
-} from '$env/static/private';
+import { env } from '$env/dynamic/private';
+
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 
 // Import the Handle and error types from the SvelteKit framework
@@ -33,7 +21,7 @@ import { prisma } from '$lib/utils/prisma';
 const availableProviders = [];
 
 // Add the CredentialsProvider if EMAIL_TEST is true
-if (EMAIL_TEST) {
+if (env.EMAIL_TEST) {
 	availableProviders.push(
 		CredentialsProvider({
 			name: 'Email for testing',
@@ -57,38 +45,38 @@ if (EMAIL_TEST) {
 }
 
 // Add the Email provider if SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD, and EMAIL_FROM are defined
-if (SMTP_HOST && SMTP_PORT && SMTP_USER && SMTP_PASSWORD && EMAIL_FROM) {
+if (env.SMTP_HOST && env.SMTP_PORT && env.SMTP_USER && env.SMTP_PASSWORD && env.EMAIL_FROM) {
 	availableProviders.push(
 		Email({
 			server: {
-				host: SMTP_HOST,
-				port: Number(SMTP_PORT),
+				host: env.SMTP_HOST,
+				port: Number(env.SMTP_PORT),
 				auth: {
-					user: SMTP_USER,
-					pass: SMTP_PASSWORD
+					user: env.SMTP_USER,
+					pass: env.SMTP_PASSWORD
 				}
 			},
-			from: EMAIL_FROM,
+			from: env.EMAIL_FROM,
 			name: 'Magic Link'
 		}) as any
 	);
 }
 
 // Add the Azure provider if AZURE_ID, AZURE_SECRET, and AZURE_TENANT_ID are defined
-if (AZURE_ID && AZURE_SECRET && AZURE_TENANT_ID) {
+if (env.AZURE_ID && env.AZURE_SECRET && env.AZURE_TENANT_ID) {
 	availableProviders.push(
 		Azure({
-			clientId: AZURE_ID,
-			clientSecret: AZURE_SECRET,
-			tenantId: AZURE_TENANT_ID,
+			clientId: env.AZURE_ID,
+			clientSecret: env.AZURE_SECRET,
+			tenantId: env.AZURE_TENANT_ID,
 			authorization: { params: { scope: 'openid profile user.Read email' } }
 		}) as any
 	);
 }
 
 // Add the GitHub provider if GITHUB_ID and GITHUB_SECRET are defined
-if (GITHUB_ID && GITHUB_SECRET) {
-	availableProviders.push(GitHub({ clientId: GITHUB_ID, clientSecret: GITHUB_SECRET }) as any);
+if (env.GITHUB_ID && env.GITHUB_SECRET) {
+	availableProviders.push(GitHub({ clientId: env.GITHUB_ID, clientSecret: env.GITHUB_SECRET }) as any);
 }
 
 // Define the authorization function
@@ -117,7 +105,7 @@ export const handle: Handle = sequence(
 	SvelteKitAuth({
 		adapter: PrismaAdapter(prisma) as any,
 		providers: [...availableProviders],
-		secret: AUTH_SECRET,
+		secret: env.AUTH_SECRET,
 		trustHost: true,
 		session: {
 			strategy: 'jwt',
