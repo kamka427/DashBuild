@@ -296,20 +296,7 @@ describe('createGrafanaFolder', () => {
 	});
 });
 
-export const getGrafanaDashboardJSON = async (uid: string): Promise<any> => {
-	console.log(`Calling ${GRAFANA_URL}/api/dashboards/uid/${uid};`);
-	const response = await fetch(`${GRAFANA_URL}/api/dashboards/uid/${uid}`, {
-		method: 'GET',
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: GRAFANA_API_TOKEN
-		}
-	});
-
-	const resp = await response.json();
-	console.log(resp);
-	return resp;
-};
+import { getGrafanaDashboardJSON } from './grafanaHandler';
 
 describe('getGrafanaDashboardJSON', () => {
 	it('it should retrieve the dashboard Grafana JSON with the passed uid', async () => {

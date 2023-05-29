@@ -7,6 +7,7 @@ import GitHub from '@auth/core/providers/github';
 import CredentialsProvider from '@auth/core/providers/credentials';
 
 // Import the environment variables and the Prisma adapter
+import { AUTH_SECRET } from '$env/static/private';
 import { env } from '$env/dynamic/private';
 
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
@@ -108,7 +109,7 @@ export const handle: Handle = sequence(
 	SvelteKitAuth({
 		adapter: PrismaAdapter(prisma) as any,
 		providers: [...availableProviders],
-		secret: env.AUTH_SECRET,
+		secret: AUTH_SECRET,
 		trustHost: true,
 		session: {
 			strategy: 'jwt',

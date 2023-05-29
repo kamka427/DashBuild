@@ -29,8 +29,8 @@ const main = async () => {
 
 	// Generate fake users
 	const fakeUsers = Array.from({ length: 10 }).map((_, index) => ({
-		id: faker.datatype.uuid(),
-		name: faker.name.fullName(),
+		id: faker.string.uuid(),
+		name: faker.person.fullName(),
 		email: `user${index}@dashbuild.com`
 	}));
 
@@ -42,7 +42,7 @@ const main = async () => {
 	// Generate a random number of dashboards
 	for (let i = 0; i < Math.floor(Math.random() * 15) + 5; i++) {
 		// Generate a random dashboard name
-		const dashboardName = faker.company.bs();
+		const dashboardName = faker.company.buzzPhrase();
 
 		// Generate a random number of columns
 		const columns = Math.floor(Math.random() * 4) + 1;
@@ -55,9 +55,9 @@ const main = async () => {
 
 			// Add the panel to the dashboard
 			panelsOnDash.push({
-				id: faker.datatype.uuid(),
+				id: faker.string.uuid(),
 				name: panel.title,
-				description: faker.company.bs() + ' ' + faker.company.bs() + ' ' + faker.company.bs(),
+				description: faker.company.buzzPhrase() + ' ' + faker.company.buzzPhrase() + ' ' + faker.company.buzzPhrase(),
 				thumbnailPath: panel.thumbnailPath,
 				grafanaJSON: panel.JSON,
 				grafanaUrl: null,
@@ -72,7 +72,7 @@ const main = async () => {
 		}
 
 		// Generate random tags for the dashboard
-		const dashboardTags = [faker.company.bsBuzz(), faker.company.bsBuzz()];
+		const dashboardTags = [faker.company.buzzPhrase(), faker.company.buzzPhrase()];
 
 		// Generate a thumbnail for the dashboard
 		const dashboardPreview = await generateDashboardThumbnail(panelsOnDash, dashboardName);
@@ -89,9 +89,9 @@ const main = async () => {
 		// Create the dashboard and its associated panels
 		await prisma.dashboard.create({
 			data: {
-				id: faker.datatype.uuid(),
+				id: faker.string.uuid(),
 				name: dashboardName,
-				description: faker.company.bs() + ' ' + faker.company.bs() + ' ' + faker.company.bs(),
+				description: faker.company.buzzPhrase() + ' ' + faker.company.buzzPhrase() + ' ' + faker.company.buzzPhrase(),
 				published: faker.datatype.boolean(),
 				tags: dashboardTags,
 				thumbnailPath: dashboardPreview,
