@@ -28,10 +28,12 @@
 	<title>Gallery</title>
 </svelte:head>
 <main class="container mx-auto space-y-6">
-	<BreadCrumbs />
-	<Info
-		infoMessage="This is the gallery page. Here you can find all the dashboards that have been published by other users.  You can search for dashboards by name, description and tags. You can also change how many columns you want to see the dashboards in."
-	/>
+	<div class="flex items-center justify-between gap-2">
+		<BreadCrumbs />
+		<Info
+			infoMessage="This is the gallery page. Here you can find all the dashboards that have been published by other users.  You can search for dashboards by name, description and tags. You can also change how many columns you want to see the dashboards in."
+		/>
+	</div>
 	<DashboardFilters
 		bind:search={$searchStore.search}
 		bind:tag={$searchStore.tagFilter}

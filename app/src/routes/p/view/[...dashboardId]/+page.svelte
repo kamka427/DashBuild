@@ -37,10 +37,12 @@
 </svelte:head>
 
 <div class="container mx-auto space-y-6">
-	<BreadCrumbs />
-	<Info
-		infoMessage="This is the Dashboard details page. The page where you can view the details of a dashboard. Click on the Versions or Panels section to see more information."
-	/>
+	<div class="flex items-center justify-between gap-2">
+		<BreadCrumbs />
+		<Info
+			infoMessage="This is the Dashboard details page. The page where you can view the details of a dashboard. Click on the Versions or Panels section to see more information."
+		/>
+	</div>
 	<div class="container mx-auto space-y-6 {isLoading ? 'pointer-events-none animate-pulse' : ''}">
 		<div
 			class="flex flex-wrap justify-between gap-4 {isLoading

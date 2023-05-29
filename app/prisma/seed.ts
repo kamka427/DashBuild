@@ -57,7 +57,12 @@ const main = async () => {
 			panelsOnDash.push({
 				id: faker.string.uuid(),
 				name: panel.title,
-				description: faker.company.buzzPhrase() + ' ' + faker.company.buzzPhrase() + ' ' + faker.company.buzzPhrase(),
+				description:
+					faker.company.buzzPhrase() +
+					' ' +
+					faker.company.buzzPhrase() +
+					' ' +
+					faker.company.buzzPhrase(),
 				thumbnailPath: panel.thumbnailPath,
 				grafanaJSON: panel.JSON,
 				grafanaUrl: null,
@@ -91,7 +96,12 @@ const main = async () => {
 			data: {
 				id: faker.string.uuid(),
 				name: dashboardName,
-				description: faker.company.buzzPhrase() + ' ' + faker.company.buzzPhrase() + ' ' + faker.company.buzzPhrase(),
+				description:
+					faker.company.buzzPhrase() +
+					' ' +
+					faker.company.buzzPhrase() +
+					' ' +
+					faker.company.buzzPhrase(),
 				published: faker.datatype.boolean(),
 				tags: dashboardTags,
 				thumbnailPath: dashboardPreview,

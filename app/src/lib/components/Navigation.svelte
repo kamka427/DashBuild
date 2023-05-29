@@ -82,7 +82,7 @@
 							</div>
 						</div>
 					{:else}
-						<div class="placeholder avatar">
+						<div class="placeholder avatar hidden xl:block">
 							<div class="w-12 rounded-full bg-neutral-focus text-neutral-content">
 								<span class="text-xl">
 									{initials}

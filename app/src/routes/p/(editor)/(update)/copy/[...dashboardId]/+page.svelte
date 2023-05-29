@@ -25,10 +25,12 @@
 	<title>Copy Dashboard</title>
 </svelte:head>
 <main class="container mx-auto space-y-6">
-	<BreadCrumbs />
-	<Info
-		infoMessage="This is the dashboard editor page. The page where you can create, edit and copy dashboards. Click on the Plus sign to get started."
-	/>
+	<div class="flex items-center justify-between gap-2">
+		<BreadCrumbs />
+		<Info
+			infoMessage="This is the dashboard editor page. The page where you can create, edit and copy dashboards. Click on the Plus sign to get started."
+		/>
+	</div>
 	<DashboardEditor
 		{title}
 		{description}

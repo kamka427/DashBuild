@@ -1,8 +1,5 @@
 <script lang="ts">
-	import {
-		createSearchStore,
-		panelSearchHandler,
-	} from '$lib/stores/search';
+	import { createSearchStore, panelSearchHandler } from '$lib/stores/search';
 
 	// Import the panelEntry type
 	import type { panelEntry } from '$lib/utils/types';
@@ -35,7 +32,7 @@
 <!-- Modal dialog for selecting a new panel -->
 <input type="checkbox" id="my-modal" class="modal-toggle" />
 <div class="modal">
-	<div class="bg-base-200 container mx-auto rounded-md">
+	<div class="container mx-auto rounded-md bg-base-200">
 		<div class="flex items-center justify-between p-4">
 			<h2 class="text-4xl">Select a new panel</h2>
 			<div class="flex gap-4">
@@ -53,7 +50,7 @@
 		</div>
 		<!-- List of predefined panels -->
 		<ul
-			class="bg-base-100 grid max-h-[40em] w-full grid-cols-2 gap-4 overflow-y-auto rounded-lg p-4"
+			class="grid max-h-[40em] w-full grid-cols-2 gap-4 overflow-y-auto rounded-lg bg-base-100 p-4"
 		>
 			{#each $searchStore.filtered as panel}
 				<li>
@@ -87,14 +84,14 @@
 </div>
 
 <!-- Card for adding a new panel -->
-<div class="card card-compact bg-base-300 text-base-content min-h-[30em] w-full shadow-xl">
-	<figure class="bg-base-200 flex h-full w-full items-center justify-center">
+<div class="card card-compact min-h-[30em] w-full bg-base-300 text-base-content shadow-xl">
+	<figure class="flex h-full w-full items-center justify-center bg-base-200">
 		<!-- Label for opening the modal dialog -->
 		<label for="my-modal">
 			<!-- Add panel icon -->
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
-				class="text-base-content h-64 w-64"
+				class="h-64 w-64 text-base-content"
 				fill="none"
 				viewBox="0 0 24 24"
 				stroke="currentColor"
