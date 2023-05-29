@@ -36,7 +36,7 @@ describe('fetchPanels', () => {
 				JSON: {
 					title: 'Panel 1'
 				},
-				thumbnailPath: '/thumbnails/panel1.png',
+				thumbnailPath: '/defaults/panel1.png',
 				fileName: 'panel1',
 				properties: {}
 			},
@@ -45,7 +45,7 @@ describe('fetchPanels', () => {
 				JSON: {
 					title: 'Panel 2'
 				},
-				thumbnailPath: '/thumbnails/panel2.png',
+				thumbnailPath: '/defaults/panel2.png',
 				fileName: 'panel2',
 				properties: {}
 			}
@@ -153,10 +153,6 @@ describe('createGrafanaDashboardPayload', () => {
 		const description = 'A dashboard for monitoring metrics';
 		const tags = ['monitoring', 'metrics'];
 		const userFolder = 'my-folder';
-		const existingDashboard = {
-			id: 'abc123',
-			version: 2
-		};
 
 		const result = await createGrafanaDashboardPayload(
 			panelForm,
@@ -287,7 +283,7 @@ describe('createGrafanaFolder', () => {
 			json: mockFn().mockResolvedValue({ status: 'success' })
 		} as any);
 
-		const result = await createGrafanaFolder(user as any);
+		await createGrafanaFolder(user as any);
 
 		expect(global.fetch).toHaveBeenCalledWith(`${GRAFANA_URL}/api/folders`, {
 			method: 'POST',

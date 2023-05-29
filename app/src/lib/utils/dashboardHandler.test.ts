@@ -35,7 +35,7 @@ import { generatePanelFormJSON } from './dashboardHandler';
 describe('generatePanelFormJSON', () => {
 	it('should generate panel form JSON with correct properties and grid positions', () => {
 		const panelForm =
-			'[{"title":"Panel 1","grafanaJSON":{"type":"graph"},"id":null},{"title":"Panel 2","grafanaJSON":{"type":"table"},"id":null}]';
+			'[{"title":"Panel 1","grafanaJSON":{"type":"graph"},"id":null,"width": 1},{"title":"Panel 2","grafanaJSON":{"type":"table"},"id":null,"width": 1}]';
 		const colCount = 2;
 		const expected = [
 			{
@@ -45,6 +45,7 @@ describe('generatePanelFormJSON', () => {
 					gridPos: { x: 0, y: 0, w: 12, h: 9 },
 					id: 1
 				},
+				width: 1,
 				id: 1,
 				position: 1
 			},
@@ -55,6 +56,7 @@ describe('generatePanelFormJSON', () => {
 					gridPos: { x: 12, y: 0, w: 12, h: 9 },
 					id: 2
 				},
+				width: 1,
 				id: 2,
 				position: 2
 			}
