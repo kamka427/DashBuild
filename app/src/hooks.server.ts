@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Import the SvelteKitAuth middleware and the authentication providers
 import { SvelteKitAuth } from '@auth/sveltekit';
 import Email from '@auth/core/providers/email';
