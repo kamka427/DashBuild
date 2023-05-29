@@ -114,9 +114,9 @@
 		>
 			<figure>
 				<img
-					src={panel?.thumbnailPath}
+					src={panel?.thumbnailPath + '?time=' + Date.now()}
 					class="rounded-md shadow-xl"
-					alt="Dashboard thumbnail"
+					alt="Panel thumbnail"
 					id={positionId}
 				/>
 			</figure>

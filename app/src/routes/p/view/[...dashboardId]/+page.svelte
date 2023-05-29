@@ -64,7 +64,11 @@
 		</div>
 		<div class="mt-6 flex flex-wrap gap-2 sm:flex-nowrap">
 			<div class=" container w-full sm:w-1/2">
-				<img src={data.dashboard.thumbnailPath} alt="Dashboard" class="rounded-xl" />
+				<img
+					src={data.dashboard.thumbnailPath + '?time=' + Date.now()}
+					alt="Dashboard thumbnail"
+					class="rounded-xl"
+				/>
 			</div>
 			<DashboardInfo dashboard={data.dashboard} />
 		</div>
@@ -84,7 +88,7 @@
 			if (result.status === 200) {
 				isLoading = false;
 				invalidateAll();
-				goto(`/p/view/${data.dashboard.id}`);
+				goto(`/p/view/${data.dashboard.id}?time=${Date.now()}`);
 			}
 		};
 	}}

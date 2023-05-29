@@ -18,14 +18,14 @@
 					{#if $page.data.session}
 						<a href="/p/view/{dashboard.id}">
 							<img
-								src={dashboard.thumbnailPath}
+								src={dashboard.thumbnailPath + '?time=' + Date.now()}
 								class="w-full"
 								alt="A published dashboard in the carousel"
 							/>
 						</a>
 					{:else}
 						<img
-							src={dashboard.thumbnailPath}
+							src={dashboard.thumbnailPath + '?time=' + Date.now()}
 							class="w-full"
 							alt="A published dashboard in the carousel"
 						/>

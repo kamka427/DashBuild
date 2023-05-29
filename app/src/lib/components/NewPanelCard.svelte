@@ -39,7 +39,11 @@
 					>
 						<figure>
 							<!-- Panel thumbnail image -->
-							<img src={panel.thumbnailPath} alt="" class="h-full w-full rounded-md shadow-xl" />
+							<img
+								src={panel.thumbnailPath + '?time=' + Date.now()}
+								alt="Panel thumbnail"
+								class="h-full w-full rounded-md shadow-xl"
+							/>
 						</figure>
 						<div class="card-body">
 							<!-- Panel title -->

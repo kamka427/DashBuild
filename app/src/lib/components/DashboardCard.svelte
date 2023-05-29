@@ -20,7 +20,11 @@
 <main class="card card-compact h-full w-full bg-base-300 text-base-content shadow-xl">
 	<figure>
 		<a href="/p/view/{dashboard.id}">
-			<img src={dashboard.thumbnailPath} class="w-max shadow-xl" alt="Dashboard thumbnail" />
+			<img
+				src={dashboard.thumbnailPath + '?time=' + Date.now()}
+				class="w-max shadow-xl"
+				alt="Dashboard thumbnail"
+			/>
 		</a>
 	</figure>
 	<div class="card-body gap-4">

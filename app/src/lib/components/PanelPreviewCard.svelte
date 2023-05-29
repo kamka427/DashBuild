@@ -17,7 +17,11 @@
 <div class="card card-compact w-full bg-base-300 text-base-content">
 	<figure>
 		<!-- Panel thumbnail image -->
-		<img src={panel?.thumbnailPath} class="w-max rounded-md shadow-xl" alt="Dashboard thumbnail" />
+		<img
+			src={panel?.thumbnailPath + '?time=' + Date.now()}
+			class="w-max rounded-md shadow-xl"
+			alt="Panel thumbnail"
+		/>
 	</figure>
 	<div class="card-body gap-4">
 		<!-- Panel title -->
