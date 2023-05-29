@@ -9,9 +9,14 @@ import {
 	callGrafanaDashboardApi,
 	createGrafanaDashboardPayload,
 	createGrafanaFolder,
-	deleteDashboardOnGrafana
+	deleteDashboardOnGrafana,
+	getGrafanaDashboardJSON
 } from './grafanaHandler';
-import { initThumbnailsAndPaths, updateAllThumbnails } from './thumbnailHandler';
+import {
+	deleteUnusedThumbnails,
+	initThumbnailsAndPaths,
+	updateAllThumbnails
+} from './thumbnailHandler';
 import { redirect, fail, error as svelteError } from '@sveltejs/kit';
 import { permissionCheck, validateForm, validatePublish } from './validators';
 import { prisma } from './prisma';
@@ -92,7 +97,7 @@ export const saveDashboardAction = async (
 	const method = url.pathname.split('/')[2];
 
 	// Create Grafana dashboard payload
-	const grafanaObject = await createGrafanaDashboardPayload(
+	const grafanaPayload = await createGrafanaDashboardPayload(
 		panelList,
 		title,
 		description,
@@ -102,10 +107,16 @@ export const saveDashboardAction = async (
 	);
 
 	// Call Grafana API to create or update dashboard
-	const resp = await callGrafanaDashboardApi(JSON.stringify(grafanaObject));
+	const resp = await callGrafanaDashboardApi(JSON.stringify(grafanaPayload));
 	if (resp.status === 'success') {
 		// Get UID and slug from response
 		const uidAndSlug = getUidAndSlug(resp);
+
+		console.log(resp.uid);
+
+		const grafanaJSON = await getGrafanaDashboardJSON(resp.uid);
+
+		const dashboardJSON = grafanaJSON['dashboard'];
 
 		// Initialize thumbnails and paths
 		try {
@@ -122,7 +133,7 @@ export const saveDashboardAction = async (
 			description,
 			published,
 			tags,
-			grafanaObject,
+			dashboardJSON,
 			colCount,
 			user,
 			panelList
@@ -139,7 +150,6 @@ export const saveDashboardAction = async (
 				});
 			}
 		}
-
 		// Redirect to dashboard view page
 		throw redirect(302, `/p/view/${resp.uid}`);
 	} else {
@@ -182,6 +192,8 @@ export const deleteDashboardAction = async (
 		});
 
 		await deleteDashboardOnGrafana(dashboardId);
+
+		await deleteUnusedThumbnails(dashboardId);
 
 		return { status: 200 };
 	} catch (error) {

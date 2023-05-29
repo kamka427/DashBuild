@@ -208,3 +208,23 @@ export const createGrafanaFolder = async (user: User): Promise<void> => {
 	const folderObject = await createGrafanaFolderPayload(user.id, user.email);
 	await callGrafanaFolderApi(JSON.stringify(folderObject));
 };
+
+/**
+ * Gets the Grafana dashboard JSON for the given UID.
+ * @param uid - The UID of the dashboard to get.
+ * @returns The response from the API.
+ */
+export const getGrafanaDashboardJSON = async (uid: string): Promise<any> => {
+	console.log(`Calling ${GRAFANA_URL}/api/dashboards/uid/${uid};`);
+	const response = await fetch(`${GRAFANA_URL}/api/dashboards/uid/${uid}`, {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: GRAFANA_API_TOKEN
+		}
+	});
+
+	const resp = await response.json();
+	console.log(resp);
+	return resp;
+};

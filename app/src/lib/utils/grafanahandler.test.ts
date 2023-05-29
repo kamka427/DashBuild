@@ -295,3 +295,40 @@ describe('createGrafanaFolder', () => {
 		});
 	});
 });
+
+export const getGrafanaDashboardJSON = async (uid: string): Promise<any> => {
+	console.log(`Calling ${GRAFANA_URL}/api/dashboards/uid/${uid};`);
+	const response = await fetch(`${GRAFANA_URL}/api/dashboards/uid/${uid}`, {
+		method: 'GET',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: GRAFANA_API_TOKEN
+		}
+	});
+
+	const resp = await response.json();
+	console.log(resp);
+	return resp;
+};
+
+describe('getGrafanaDashboardJSON', () => {
+	it('it should retrieve the dashboard Grafana JSON with the passed uid', async () => {
+		const uid = 'abc123';
+
+		const expected = { dashboard: { id: 123, title: 'My Dashboard' } };
+
+		global.fetch = mockFn().mockResolvedValue({
+			json: mockFn().mockResolvedValue(JSON.stringify(expected))
+		} as any);
+
+		await getGrafanaDashboardJSON(uid);
+
+		expect(global.fetch).toHaveBeenCalledWith(`${GRAFANA_URL}/api/dashboards/uid/${uid}`, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: GRAFANA_API_TOKEN
+			}
+		});
+	});
+});

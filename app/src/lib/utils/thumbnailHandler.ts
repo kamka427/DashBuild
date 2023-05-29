@@ -139,3 +139,25 @@ export const initThumbnailsAndPaths = async (uid: string, panelList: Panel[]) =>
 	// Generate the dashboard thumbnail image
 	await generateDashboardThumbnail(uid, panelList);
 };
+
+/**
+ * Deletes all unused thumbnail images for the specified dashboard.
+ * @param uid - The unique identifier of the dashboard.
+ * @param panelList - The list of panels in the dashboard.
+ */
+export const deleteUnusedThumbnails = async (uid: string) => {
+	const directory = 'static/thumbnails';
+	fs.readdir(directory, (err: any, files: any) => {
+		if (err) throw err;
+
+		// Collect all files that contain the uid
+		files = files.filter((file: any) => file.includes(uid));
+
+		// Delete each file in the directory
+		for (const file of files) {
+			fs.unlink(path.join(directory, file), (err: any) => {
+				if (err) throw err;
+			});
+		}
+	});
+};

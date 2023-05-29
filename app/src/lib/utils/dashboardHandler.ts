@@ -70,7 +70,7 @@ export const upsertDashboardQuery = async (
 	dashboardDescription: string,
 	published: string,
 	tags: string,
-	grafanaObject: object,
+	grafanaJSON: object,
 	colCount: number,
 	user: User,
 	panelList: any
@@ -88,7 +88,7 @@ export const upsertDashboardQuery = async (
 			published: parsedPublished,
 			tags: tags,
 			thumbnailPath: `/thumbnails/${resp.uid}_dashboard.png`,
-			grafanaJSON: grafanaObject,
+			grafanaJSON: grafanaJSON,
 			columns: Number(colCount),
 			grafanaUrl: `${GRAFANA_PUBLIC_URL}${resp.url}`,
 			version: resp.version,
@@ -96,7 +96,7 @@ export const upsertDashboardQuery = async (
 				create: {
 					id: `${resp.uid}-${resp.version}`,
 					version: resp.version,
-					grafanaJSON: grafanaObject
+					grafanaJSON: grafanaJSON
 				}
 			},
 			userId: user.id,
@@ -122,7 +122,7 @@ export const upsertDashboardQuery = async (
 			published: parsedPublished,
 			tags: tags,
 			thumbnailPath: `/thumbnails/${resp.uid}_dashboard.png`,
-			grafanaJSON: grafanaObject,
+			grafanaJSON: grafanaJSON,
 			columns: Number(colCount),
 			grafanaUrl: `${GRAFANA_PUBLIC_URL}${resp.url}`,
 			version: resp.version,
@@ -130,7 +130,7 @@ export const upsertDashboardQuery = async (
 				create: {
 					id: `${resp.uid}-${resp.version}`,
 					version: resp.version,
-					grafanaJSON: grafanaObject
+					grafanaJSON: grafanaJSON
 				}
 			},
 			userId: user.id,
