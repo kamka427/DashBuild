@@ -88,10 +88,7 @@ export const saveDashboardAction = async (
 		});
 	}
 
-	// Create Grafana folder if user has no dashboards
-	if (user.dashboards.length === 0) {
-		await createGrafanaFolder(user);
-	}
+	await createGrafanaFolder(user);
 
 	// Determine whether to create or update dashboard
 	const method = url.pathname.split('/')[2];
