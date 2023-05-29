@@ -1,11 +1,30 @@
 <script lang="ts">
+	import {
+		createSearchStore,
+		panelSearchHandler,
+	} from '$lib/stores/search';
+
 	// Import the panelEntry type
 	import type { panelEntry } from '$lib/utils/types';
+	import { onDestroy } from 'svelte';
 
 	// Define the component properties
 	export let predefinedPanels: panelEntry[];
 	export let addAction: (panel: panelEntry) => void;
 	export let selectedPanel: panelEntry;
+
+	console.log(predefinedPanels);
+
+	// Create a search store for the panels
+	const searchStore = createSearchStore(predefinedPanels);
+
+	// Subscribe to changes in the search store
+	const unsubscribe = searchStore.subscribe((model) => panelSearchHandler(model));
+
+	// Unsubscribe from the search store when the component is destroyed
+	onDestroy(() => {
+		unsubscribe();
+	});
 
 	// Set the selected panel
 	const setSelection = (panel: panelEntry) => {
@@ -16,16 +35,27 @@
 <!-- Modal dialog for selecting a new panel -->
 <input type="checkbox" id="my-modal" class="modal-toggle" />
 <div class="modal">
-	<div class="container mx-auto rounded-md bg-base-200">
+	<div class="bg-base-200 container mx-auto rounded-md">
 		<div class="flex items-center justify-between p-4">
 			<h2 class="text-4xl">Select a new panel</h2>
-			<label for="my-modal" class="btn-error btn">Close</label>
+			<div class="flex gap-4">
+				<label class="input-group">
+					<span>Search</span>
+					<input
+						type="search"
+						placeholder="Search for a dashboard"
+						class="input-bordered input"
+						bind:value={$searchStore.search}
+					/>
+				</label>
+				<label for="my-modal" class="btn-error btn">Close</label>
+			</div>
 		</div>
 		<!-- List of predefined panels -->
 		<ul
-			class="grid max-h-[40em] w-full grid-cols-2 gap-4 overflow-y-auto rounded-lg bg-base-100 p-4"
+			class="bg-base-100 grid max-h-[40em] w-full grid-cols-2 gap-4 overflow-y-auto rounded-lg p-4"
 		>
-			{#each predefinedPanels as panel}
+			{#each $searchStore.filtered as panel}
 				<li>
 					<!-- svelte-ignore a11y-click-events-have-key-events -->
 					<!-- Label for selecting a panel -->
@@ -57,14 +87,14 @@
 </div>
 
 <!-- Card for adding a new panel -->
-<div class="card card-compact min-h-[30em] w-full bg-base-300 text-base-content shadow-xl">
-	<figure class="flex h-full w-full items-center justify-center bg-base-200">
+<div class="card card-compact bg-base-300 text-base-content min-h-[30em] w-full shadow-xl">
+	<figure class="bg-base-200 flex h-full w-full items-center justify-center">
 		<!-- Label for opening the modal dialog -->
 		<label for="my-modal">
 			<!-- Add panel icon -->
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
-				class="h-64 w-64 text-base-content"
+				class="text-base-content h-64 w-64"
 				fill="none"
 				viewBox="0 0 24 24"
 				stroke="currentColor"

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import BreadCrumbs from '$lib/components/BreadCrumbs.svelte';
-	import { createSearchStore, searchHandler } from '$lib/stores/search';
+	import { createSearchStore, dashboardSearchHandler } from '$lib/stores/search';
 	import { onDestroy } from 'svelte';
 	import DashboardFilters from '$lib/components/DashboardFilters.svelte';
 	import DashboardCard from '$lib/components/DashboardCard.svelte';
@@ -14,7 +14,7 @@
 	const searchStore = createSearchStore(data.dashboards);
 
 	// Subscribe to changes in the search store
-	const unsubscribe = searchStore.subscribe((model) => searchHandler(model));
+	const unsubscribe = searchStore.subscribe((model) => dashboardSearchHandler(model));
 
 	// Unsubscribe from the search store when the component is destroyed
 	onDestroy(() => {
