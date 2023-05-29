@@ -66,7 +66,7 @@ export const copyDefaultThumbnail = async (uid: string, position: number, type: 
 	try {
 		// Copy the default thumbnail image to the specified position
 		fs.copyFileSync(
-			`${path.resolve(`static/thumbnails/${type}.png`)}`,
+			`${path.resolve(`static/defaults/${type}.png`)}`,
 			`${path.resolve(`static/thumbnails/${uid}_${position}.png`)}`
 		);
 	} catch (err) {

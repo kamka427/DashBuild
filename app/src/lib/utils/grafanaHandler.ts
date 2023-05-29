@@ -18,7 +18,7 @@ export const fetchPanels = async (): Promise<panelEntry[]> => {
 		panels.push({
 			title: panel.json_data.title,
 			JSON: panel.json_data,
-			thumbnailPath: `/thumbnails/${panel.file_name}.png`,
+			thumbnailPath: `/defaults/${panel.file_name}.png`,
 			fileName: panel.file_name,
 			properties: panel.config
 		});
