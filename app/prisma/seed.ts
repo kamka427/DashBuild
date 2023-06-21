@@ -15,7 +15,7 @@ removeThumbnails();
 
 // Fetch the available panels
 const availablePanels = await fetchPanels();
-console.log("availablePanels",availablePanels);
+console.log('availablePanels', availablePanels);
 
 // Create a new instance of the PrismaClient
 const prisma = new PrismaClient();
@@ -54,7 +54,7 @@ const main = async () => {
 			// Select a random panel from the available panels
 			const panel = faker.helpers.arrayElement(availablePanels);
 
-			console.log("!!!",panel.title);
+			console.log('!!!', panel.title);
 			// Add the panel to the dashboard
 			panelsOnDash.push({
 				id: faker.string.uuid(),
