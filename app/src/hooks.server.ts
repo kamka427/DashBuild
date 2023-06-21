@@ -23,7 +23,7 @@ import { prisma } from '$lib/utils/prisma';
 const availableProviders = [];
 
 // Add the CredentialsProvider if EMAIL_TEST is true
-if (env.EMAIL_TEST) {
+if (env.EMAIL_TEST === 'true') {
 	availableProviders.push(
 		CredentialsProvider({
 			name: 'Email for testing',
